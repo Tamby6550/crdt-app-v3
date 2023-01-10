@@ -1,0 +1,266 @@
+html,body {
+  font-size: 11.5px;
+  height: 100%;
+}
+.p-toast {
+
+  max-width: 28rem;
+}
+.p-panelmenu .p-panelmenu-panel .p-panelmenu-header>a {
+  padding: 10px 9px;
+  /* padding: 1vmax; */
+  /* padding: 0.8vw; */
+  display: flex;
+  flex-direction: row;
+  background-color: transparent;
+  border: none;
+  /* font-size: 14px; */
+  /* font-size: 0.8vmin; */
+  /* font-size: 1vmax; */
+}
+
+.p-menuitem {
+  width: auto;
+}
+
+.p-submenu-list .p-menuitem,
+.p-menuitem-icon,
+.p-panelmenu-icon,
+.p-button-icon,
+.p-button-label {
+  /* font-size: 12px; */
+  /* font-size: 0.8vmin; */
+  /* font-size: 1vmax; */
+
+  /*Nakelezina ny line height*/
+  /* line-height: 11px; */
+}
+
+/* .p-panelmenu .p-panelmenu-content {
+  padding: 0 0;
+} */
+
+.p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link {
+  /* padding: 10px 9px;
+  width: auto; */
+  /* padding: 1vmax; */
+  /* padding: 0.8vw; */
+}
+
+.p-datatable .p-datatable-thead>tr>th,
+.p-datatable .p-datatable-tbody>tr>td {
+  /* padding: 9px; */
+  /* padding: 1vmax; */
+  /* padding: 0.8vw; */
+  /* font-size: 14px; */
+  /* font-size: 0.8vmin; */
+  /* font-size: 1vmax; */
+}
+
+
+.custom-card-haut .p-card-body .p-card-content {
+  padding-top: 0;
+  padding-bottom: 0;
+  align-items: center;
+}
+
+
+.p-panelmenu .p-panelmenu-content {
+  border: none;
+}
+
+.p-panelmenu .p-panelmenu-panel .p-panelmenu-header>a .pi-chevron-right {
+  order: 3;
+  margin-left: auto;
+  /* font-size: 14px; */
+  /* font-size: 0.8vmin; */
+  /* font-size: 1vmax; */
+}
+
+.p-panelmenu .p-panelmenu-panel .p-panelmenu-header>a .pi-chevron-down {
+  order: 3;
+  margin-left: auto;
+  /* font-size: 14px; */
+  /* font-size: 0.8vmin; */
+  /* font-size: 1vmax; */
+}
+
+.p-panelmenu .p-panelmenu-panel .p-panelmenu-header>a span:nth-child(2) {
+  order: 1;
+}
+
+.p-panelmenu .p-panelmenu-panel .p-panelmenu-header>a span:nth-child(3) {
+  order: 2;
+}
+
+.p-0 .p-card-body {
+  padding: 0;
+}
+
+.menu-active {
+  background-color: rgb(101, 103, 105);
+}
+
+/*Hoany menu tsis sous menu rehefa active izy*/
+.menu-active a span {
+  color: white;
+}
+
+.menu-active:hover {
+  color: rgb(35, 32, 32);
+  background-color: rgb(34, 33, 33);
+}
+
+/*Hoany menu misy sous menu rehefa active izy*/
+.p-panelmenu .p-panelmenu-content .menu-active .p-menuitem-link .p-menuitem-text,
+.p-panelmenu .p-panelmenu-content .menu-active .p-menuitem-link .p-menuitem-icon {
+  color: white;
+}
+
+/*Manakisaka ny submenu*/
+ul.p-submenu-list.p-panelmenu-root-submenu {
+  padding-left: 10%;
+}
+
+.p-breadcrumb {
+  padding: 1px;
+  padding-left: 5px;
+  display: flex;
+  align-items: center;
+  border: none;
+}
+
+.p-breadcrumb ul li {
+  font-size: 12px;
+  padding: 1px;
+  /* font-size: 0.9vmin;
+  font-size: 0.8vmax; */
+}
+
+
+/*Cursuer @aide navigation breadcrumb atao defaut fa tsy pointeur*/
+.p-breadcrumb .p-menuitem-link {
+  cursor: default;
+}
+
+.card-custom .p-card-content {
+  /* padding-top: 0; */
+}
+
+.p-datatable-header {
+  padding: 2px 8px !important;
+}
+
+.form-input-css-tamby {
+  /* display: block;
+  width: 100%;
+  height: 28px;
+  padding: .375rem .75rem;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .25rem; */
+}
+
+.label-input-sm {
+  font-size: 1em;
+}
+
+
+.style-modal-tamby{
+  font-size: 0.9rem;
+  font-weight: normal;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,Liberation Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+
+}
+
+/* manala espace be am header'n dialog */
+.p-dialog .p-dialog-header {
+  padding-bottom: 0;
+}
+
+
+
+/*Tab View*/
+.tabview-demo .tabview-header-icon i, .tabview-demo .tabview-header-icon span {
+  vertical-align: middle;
+}
+
+.tabview-demo .tabview-header-icon span {
+  margin: 0 .5rem;
+}
+
+.tabview-demo .p-tabview p {
+  line-height: 1.5;
+  margin: 0;
+}
+
+
+/*Block UI*/
+
+.blockui-demo .p-panel p {
+  line-height: 1.5;
+  margin: 0;
+}
+.blockui-demo button {
+  margin-right: 0.5rem;
+}
+
+
+
+/*Patient du jour Id patient recherche*/
+.field.my-1.flex.flex-row.px-4.recherche-pat {
+  align-items: center;
+}
+
+
+/*TabView*/
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  background: #f5f4f4;
+  border-color: #a8b6db;
+  color: #7370f9;
+}
+
+/*Tag sucess*/
+.p-tag.p-tag-success {
+  background-color: #22C55E;
+  color: #ffffff;
+}
+
+
+/*Tost Success*/
+.p-toast .p-toast-message.p-toast-message-success {
+  background: #e4f8f0;
+  border: solid #1ea97c;
+  border-width: 0 0 0 6px;
+  color: #1ea97c;
+}
+
+
+/*CSS icon recherhce global dans examennonEff*/
+.global-tamby {
+  position: relative;
+  display: flex;
+}
+
+
+/*Boutton success*/
+.p-button.p-button-success, .p-buttonset.p-button-success > .p-button, .p-splitbutton.p-button-success > .p-button, .p-fileupload-choose.p-button-success {
+  color: #ffffff;
+  background: #22C55E;
+  border: 1px solid #22C55E;
+  font-size: 1.2rem;
+}
+
+
+/*fieldset*/
+.p-fieldset {
+  border: 1px solid #c6cacd;
+  background: #f9f9f9;
+  color: #495057;
+  border-radius: 3px;
+}
