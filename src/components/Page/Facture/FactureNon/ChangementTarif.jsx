@@ -20,7 +20,7 @@ export default function ChangementTarif(props) {
         setinfoNecess({ donne: donne, num_arriv: props.num_arriv, date_arriv: props.date_arriv, tarif: '', id_patient: id_patient })
     }
 
-    const onVide = ()=>{
+    const onVide = () => {
         setinfoNecess({ donne: [null], num_arriv: '', date_arriv: '', tarif: '', id_patient: '' })
     }
     const choixType = [
@@ -79,7 +79,7 @@ export default function ChangementTarif(props) {
 
 
 
-    const onUpdateTarif = async() => {
+    const onUpdateTarif = async () => {
         let dt = (infoNecess.date_arriv).split('/');
         let cmpltDate = dt[0] + '-' + dt[1] + '-' + dt[2];
         setcharge(true)
@@ -91,7 +91,6 @@ export default function ChangementTarif(props) {
                     props.setinfoFacture({ ...props.infoFacture, type: infoNecess.tarif });
                     props.loadData();
                     setcharge(false)
-                     
                     onHide('displayBasic2');
                 }
             ).catch((erro) => {
@@ -100,7 +99,27 @@ export default function ChangementTarif(props) {
     }
     return (
         <>
-            <Button icon={PrimeIcons.PENCIL} className='p-buttom-sm p-1 mr-2 mt-5 p-button-warning ' tooltip='Changement de Tarif' tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); onChargerData(props.examen, props.id_patient) }} />
+            <Button icon={PrimeIcons.PENCIL} className='p-buttom-sm p-1 mr-2 mt-5 p-button-warning ' tooltip='Changement de Tarif' tooltipOptions={{ position: 'top' }}
+                onClick={() => {
+                    const accept = () => {
+                        onClick('displayBasic2');
+                    onChargerData(props.examen, props.id_patient)
+                    }
+                    const reject = () => {
+                        return null;
+                    }
+                    confirmDialog({
+                        message: 'Voulez vous modifier le tarif ',
+                        header: '',
+                        icon: 'pi pi-exclamation-circle',
+                        acceptClassName: 'p-button-info',
+                        acceptLabel: 'Ok , Changer',
+                        rejectLabel: 'Fermer',
+                        accept,
+                        reject
+                    });
+                  
+                }} />
             <div className='grid'>
                 <Dialog header={renderHeader('displayBasic2')} className="lg:col-3 md:col-5 col-8 p-0" visible={displayBasic2} footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
                     <div className="p-1 style-modal-tamby" >
@@ -133,7 +152,7 @@ export default function ChangementTarif(props) {
                                     //     accept,
                                     //     reject
                                     // });
-                                   
+
                                 }
                             }} />
                         </div>

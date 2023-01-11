@@ -11,7 +11,7 @@ import { Dialog } from 'primereact/dialog';
 import axios from 'axios'
 import { InputText } from 'primereact/inputtext'
 import { InputNumber } from 'primereact/inputnumber'
-
+import ChoixReglement from './ChoixReglement';
 import moment from 'moment/moment';
 import ChangementTarif from './ChangementTarif';
 import { BlockUI } from 'primereact/blockui';
@@ -63,13 +63,20 @@ export default function RFacture(props) {
     const [charge, setCharge] = useState(false);
     const [infoExamen, setinfoExamen] = useState({ num_facture: '', patient: '', type: '', code_cli: '', pec: '', remise: '', code_presc: '' });
     const [infoFacture, setinfoFacture] = useState({
-        num_facture: '', patient: '', type: '', code_cli: '', nom_cli: '', pec: '', remise: '',
+        num_facture: '',date_facture:'', patient: '', type: '',type_facture:'',reglement_id:'',rib:'',id_details_reglement:'', code_cli: '', nom_cli: '', pec: '', remise: '',
         code_presc: '', nom_presc: '', num_arriv: '', date_arriv: '', code_reglement: '', montant_brute: '', montant_net: '', montant_patient: '', montant_pech: '', montant_remise: ''
     });
+    const [infoReglement, setinfoReglement] = useState({id_details_reglement:'',num_facture:'',reglement_id:''})
     const [verfChamp, setverfChamp] = useState({});
     const [totalMt, settotalMt] = useState(0);
     const [aujourd, setaujourd] = useState()
-    const [infoExamenVal, setinfoExamenVal] = useState({ num_arriv: '', date_arriv: '' });
+
+    const onVide = () => {
+        setinfoFacture({
+            num_facture: '', patient: '', type: '', code_cli: '', nom_cli: '', pec: '', remise: '',
+            code_presc: '', nom_presc: '', num_arriv: '', date_arriv: '', code_reglement: '', montant_brute: '', montant_net: '', montant_patient: '', montant_pech: '', montant_remise: ''
+        })
+    }
 
 
     //refa mis a jour ny input remise na pec
@@ -115,7 +122,7 @@ export default function RFacture(props) {
     }
 
     //eo @chargement de BD
-    const calcule = (result, total) => {
+    const calcule = (result, total,datefact) => {
         let mtremise = 0;
         let mtnet = 0;
         let mtpat = 0;
@@ -130,42 +137,36 @@ export default function RFacture(props) {
             mtpec = 0;
         }
         setinfoFacture({
-            ...infoFacture, num_facture: result.data.num_facture,
-             num_arriv: props.data.numero, date_arriv: props.data.date_arr, patient: props.data.nom, type: props.data.type_pat,
-            montant_brute: format(total, 2, " "), montant_remise: format(mtremise, 2, " "), montant_net: format(mtnet, 2, " "), montant_patient: format(mtpat, 2, " "), montant_pech: format(mtpec, 2, " ")
+            ...infoFacture, num_facture: result.data.num_facture,date_facture:moment(datefact).format('DD/MM/YYYY'),
+            num_arriv: props.data.numero, date_arriv: props.data.date_arr, patient: props.data.nom, type: result.data.tarif,
+            montant_brute: format(total, 2, " "), montant_remise: format(mtremise, 2, " "), montant_net: format(total, 2, " "), montant_patient: format(total, 2, " "), montant_pech: format(mtpec, 2, " ")
         });
     }
 
-    // const onInfoPatient = (e) => {
-    //     setinfoFacture({ ...infoFacture, [e.target.name]: e.target.value })
-    //     setTimeout(() => {
-    //         calculeMis(totalMt);
-    //     }, 500)
-    // }
+
 
     //Get List Examen
     const loadData = async (numero, datearr, result) => {
-       
+
         await axios.get(props.url + `getPatientExamenFacture/${numero}&${datearr}`)
             .then(
                 (results) => {
                     setinfoExamen(results.data.all);
                     settotalMt(results.data.total)
                     setaujourd(results.data.datej);
-                    // console.log(result)
                     setBlockedPanel(false);
-                    calcule(result, results.data.total)
+                    calcule(result, results.data.total,results.data.datej)
                     setCharge(false);
                 }
             );
     }
 
-    //Get List numfacture
+    //Get List numfacture et tarif
     const loadDataFact = async () => {
         let dt = (props.data.date_arr).split('/');
         let cmpltDate = dt[0] + '-' + dt[1] + '-' + dt[2];
         setBlockedPanel(true);
-        await axios.get(props.url + `getPageFacture`)
+        await axios.get(props.url + `getPageFacture/${props.data.numero}&${cmpltDate}`)
             .then(
                 (result) => {
                     setTimeout(() => {
@@ -214,6 +215,7 @@ export default function RFacture(props) {
     const onHide = (name) => {
         dialogFuncMap[`${name}`](false);
         props.setrefreshData(1);
+        onVide();
 
     }
 
@@ -229,7 +231,7 @@ export default function RFacture(props) {
         return (
             <div>
                 <center>
-                    <h4 className='mb-1'>Facture , Aujourd'hui : {jr.format('DD/MM/YYYY')} </h4>
+                    <h4 className='mb-1'>Facture , Aujourd'hui : {infoFacture.date_facture} </h4>
                 </center>
                 <hr />
             </div>
@@ -248,23 +250,29 @@ export default function RFacture(props) {
 
 
 
-    const onValideExamen = async () => { //Modification  donnees vers Laravel
-        setchargeV({ chupdate: true });
-        await axios.put(props.url + 'validationExamen', infoExamenVal)
-            .then(res => {
-                notificationAction(res.data.etat, 'Validation examen', res.data.message);//message avy @back
-                setchargeV({ chupdate: false });
-                setTimeout(() => {
-                    onHide('displayBasic2');
-                    props.changecharge(1);
-                }, 600)
-            })
-            .catch(err => {
-                console.log(err);
-                //message avy @back
-                notificationAction('error', 'Erreur', err.data.message);
-                setchargeV({ chupdate: false });
-            });
+    //Modification  donnees vers Laravel
+    const onValideFacture = async () => {
+        if (infoFacture.code_presc == '' || infoFacture.code_cli == '') {
+            console.log('first')
+        }
+        else {
+            // setchargeV({ chupdate: true });
+            // await axios.put(props.url + 'validationExamen', infoExamenVal)
+            //     .then(res => {
+            //         notificationAction(res.data.etat, 'Validation examen', res.data.message);//message avy @back
+            //         setchargeV({ chupdate: false });
+            //         setTimeout(() => {
+            //             onHide('displayBasic2');
+            //             props.changecharge(1);
+            //         }, 600)
+            //     })
+            //     .catch(err => {
+            //         console.log(err);
+            //         //message avy @back
+            //         notificationAction('error', 'Erreur', err.data.message);
+            //         setchargeV({ chupdate: false });
+            //     });
+        }
     }
 
     return (
@@ -281,17 +289,17 @@ export default function RFacture(props) {
                                     <div className="card">
                                         <div className="p-fluid px-4 formgrid grid">
                                             <div className="field   lg:col-5 md:col-12 col:12">
-                                                <label htmlFor="username2" className="label-input-sm">Numéro Facture</label>
+                                                <label htmlFor="username2" className="label-input-sm">Numéro Facture*</label>
                                                 <InputText id="username2" aria-describedby="username2-help" name='num_facture' value={infoFacture.num_facture} readOnly />
                                                 {/* {verfChamp.num_facture ? <small id="username2-help" className="p-error block">Champ vide !</small> : null} */}
                                             </div>
                                             <div className="field   lg:col-3 md:col-12 col:12">
-                                                <label htmlFor="username2" className="label-input-sm">N° arrivée</label>
+                                                <label htmlFor="username2" className="label-input-sm">N° arrivée*</label>
                                                 <InputText id="username2" aria-describedby="username2-help" name='num_arriv' value={infoFacture.num_arriv} readOnly />
                                                 {/* {verfChamp.num_arriv ? <small id="username2-help" className="p-error block">Champ vide !</small> : null} */}
                                             </div>
                                             <div className="field   lg:col-4 md:col-12 col:12">
-                                                <label htmlFor="username2" className="label-input-sm">Date d'arrivée</label>
+                                                <label htmlFor="username2" className="label-input-sm">Date d'arrivée*</label>
                                                 <InputText id="username2" aria-describedby="username2-help" name='num_arriv' value={infoFacture.date_arriv} readOnly />
                                                 {/* {verfChamp.date_arriv ? <small id="username2-help" className="p-error block">Champ vide !</small> : null} */}
                                             </div>
@@ -300,23 +308,23 @@ export default function RFacture(props) {
                                         <div className="card">
                                             <div className="p-fluid px-4 formgrid grid">
                                                 <div className="field   lg:col-7 md:col-12 col:12">
-                                                    <label htmlFor="username2" className="label-input-sm">Patient</label>
+                                                    <label htmlFor="username2" className="label-input-sm">Patient*</label>
                                                     <InputText id="username2" aria-describedby="username2-help" name='patient' value={infoFacture.patient} readOnly />
                                                     {/* {verfChamp.patient ? <small id="username2-help" className="p-error block">Champ vide !</small> : null} */}
                                                 </div>
 
                                                 <div className="field   lg:col-2 md:col-3 col:2">
-                                                    <label htmlFor="username2" className="label-input-sm">Tarif</label>
+                                                    <label htmlFor="username2" className="label-input-sm">Tarif*</label>
                                                     <InputText id="username2" aria-describedby="username2-help" name='type' value={infoFacture.type} readOnly />
                                                     {/* {verfChamp.type ? <small id="username2-help" className="p-error block">Champ vide !</small> : null} */}
 
                                                 </div>
                                                 <div className="field   lg:col-2 md:col-3 col:2">
-                                                    <ChangementTarif url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} setBlockedPanel={setBlockedPanel} loadData={loadDataFact} ancientarif={infoFacture.type} examen={infoExamen} id_patient={props.data.id_patient} num_arriv={props.data.numero} date_arriv={props.data.date_arr} />
+                                                    <ChangementTarif setrefreshData={props.changecharge} url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} setBlockedPanel={setBlockedPanel} loadData={loadDataFact} ancientarif={infoFacture.type} examen={infoExamen} id_patient={props.data.id_patient} num_arriv={props.data.numero} date_arriv={props.data.date_arr} />
                                                 </div>
 
                                                 <div className="field   lg:col-10 md:col-10 col:10">
-                                                    <label htmlFor="username2" className="label-input-sm">Client </label>
+                                                    <label htmlFor="username2" className="label-input-sm">Client* </label>
                                                     <InputText id="username2" aria-describedby="username2-help" name='code_cli' value={infoFacture.nom_cli} readOnly />
                                                     {verfChamp.nom_cli ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
                                                 </div>
@@ -327,15 +335,13 @@ export default function RFacture(props) {
                                                 <div className="field   lg:col-4 md:col-8 col:12">
                                                     <label htmlFor="username2" className="label-input-sm">P.en Charge(%)</label>
                                                     <InputNumber id="username2" aria-describedby="username2-help" name='pec' min={0} max={100} value={infoFacture.pec} onValueChange={(e) => { calculeMis(totalMt, infoFacture.remise, e.target.value) }} />
-                                                    {/* {verfChamp.code_client ? <small id="username2-help" className="p-error block">Code client vide !</small> : null} */}
                                                 </div>
                                                 <div className="field   lg:col-4 md:col-8 col:12">
                                                     <label htmlFor="username2" className="label-input-sm">Remise(%)</label>
-                                                    <InputNumber id="username2" aria-describedby="username2-help" name='remise'min={0} max={100} value={infoFacture.remise} onValueChange={(e) => { calculeMis(totalMt, e.target.value, infoFacture.pec) }} />
-                                                    {/* {verfChamp.code_client ? <small id="username2-help" className="p-error block">Code client vide !</small> : null} */}
+                                                    <InputNumber id="username2" aria-describedby="username2-help" name='remise' min={0} max={100} value={infoFacture.remise} onValueChange={(e) => { calculeMis(totalMt, e.target.value, infoFacture.pec) }} />
                                                 </div>
                                                 <div className="field   lg:col-8 md:col-10 col:10">
-                                                    <label htmlFor="username2" className="label-input-sm">Prescripteur</label>
+                                                    <label htmlFor="username2" className="label-input-sm">Prescripteur*</label>
                                                     <InputText id="username2" aria-describedby="username2-help" name='code_presc' value={infoFacture.nom_presc} readOnly />
                                                     {verfChamp.nom_presc ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
                                                 </div>
@@ -345,7 +351,7 @@ export default function RFacture(props) {
                                             </div>
 
                                         </div>
-                                        </div>
+                                    </div>
                                 </Fieldset>
                             </div>
                             <div className="field   lg:col-7 md:col-12 col:12 my-1 flex flex-column">
@@ -354,20 +360,22 @@ export default function RFacture(props) {
                                         <Fieldset legend="Reglement">
                                             <div className="card">
                                                 <div className="p-fluid px-4 formgrid grid">
-                                                    <div className="field   lg:col-12 md:col-12 col:12">
-                                                        <label htmlFor="username2" className="label-input-sm">Reglement</label>
-                                                        <InputText id="username2" aria-describedby="username2-help" name='num_facture' value={infoFacture.num_facture} readOnly />
-                                                        {/* {verfChamp.code_client ? <small id="username2-help" className="p-error block">Code client vide !</small> : null} */}
+                                                    <div className="field lg:col-10 md:col-10 col:10">
+                                                        <label htmlFor="username2" className="label-input-sm">Reglement </label>
+                                                        <InputText id="username2" aria-describedby="username2-help" name='code_cli' value={infoFacture.nom_cli}  />
+                                                      
+                                                    </div>
+                                                    <div className="field   lg:col-2 md:col-2 col:2">
+                                                        <ChoixReglement url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} />
+
                                                     </div>
                                                     <div className="field   lg:col-12 md:col-12 col:12">
                                                         <label htmlFor="username2" className="label-input-sm">Montant</label>
                                                         <InputText id="username2" aria-describedby="username2-help" name='num_arriv' value={infoFacture.num_arriv} readOnly />
-                                                        {/* {verfChamp.code_client ? <small id="username2-help" className="p-error block">Code client vide !</small> : null} */}
                                                     </div>
                                                     <div className="field   lg:col-12 md:col-12 col:12">
                                                         <label htmlFor="username2" className="label-input-sm">N° Chèque	</label>
                                                         <InputText id="username2" aria-describedby="username2-help" name='num_arriv' value={infoFacture.date_arriv} readOnly />
-                                                        {/* {verfChamp.code_client ? <small id="username2-help" className="p-error block">Code client vide !</small> : null} */}
                                                     </div>
                                                 </div>
                                             </div>
@@ -381,27 +389,22 @@ export default function RFacture(props) {
                                                     <div className="field   lg:col-12 md:col-12 col:12">
                                                         <label htmlFor="username2" className="label-input-sm">Total(en Ar)</label>
                                                         <InputText id="username2" aria-describedby="username2-help" name='montant_brute' value={infoFacture.montant_brute} readOnly />
-                                                        {/* {verfChamp.code_client ? <small id="username2-help" className="p-error block">Code client vide !</small> : null} */}
                                                     </div>
                                                     <div className="field   lg:col-12 md:col-12 col:12">
-                                                        <label htmlFor="username2" className="label-input-sm">Remise <i style={{fontWeight:'700'}}> {infoFacture.remise}% </i> (en Ar) </label>
+                                                        <label htmlFor="username2" className="label-input-sm">Remise <i style={{ fontWeight: '700' }}> {infoFacture.remise}% </i> (en Ar) </label>
                                                         <InputText id="username2" aria-describedby="username2-help" name='montant_remise' value={infoFacture.montant_remise} readOnly />
-                                                        {/* {verfChamp.code_client ? <small id="username2-help" className="p-error block">Code client vide !</small> : null} */}
                                                     </div>
                                                     <div className="field   lg:col-12 md:col-12 col:12">
                                                         <label htmlFor="username2" className="label-input-sm">Montant net(en Ar)</label>
                                                         <InputText id="username2" aria-describedby="username2-help" name='montant_net' value={infoFacture.montant_net} readOnly />
-                                                        {/* {verfChamp.code_client ? <small id="username2-help" className="p-error block">Code client vide !</small> : null} */}
                                                     </div>
                                                     <div className="field   lg:col-12 md:col-12 col:12">
                                                         <label htmlFor="username2" className="label-input-sm">A Payer par le patient(en Ar)</label>
-                                                        <InputText id="username2" aria-describedby="username2-help" name='montant_patient' value={infoFacture.montant_patient} readOnly />
-                                                        {/* {verfChamp.code_client ? <small id="username2-help" className="p-error block">Code client vide !</small> : null} */}
+                                                        <InputText id="username2" aria-describedby="username2-help" name='montant_patient' style={{ fontWeight: '600', borderColor: 'grey' }} value={infoFacture.montant_patient} readOnly />
                                                     </div>
                                                     <div className="field   lg:col-12 md:col-12 col:12">
-                                                        <label htmlFor="username2" className="label-input-sm">Montant pris en charge <i style={{fontWeight:'700'}}> {infoFacture.pec}% </i> (en Ar)</label>
-                                                        <InputText id="username2" aria-describedby="username2-help" name='montant_pech' value={infoFacture.montant_pech} readOnly />
-                                                        {/* {verfChamp.code_client ? <small id="username2-help" className="p-error block">Code client vide !</small> : null} */}
+                                                        <label htmlFor="username2" className="label-input-sm">Montant pris en charge <i style={{ fontWeight: '700' }}> {infoFacture.pec}% </i> (en Ar)</label>
+                                                        <InputText id="username2" aria-describedby="username2-help" name='montant_pech' style={{ fontWeight: '600', borderColor: 'grey' }} value={infoFacture.montant_pech} readOnly />
                                                     </div>
 
 
@@ -432,7 +435,7 @@ export default function RFacture(props) {
                     <div className='flex mt-3 mr-4 justify-content-center '>
                         <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-success ' tooltip="Valider l'examen" style={{ cursor: 'pointer' }} label={chargeV.chupdate ? 'Veuillez attendez...' : 'Valider'}
                             onClick={() => {
-                                onValideExamen()
+                                onValideFacture()
                             }} />
                     </div>
                 </BlockUI>
