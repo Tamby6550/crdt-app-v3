@@ -200,11 +200,11 @@ export default function CompteRendu(props) {
                     <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-primary ' label={chargePost.chajoute ? 'Enregistrement...' : 'Enregistrer'} onClick={log} />
                     <ReactToPrint trigger={() =>
                         <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-primary ml-3 ' label={'Imprimer'} disabled={printDesact} />
-                    } content={() => reportTemplateRef} />
+                    } content={() => document.getElementById("scan")} />
                 </div>
             </Dialog>
             <div className='hidden'>
-                <div ref={(el) => (reportTemplateRef = el)}>
+                <div id="scan" ref={(el) => (reportTemplateRef = el)}>
                     <div className="flex justify-content-end w-100">
                         <div id="print" style={{ fontSize: '1.4em' }}></div>
                         <div style={{ width: "45px", height: "45px" }}>
