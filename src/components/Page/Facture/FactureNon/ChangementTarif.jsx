@@ -83,18 +83,19 @@ export default function ChangementTarif(props) {
         let dt = (infoNecess.date_arriv).split('/');
         let cmpltDate = dt[0] + '-' + dt[1] + '-' + dt[2];
         setcharge(true)
+
         await axios.put(props.url + 'changmentTarif', infoNecess)
             .then(
                 (res) => {
                     //message avy @back
                     notificationAction(res.data.etat, 'Tarif ', res.data.message);
-                    props.setinfoFacture({ ...props.infoFacture, type: infoNecess.tarif });
+                    props.setinfoFacture({ ...props.infoFacture, type: infoNecess.tarif,pec: '', remise: '',  });
                     props.loadData();
                     setcharge(false)
                     onHide('displayBasic2');
                 }
             ).catch((erro) => {
-                console.log(erro)
+                console.log(erro);
             })
     }
     return (
@@ -103,7 +104,7 @@ export default function ChangementTarif(props) {
                 onClick={() => {
                     const accept = () => {
                         onClick('displayBasic2');
-                    onChargerData(props.examen, props.id_patient)
+                        onChargerData(props.examen, props.id_patient)
                     }
                     const reject = () => {
                         return null;
@@ -118,7 +119,7 @@ export default function ChangementTarif(props) {
                         accept,
                         reject
                     });
-                  
+
                 }} />
             <div className='grid'>
                 <Dialog header={renderHeader('displayBasic2')} className="lg:col-3 md:col-5 col-8 p-0" visible={displayBasic2} footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>

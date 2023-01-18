@@ -92,7 +92,7 @@ function App() {
                 </div>
                 <div className='col-12'>
                   <Routes>
-                    <Route path='/facture' element={<Facture url={url} />} />
+                    {/* <Route path='/facture' element={<Facture url={url} />} /> */}
                     <Route path='/prescripteur' element={<Prescripteur url={url} />} />
                     <Route path='/client' element={<Client url={url} />} />
                     <Route path='/examen' element={<Examen url={url} />} />

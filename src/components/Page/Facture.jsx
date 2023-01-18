@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { TabView, TabPanel } from 'primereact/tabview';
 import FactureNon from './Facture/FactureNon';
-
+import FactureEff from './Facture/FactureEff';
 export default function Facture(props) {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -13,7 +13,8 @@ export default function Facture(props) {
            <FactureNon  url={props.url}  activeIndex={activeIndex} />
           </TabPanel>
           <TabPanel header="Liste Facturé">
-           <h1>dfgdf</h1>
+          
+           <FactureEff  url={props.url}  activeIndex={activeIndex} />
           </TabPanel>
         </TabView>
       </div>
