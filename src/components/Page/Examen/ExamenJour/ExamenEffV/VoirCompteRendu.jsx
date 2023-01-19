@@ -13,7 +13,8 @@ import QRCode from 'react-qr-code'
 export default function VoirCompteRendu(props) {
 
 
-    const [recHtml, setrecHtml] = useState(null)
+    const [recHtml, setrecHtml] = useState(null);
+    const [textchrg, settextchrg] = useState('Chargement...')
     const [info, setinfo] = useState({ num_arriv: '', date_arriv: '', cr_name: '', lib_examen: '' })
     const [chargePost, setchargePost] = useState({ chajoute: false });
     const [printDesact, setprintDesact] = useState(true)
@@ -83,14 +84,15 @@ export default function VoirCompteRendu(props) {
                 }
             )
                 .catch((e) => {
-                    console.log(e)
+                    console.log('hello'+e)
                 })
         } catch (error) {
-            console.log(error)
+            console.log('kjsdljf'+error)
         }
     }
     const getData = async () => {
         // setchargePost({ chajoute: true });
+        settextchrg('Chargement...');
         let lib_examenconv = props.data.lib_examen
         lib_examenconv = lib_examenconv.replace(/\//g, "--");
         lib_examenconv = lib_examenconv.replace(/\"/g, "---");
@@ -109,7 +111,6 @@ export default function VoirCompteRendu(props) {
                 }
             }).then(
                 (result) => {
-                    
                     setrecHtml(result.data)
                     setTimeout(() => {
                         var myElement = document.getElementById("print");
@@ -118,7 +119,8 @@ export default function VoirCompteRendu(props) {
                 }
             )
                 .catch((e) => {
-                    console.log(e)
+                    // console.log(e);
+                    settextchrg('Aucune compte rendu !')
                 })
         } catch (error) {
             console.log(error)
@@ -219,7 +221,7 @@ export default function VoirCompteRendu(props) {
                     <div className='mb-3'>
                         <BundledEditor
                             onInit={(evt, editor) => editorRef.current = editor}
-                            initialValue={recHtml === null ? '<h1>Chargement...</h1>' : recHtml}
+                            initialValue={recHtml === null ? '<h1>'+textchrg+'</h1>' : recHtml}
                             init={{
                                 height: 500,
                                 menubar: false,

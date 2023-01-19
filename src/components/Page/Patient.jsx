@@ -155,7 +155,7 @@ export default function Patient(props) {
     return (
         <>
             <Toast ref={toastTR} position="top-right" />
-            <Dialog header={"Date D'arrivée : "+numJournal.datej} visible={displayBasic} className="lg:col-3 md:col-5 col-8 p-0" onHide={false} >
+            <Dialog header={"Date D'arrivée : "+numJournal.datej} visible={displayBasic} className="lg:col-3 md:col-5 col-8 p-0"  onHide={() => onHide('displayBasic')} >
               <center><h3 className='m-3'>Numéro de journal d'arrivée :  <u style={{ color: 'rgb(34, 197, 94)', fontWeight: 'bold', fontSize: '1.8rem' }}> {numJournal.num}</u>   </h3></center>  
             </Dialog>
             <div className="flex flex-column justify-content-center">

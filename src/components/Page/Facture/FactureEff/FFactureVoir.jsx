@@ -435,7 +435,6 @@ export default function FFactureVoir(props) {
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <hr />
                         <div className="grid h-full">
@@ -454,7 +453,6 @@ export default function FFactureVoir(props) {
                         </div>
                     </div>
                     <div className='flex mt-3 mr-4 justify-content-center '>
-                     
                         <ReactToPrint trigger={() =>
                             <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-primary ml-5 ' label={'Imprimer'} />
                         } content={() => document.getElementById("scan")} />

@@ -107,12 +107,14 @@ export default function ExamenEff(props) {
     const renderHeader1 = () => {
         return (
             <div className="flex justify-content-between">
-                <Button type="button" icon="pi pi-filter-slash" label="Vider" className="p-button-outlined" onClick={clearFilter1} />
                 <h3 className='m-3'>Examens en attente de Validation</h3>
-                <span className="p-input-icon-left global-tamby">
-                    <i className="pi pi-search" />
-                    <InputText value={globalFilterValue1} onChange={onGlobalFilterChange1} placeholder="Recherche global..." />
-                </span>
+                <div className='flex'>
+                    <Button type="button" icon="pi pi-filter-slash" label="Vider" className="p-button-outlined" onClick={clearFilter1} />
+                    <span className="p-input-icon-left global-tamby ml-2"   >
+                        <i className="pi pi-search" />
+                        <InputText value={globalFilterValue1} onChange={onGlobalFilterChange1} placeholder="Recherche global..." />
+                    </span>
+                </div>
             </div>
         )
     }
@@ -125,7 +127,7 @@ export default function ExamenEff(props) {
                     {data.date_arrive == data.jourj ?
                         null
                         :
-                        <Tag className="mr-2 " severity={"warning"}  icon={PrimeIcons.CLOCK} ></Tag>
+                        <Tag className="mr-2 " severity={"warning"} icon={PrimeIcons.CLOCK} ></Tag>
                     }
                 </div>
             </div>
@@ -139,7 +141,7 @@ export default function ExamenEff(props) {
 
             <div className="flex flex-column justify-content-center">
 
-                <DataTable header={header1} filters={filters1} globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listExamenNonEff} loading={charge} scrollable scrollHeight="550px" responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun examen à éffectuées"} >
+                <DataTable header={header1} filters={filters1} globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listExamenNonEff} loading={charge} scrollable scrollHeight="550px" responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun examen "} >
 
                     <Column field='numero' header={'Numéro d\'Arrivée'} style={{ fontWeight: '600' }}></Column>
                     <Column field={'date_arr'} header={'Date d\'Arrivée'} body={bodyBouttonh} style={{ fontWeight: '600' }}></Column>
@@ -148,7 +150,6 @@ export default function ExamenEff(props) {
                     <Column field='date_naiss' header="Date_Naiss"></Column>
                     <Column field='type_pat' header="Tarif"></Column>
                     <Column header="Action" body={bodyBoutton} align={'left'}></Column>
-                    {/* <Column field='telephone' header="Tél"></Column> */}
                 </DataTable>
 
 

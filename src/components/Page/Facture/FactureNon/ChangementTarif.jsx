@@ -90,6 +90,7 @@ export default function ChangementTarif(props) {
                     //message avy @back
                     notificationAction(res.data.etat, 'Tarif ', res.data.message);
                     props.setinfoFacture({ ...props.infoFacture, type: infoNecess.tarif,pec: '', remise: '',  });
+                    props.settarifCh(infoNecess.tarif)
                     props.loadData();
                     setcharge(false)
                     onHide('displayBasic2');

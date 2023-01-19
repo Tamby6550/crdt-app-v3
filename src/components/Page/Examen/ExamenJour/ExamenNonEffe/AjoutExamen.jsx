@@ -4,6 +4,8 @@ import { PrimeIcons } from 'primereact/api';
 import { InputText } from 'primereact/inputtext'
 import { Toast } from 'primereact/toast';
 import ListeExamen from './ListeExamen';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+
 /*Importer modal */
 import { Dialog } from 'primereact/dialog';
 import axios from 'axios';
@@ -11,7 +13,7 @@ import axios from 'axios';
 export default function AjoutExamen(props) {
 
 
-    
+
     const [charge, setcharge] = useState({ chajoute: false });
     const [infoajoutExamen, setinfoajoutExamen] = useState({ num_arriv: '', date_arriv: '', donne: null });
     // ****************************ATO ABY NY ZAVATRA NATAOKO AMNAZY**********************************************  
@@ -20,10 +22,10 @@ export default function AjoutExamen(props) {
 
     let handleChange = (i, name, valeur) => {
         let newFormExamen = [...infoExamen];
-        newFormExamen[i][name] = valeur;   
-        setinfoExamen(newFormExamen);        
+        newFormExamen[i][name] = valeur;
+        setinfoExamen(newFormExamen);
     }
-    
+
     let ajoutFormulaire = () => {
         setinfoExamen([...infoExamen, Nouveau]);
     }
@@ -39,11 +41,11 @@ export default function AjoutExamen(props) {
 
     const [verfChamp, setverfChamp] = useState(false);
     const onVide = () => {
-        setinfoajoutExamen({ num_arriv: '', date_arriv: '', donne:null });
+        setinfoajoutExamen({ num_arriv: '', date_arriv: '', donne: null });
         setinfoExamen([{ lib_examen: '', code_tarif: '', quantite: '', montant: '', type_examen: '' }])
     }
 
-   
+
     const toastTR = useRef(null);
     const notificationAction = (etat, titre, message) => {
         toastTR.current.show({ severity: etat, summary: titre, detail: message, life: 3000 });
@@ -79,7 +81,7 @@ export default function AjoutExamen(props) {
     const renderHeader = (name) => {
         return (
             <div>
-                <h4 className='mb-1'>Ajout examen de <i style={{ fontWeight: '800', color: 'black'  }} >{props.data.nom}({'Tarif :' + props.data.type_pat + ', ID :' + props.data.id_patient})</i> </h4>
+                <h4 className='mb-1'>Ajout examen de <i style={{ fontWeight: '800', color: 'black' }} >{props.data.nom}({'Tarif :' + props.data.type_pat + ', ID :' + props.data.id_patient})</i> </h4>
                 <hr />
             </div>
         );
@@ -90,7 +92,7 @@ export default function AjoutExamen(props) {
 
     const onSub = async () => { //Ajout de donnees vers Laravel
         setcharge({ chajoute: true });
-        await axios.post(props.url + 'insertExamenJour', { num_arriv: props.data.numero, date_arriv:  props.data.date_arr, donne: infoExamen })
+        await axios.post(props.url + 'insertExamenJour', { num_arriv: props.data.numero, date_arriv: props.data.date_arr, donne: infoExamen })
             .then(res => {
                 notificationAction(res.data.etat, 'Enregistrement', res.data.message);//message avy @back
                 setcharge({ chajoute: false });
@@ -107,11 +109,43 @@ export default function AjoutExamen(props) {
             });
     }
 
+    const bodyConfirme = () => {
+        return (
+            <div className='flex flex-column justify-content-center align-items-center m-0 '>
+                <h4 className='m-1'>
+                    Vous voullez ajouter l'examen de <label style={{fontSize:'1.2em'}}>{props.data.nom}</label>  , tarif : {props.data.type_pat} ?
+                </h4>
+             
+            </div>
+        )
+    }
 
     return (
         <div>
             <Toast ref={toastTR} position="top-right" />
-            <Button tooltip='Ajout examen' label='' icon={PrimeIcons.PLUS} tooltipOptions={{ position: 'top' }} value="Ajout" className=' p-button-secondary' onClick={() => onClick('displayBasic2')} />
+            {/* <ConfirmDialog /> */}
+
+            <Button tooltip='Ajout examen' label='' icon={PrimeIcons.PLUS} tooltipOptions={{ position: 'top' }} value="Ajout" className=' p-button-secondary'
+                onClick={() => {
+
+                    const accept = () => {
+                        onClick('displayBasic2');
+                    }
+                    const reject = () => {
+                        return null;
+                    }
+                    confirmDialog({
+                        message: bodyConfirme,
+                        header: '',
+                        icon: 'pi pi-exclamation-circle',
+                        acceptClassName: 'p-button-info',
+                        acceptLabel: 'Ok , ajouter',
+                        rejectLabel: 'Fermer',
+                        accept,
+                        reject
+                    });
+                }}
+            />
             <div className='grid'>
                 <Dialog header={renderHeader('displayBasic2')} className="lg:col-9 md:col-10 col-11 p-0" visible={displayBasic2} footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
                     <div className="p-1 style-modal-tamby ml-5" >
@@ -158,20 +192,20 @@ export default function AjoutExamen(props) {
                     <div className='flex mt-3 mr-4 justify-content-center '>
                         <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-info ' label={charge.chajoute ? 'Enregistrement en cours...' : 'Enregistrer'}
                             onClick={() => {
-                                let verf=0;
+                                let verf = 0;
                                 for (let i = 0; i < infoExamen.length; i++) {
                                     if (infoExamen[i].code_tarif != "") {
                                         setverfChamp(false);
-                                       verf=1;
+                                        verf = 1;
                                     } else {
-                                        verf=0
+                                        verf = 0
                                         setverfChamp(true);
                                         break;
                                     }
                                 }
-                                if (verf==1) {
+                                if (verf == 1) {
                                     onSub()
-                                } 
+                                }
                             }} />
                     </div>
                 </Dialog>

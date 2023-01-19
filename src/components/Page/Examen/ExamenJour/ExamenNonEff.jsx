@@ -16,7 +16,7 @@ export default function ExamenNonEff(props) {
     //Block Chargement
     const [blockedDocument, setBlockedDocument] = useState(true);
 
-    
+
 
     //Chargement de données
     const [charge, setCharge] = useState(false);
@@ -90,9 +90,9 @@ export default function ExamenNonEff(props) {
             </div>
         )
     }
-  
+
     //Global filters
-    
+
     const [filters1, setFilters1] = useState(null);
     const [globalFilterValue1, setGlobalFilterValue1] = useState('');
     const onGlobalFilterChange1 = (e) => {
@@ -115,12 +115,14 @@ export default function ExamenNonEff(props) {
     const renderHeader1 = () => {
         return (
             <div className="flex justify-content-between">
-                <Button type="button" icon="pi pi-filter-slash" label="Vider" className="p-button-outlined" onClick={clearFilter1} />
                 <h3 className='m-3'>Examens à éffectuées</h3>
-                <span className="p-input-icon-left global-tamby">
-                    <i className="pi pi-search" />
-                    <InputText value={globalFilterValue1} onChange={onGlobalFilterChange1} placeholder="Recherche global..." />
-                </span>
+                <div className='flex'>
+                    <Button type="button" icon="pi pi-filter-slash" label="Vider" className="p-button-outlined" onClick={clearFilter1} />
+                    <span className="p-input-icon-left global-tamby ml-2"   >
+                        <i className="pi pi-search" />
+                        <InputText value={globalFilterValue1} onChange={onGlobalFilterChange1} placeholder="Recherche global..." />
+                    </span>
+                </div>
             </div>
         )
     }
@@ -134,16 +136,16 @@ export default function ExamenNonEff(props) {
             <ConfirmDialog />
 
             <div className="flex flex-column justify-content-center">
-                    <DataTable header={header1} value={listExamenNonEff} loading={charge} filters={filters1} scrollable scrollHeight="550px"  globalFilterFields={['numero','date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']}  responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun examen à éffectuées"} >
-                        <Column field='numero'  header={'Numéro d\'Arrivée'} style={{ fontWeight: '600' }}></Column>
-                        <Column field={'date_arr'}  header={'Date d\'Arrivée'} style={{ fontWeight: '600' }}></Column>
-                        <Column field={'id_patient'}  header="ID" style={{ fontWeight: '600' }}></Column>
-                        <Column field='nom' header="Nom"></Column>
-                        <Column field='date_naiss' header="Date_Naiss"></Column>
-                        <Column field='type_pat'  header="Tarif"></Column>
-                        <Column header="Action" body={bodyBoutton} align={'left'}></Column>
-                        {/* <Column field='telephone' header="Tél"></Column> */}
-                    </DataTable>
+                <DataTable header={header1} value={listExamenNonEff} loading={charge} filters={filters1} scrollable scrollHeight="550px" globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun patient à examiner"} >
+                    <Column field='numero' header={'Numéro d\'Arrivée'} style={{ fontWeight: '600' }}></Column>
+                    <Column field={'date_arr'} header={'Date d\'Arrivée'} style={{ fontWeight: '600' }}></Column>
+                    <Column field={'id_patient'} header="ID" style={{ fontWeight: '600' }}></Column>
+                    <Column field='nom' header="Nom"></Column>
+                    <Column field='date_naiss' header="Date_Naiss"></Column>
+                    <Column field='type_pat' header="Tarif"></Column>
+                    <Column header="Action" body={bodyBoutton} align={'left'}></Column>
+                    {/* <Column field='telephone' header="Tél"></Column> */}
+                </DataTable>
             </div>
         </>
     )

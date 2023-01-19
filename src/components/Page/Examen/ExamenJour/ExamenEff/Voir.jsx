@@ -24,7 +24,7 @@ export default function Voir(props) {
     const [charge, setCharge] = useState(false);
     const [infoexamenPatient, setinfoexamenPatient] = useState([{ lib_examen: '', code_tarif: '', quantite: '', montant: '', date_examen: '', type: '' }]);
     const [verfCompteRendu, setverfCompteRendu] = useState(false);
-    const [infoExamenVal, setinfoExamenVal] = useState({ num_arriv: '', date_arriv: '' })
+    const [infoExamenVal, setinfoExamenVal] = useState({ num_arriv: '', date_arriv: '' , verfexamen:'2'})
     //Get List Examen
     const loadData = async (numero, datearr) => {
         await axios.get(props.url + `getPatientExamenEff/${numero}&${datearr}`)
@@ -38,7 +38,7 @@ export default function Voir(props) {
     }
 
     const chargementData = () => {
-        setinfoExamenVal({ num_arriv: props.data.numero, date_arriv: props.data.date_arr })
+        setinfoExamenVal({ num_arriv: props.data.numero, date_arriv: props.data.date_arr,verfexamen:'2' })
         setCharge(true);
         let dt = (props.data.date_arr).split('/');
         let cmpltDate = dt[0] + '-' + dt[1] + '-' + dt[2];
@@ -193,8 +193,7 @@ export default function Voir(props) {
     return (
         <>
             <Toast ref={toastTR} position="top-right" />
-
-            <Button icon={PrimeIcons.EYE} className='p-buttom-sm p-1 mr-2 p-button-info ' tooltip='Voir' tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementData() }} />
+            <Button icon={PrimeIcons.SAVE} className='p-buttom-sm p-1 mr-2 p-button-success ' label='Valider' tooltip="valider l'examen" tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementData() }} />
 
             <Dialog header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-10 md:col-11 col-11 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
                 <div className="p-1  style-modal-tamby">

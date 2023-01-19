@@ -9,12 +9,15 @@ export default function Facture(props) {
     <div className="tabview-demo">
       <div className="card">
         <TabView activeIndex={activeIndex} onTabChange={(e) => { setActiveIndex(e.index) }} >
-          <TabPanel header="Liste Non Facturé"   >
+          <TabPanel header="Patient non facturé"   >
            <FactureNon  url={props.url}  activeIndex={activeIndex} />
           </TabPanel>
-          <TabPanel header="Liste Facturé">
+          <TabPanel header="Facture non regler">
           
            <FactureEff  url={props.url}  activeIndex={activeIndex} />
+          </TabPanel>
+          <TabPanel header="Facture régler">
+          <h1>Hello</h1>
           </TabPanel>
         </TabView>
       </div>

@@ -84,38 +84,44 @@ export default function ExamenJour(props) {
     return (
       <div className='flex flex-row justify-content-between align-items-center m-0 '>
         <div className='my-0  py-2'>
-          <Modifier url={props.url} data={data} setrefreshData={setrefreshData} />
-          {data.verf_exam == '0' ?
-            <Button icon={PrimeIcons.TIMES} className='p-buttom-sm p-1 ' style={stylebtnDetele} tooltip='Supprimer' tooltipOptions={{ position: 'top' }}
-              onClick={() => {
-                let dt=(data.date_arr).split('/');
-                let cmpltDate=dt[0]+'-'+dt[1]+'-'+dt[2];
 
-                const accept = () => {
-                  axios.delete(props.url + `deleteRegistre/${data.numero}&${cmpltDate}`)
-                    .then(res => {
-                      notificationAction('info', 'Suppression reuissie !', 'Enregistrement bien supprimer !');
-                      setrefreshData(1)
-                    })
-                    .catch(err => {
-                      console.log(err);
-                      notificationAction('error', 'Suppression non reuissie !', 'Enregirement non supprimer !');
-                    })
-                }
-                const reject = () => {
-                  return null;
-                }
-                confirmDialog({
-                  message: 'Voulez vous supprimer le journal d\'arrivée , n° ' + data.numero+' , date : '+data.date_arr,
-                  header: 'Suppression  ',
-                  icon: 'pi pi-exclamation-circle',
-                  acceptClassName: 'p-button-danger',
-                  acceptLabel: 'Ok',
-                  rejectLabel: 'Annuler',
-                  accept,
-                  reject
-                });
-              }} />
+          {data.verf_exam == '0' ?
+            <>
+              <Modifier url={props.url} data={data} setrefreshData={setrefreshData} />
+              <Button icon={PrimeIcons.TIMES} className='p-buttom-sm p-1 ' style={stylebtnDetele} tooltip='Supprimer' tooltipOptions={{ position: 'top' }}
+                onClick={() => {
+                  let dt = (data.date_arr).split('/');
+                  let cmpltDate = dt[0] + '-' + dt[1] + '-' + dt[2];
+
+                  const accept = () => {
+                    axios.delete(props.url + `deleteRegistre/${data.numero}&${cmpltDate}`)
+                      .then(res => {
+                        notificationAction('info', 'Suppression reuissie !', 'Enregistrement bien supprimer !');
+                        setrefreshData(1)
+                      })
+                      .catch(err => {
+                        console.log(err);
+                        notificationAction('error', 'Suppression non reuissie !', 'Enregirement non supprimer !');
+                      })
+                  }
+                  const reject = () => {
+                    return null;
+                  }
+                  confirmDialog({
+                    message: 'Voulez vous supprimer le journal d\'arrivée , n° ' + data.numero + ' , date : ' + data.date_arr,
+                    header: 'Suppression  ',
+                    icon: 'pi pi-exclamation-circle',
+                    acceptClassName: 'p-button-danger',
+                    acceptLabel: 'Ok',
+                    rejectLabel: 'Annuler',
+                    accept,
+                    reject
+                  });
+                }} />
+            </>
+            :
+            data.verf_exam=='2' ? 
+              <Modifier url={props.url} data={data} setrefreshData={setrefreshData} />
             :
             null
           }
@@ -126,19 +132,19 @@ export default function ExamenJour(props) {
 
   const bodyBouttonh = (data) => {
     return (
-        <div className='flex flex-row justify-content-between align-items-center m-0 '>
-            <div className='my-0  py-2'>
-                <label htmlFor="">{data.date_arr} </label>
-                {data.date_arrive == data.jourj ?
-                    // <Tag className="mr-2 " icon={PrimeIcons.CHECK_SQUARE} severity={"success"}   ></Tag>
-                    null
-                    :
-                    <Tag className="mr-2 " severity={"warning"}  icon={PrimeIcons.CLOCK} ></Tag>
-                }
-            </div>
+      <div className='flex flex-row justify-content-between align-items-center m-0 '>
+        <div className='my-0  py-2'>
+          <label htmlFor="">{data.date_arr} </label>
+          {data.date_arrive == data.jourj ?
+            // <Tag className="mr-2 " icon={PrimeIcons.CHECK_SQUARE} severity={"success"}   ></Tag>
+            null
+            :
+            <Tag className="mr-2 " severity={"warning"} icon={PrimeIcons.CLOCK} ></Tag>
+          }
         </div>
+      </div>
     )
-}
+  }
 
   return (
     <>
