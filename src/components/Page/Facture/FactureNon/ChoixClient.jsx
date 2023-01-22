@@ -79,6 +79,7 @@ export default function ChoixClient(props) {
 
                     <Button icon={PrimeIcons.CHECK_CIRCLE} className='p-buttom-sm p-1 p-button-primary ' tooltip='Choisir' tooltipOptions={{ position: 'top' }}
                         onClick={() => {
+                            props.setverfChamp({ ...props.verfChamp,nom_cli: false })
                             props.setinfoFacture({ ...props.infoFacture, code_cli: data.code_client, nom_cli: data.nom })
                             onHide('displayBasic2')
                         }} />
@@ -164,8 +165,8 @@ export default function ChoixClient(props) {
         <>
             <Toast ref={toastTR} position="top-right" />
 
-            <Button disabled={props.typeclient=='L2'?true:false} icon={PrimeIcons.SEARCH} className='p-buttom-sm p-1 mr-2 mt-5 p-button-secondary ' tooltip='Choisir' tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementData() }} />
-            <Dialog header={renderHeader('displayBasic2')} className="lg:col-8 md:col-9 col-10 p-0" visible={displayBasic2} footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
+            <Button disabled={props.typeclient=='L2'?true:false} icon={PrimeIcons.SEARCH} className='p-buttom-sm p-1 mr-2  p-button-secondary ' tooltip='Choisir' tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementData() }} />
+            <Dialog header={renderHeader('displayBasic2')} className="lg:col-6 md:col-9 col-10 p-0" visible={displayBasic2} footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
                 <div className="flex flex-column justify-content-center">
                     <BlockUI blocked={charge} template={<ProgressSpinner />}>
                         <DataTable rows={10} rowsPerPageOptions={[10, 20, 50]} globalFilterFields={['code_client', 'nom', 'tarif', 'rc', 'stat', 'cif', 'description']} paginator header={header1} value={listClient} scrollable scrollHeight="350px" responsiveLayout="scroll" className='bg-white' filters={filters1} emptyMessage={'Aucun resultat trouvé'} style={{ fontSize: '1em' }}>

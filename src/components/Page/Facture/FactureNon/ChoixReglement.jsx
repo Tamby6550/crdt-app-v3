@@ -108,7 +108,7 @@ export default function ChoixReglement(props) {
         <>
             <Toast ref={toastTR} position="top-right" />
 
-            <Button icon={PrimeIcons.SEARCH} className='p-buttom-sm p-1 mr-2 mt-5 p-button-secondary ' tooltip='Choisir' tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementData() }} />
+            <Button icon={PrimeIcons.SEARCH} className='p-buttom-sm p-1  p-button-secondary ' tooltip='Choisir' tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementData() }} />
             <Dialog header={renderHeader('displayBasic2')} className="lg:col-5 md:col-6 sm:col-10 col-11 p-0" visible={displayBasic2} footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
                 <div className="flex flex-column justify-content-center">
                     <BlockUI blocked={charge} template={<ProgressSpinner />}>

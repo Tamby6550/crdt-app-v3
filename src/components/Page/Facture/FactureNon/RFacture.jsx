@@ -295,16 +295,26 @@ export default function RFacture(props) {
         if (infoFacture.type == 'L2') {
             if (infoFacture.code_presc == '') {
                 setverfChamp({ nom_presc: true, nom_cli: false })
+                alert('Verifer votre champ !')
             } else {
                 console.log('first')
                 onInsertFacture();
             }
         } else {
-            if (infoFacture.code_presc == '') {
-                setverfChamp({ nom_presc: true, nom_cli: false })
+            if (infoFacture.code_presc == '' && infoFacture.code_cli == '') {
+                setverfChamp({ nom_presc: true, nom_cli: true })
+                alert('Verifer votre champ !')
+
             }
-            if (infoFacture.code_cli == '') {
+            if (infoFacture.code_cli == '' && infoFacture.code_presc != '') {
                 setverfChamp({ nom_presc: false, nom_cli: true })
+                alert('Verifer votre champ !')
+
+            }
+            if (infoFacture.code_cli != '' && infoFacture.code_presc == '') {
+                setverfChamp({ nom_presc: true, nom_cli: false })
+                alert('Verifer votre champ !')
+
             }
             if (infoFacture.code_cli != '' && infoFacture.code_presc != '') {
                 onInsertFacture();
@@ -349,148 +359,119 @@ export default function RFacture(props) {
                                 <Fieldset legend="Info Patient" >
                                     <div className="card">
                                         <div className="p-fluid px-4 formgrid grid">
-                                            {/* <div className="field   lg:col-2 md:col-12 col:12">
-                                                <label htmlFor="username2" className="label-input-sm">Numéro Facture*</label>
-                                                <InputText id="username2" aria-describedby="username2-help" name='num_facture' value={infoFacture.num_facture} readOnly />
-                                            </div> */}
-                                            <div className="field   lg:col-1 md:col-12 col:12">
-                                                <label htmlFor="username2" className="label-input-sm">N° arrivée*</label>
-                                                <InputText id="username2" aria-describedby="username2-help" name='num_arriv' value={infoFacture.num_arriv} readOnly />
-                                                {/* {verfChamp.num_arriv ? <small id="username2-help" className="p-error block">Champ vide !</small> : null} */}
-                                            </div>
-                                            <div className="field   lg:col-2 md:col-12 col:12">
-                                                <label htmlFor="username2" className="label-input-sm">Date arriv*</label>
-                                                <InputText id="username2" aria-describedby="username2-help" name='num_arriv' value={infoFacture.date_arriv} readOnly />
-                                                {/* {verfChamp.date_arriv ? <small id="username2-help" className="p-error block">Champ vide !</small> : null} */}
+                                            <div className="field   lg:col-6 md:col-4 col:12 my-1 flex flex-column m-0 p-0">
+
+                                                <div className="p-fluid px-4 formgrid grid">
+
+                                                    <div className='flex lg:flex-row md:flex-column justify-content-between flex-column col-12 p-0'>
+                                                        <div className="field   lg:col-4 md:col-12 col:12 m-0 p-0">
+                                                            <label htmlFor="username2" className="label-input-sm">N° arriv *</label>
+                                                            <InputText id="username2" aria-describedby="username2-help" name='num_arriv' value={infoFacture.num_arriv} readOnly />
+                                                        </div>
+                                                        <div className="field   lg:col-6 md:col-12 col:12 m-0 p-0">
+                                                            <label htmlFor="username2" className="label-input-sm">Date arriv*</label>
+                                                            <InputText id="username2" aria-describedby="username2-help" name='num_arriv' value={infoFacture.date_arriv} readOnly />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className='flex lg:flex-row md:flex-column justify-content-between flex-column col-12 m-0 p-0'>
+                                                        <div className="field   lg:col-8 md:col-8 col:8">
+                                                            <label htmlFor="username2" className="label-input-sm">Patient*</label>
+                                                            <InputText id="username2" aria-describedby="username2-help" name='patient' value={infoFacture.patient} readOnly />
+                                                        </div>
+
+                                                        <div className="field   lg:col-4 md:col-8 col:4  p-0">
+                                                            <label htmlFor="username2" className="label-input-sm mt-2">Tarif*</label>
+                                                            <div className='m-0 flex flex-row align-items-center  '>
+                                                                <InputText id="username2" aria-describedby="username2-help" name='type' value={infoFacture.type} readOnly />
+                                                                <ChangementTarif settarifCh={settarifCh} setrefreshData={props.changecharge} url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} setBlockedPanel={setBlockedPanel} loadData={loadDataFact} ancientarif={infoFacture.type} examen={infoExamen} id_patient={props.data.id_patient} num_arriv={props.data.numero} date_arriv={props.data.date_arr} />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className='flex lg:flex-row md:flex-column justify-content-initial flex-column col-12 m-0 p-0' >
+                                                        <div className="field   lg:col-3 md:col-4  col:12 m-0 p-0">
+                                                            <label htmlFor="username2" className="label-input-sm" style={{ color: infoFacture.type == 'L2' ? 'grey' : null }} >  P.en Charge(%)</label>
+                                                            <InputNumber id="username2" aria-describedby="username2-help" name='pec' min={0} max={100} value={infoFacture.pec} onValueChange={(e) => { calculeMis(totalMt, infoFacture.remise, e.target.value); }} disabled={infoFacture.type == 'L2' ? true : false} />
+                                                        </div>
+                                                        <div className="field   lg:col-3 md:col-4 ml-4 col:12 m-0 p-0">
+                                                            <label htmlFor="username2" className="label-input-sm">Remise(%)</label>
+                                                            <InputNumber id="username2" aria-describedby="username2-help" name='remise' min={0} max={100} value={infoFacture.remise} 
+                                                            onValueChange={(e) => { 
+                                                                calculeMis(totalMt, e.target.value, infoFacture.pec); 
+                                                            }} />
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
 
-                                            {/* </div>
-                                        <div className="card">
-                                            <div className="p-fluid px-4 formgrid grid"> */}
-                                            <div className="field   lg:col-3 md:col-12 col:12">
-                                                <label htmlFor="username2" className="label-input-sm">Patient*</label>
-                                                <InputText id="username2" aria-describedby="username2-help" name='patient' value={infoFacture.patient} readOnly />
-                                                {/* {verfChamp.patient ? <small id="username2-help" className="p-error block">Champ vide !</small> : null} */}
+                                            <div className="field   lg:col-6 md:col-4 col:12 my-1 flex flex-column m-0 p-0">
+                                                <div className="p-fluid px-4 formgrid grid">
+
+                                                    <div className="field   lg:col-12 md:col-10 col:10 m-0 p-0">
+                                                        <label htmlFor="username2" className="label-input-sm">Prescripteur*</label>
+                                                        <div className='m-0 flex flex-row align-items-center  '>
+                                                            <InputText id="username2" aria-describedby="username2-help" name='code_presc' value={infoFacture.nom_presc} className={verfChamp.nom_presc ? "form-input-css-tamby p-invalid" : "form-input-css-tamby"} readOnly />
+                                                            <ChoixPrescr url={props.url} infoFacture={infoFacture} setverfChamp={setverfChamp} verfChamp={verfChamp} setinfoFacture={setinfoFacture} />
+                                                            {verfChamp.nom_presc ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="field   lg:col-12 md:col-10 col:10 m-0 p-0">
+                                                        <label htmlFor="username2" className="label-input-sm mt-2">Client* </label>
+                                                        <div className='m-0 flex flex-row align-items-center  '>
+                                                            <InputText id="username2" aria-describedby="username2-help" className={verfChamp.nom_cli ? "form-input-css-tamby p-invalid" : "form-input-css-tamby"} name='code_cli' value={infoFacture.nom_cli} readOnly />
+                                                            <ChoixClient url={props.url} infoFacture={infoFacture} setverfChamp={setverfChamp} verfChamp={verfChamp} setinfoFacture={setinfoFacture} typeclient={infoFacture.type} />
+                                                            {verfChamp.nom_cli ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
 
-                                            <div className="field   lg:col-1 md:col-2 col:2">
-                                                <label htmlFor="username2" className="label-input-sm">Tarif*</label>
-                                                {
-                                                    // tarifCh==''? 
-                                                    // <InputText id="username2" aria-describedby="username2-help" name='type' value={infoFacture.type} readOnly />
-                                                    // : 
-                                                    // <InputText id="username2" aria-describedby="username2-help" name='type' value={tarifCh} readOnly />
-                                                }
-                                                {/* {verfChamp.type ? <small id="username2-help" className="p-error block">Champ vide !</small> : null} */}
-                                                <InputText id="username2" aria-describedby="username2-help" name='type' value={infoFacture.type} readOnly />
-
-                                            </div>
-                                            <div className="field   lg:col-1 md:col-3 col:2">
-                                                <ChangementTarif settarifCh={settarifCh} setrefreshData={props.changecharge} url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} setBlockedPanel={setBlockedPanel} loadData={loadDataFact} ancientarif={infoFacture.type} examen={infoExamen} id_patient={props.data.id_patient} num_arriv={props.data.numero} date_arriv={props.data.date_arr} />
-                                            </div>
-                                            <div className="field   lg:col-3 md:col-10 col:10">
-                                                <label htmlFor="username2" className="label-input-sm">Prescripteur*</label>
-                                                <InputText id="username2" aria-describedby="username2-help" name='code_presc' value={infoFacture.nom_presc} readOnly />
-                                                {verfChamp.nom_presc ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
-                                            </div>
-                                            <div className="field   lg:col-1 md:col-2 col:2">
-                                                <ChoixPrescr url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} />
-                                            </div>
-                                            <div className="field   lg:col-3 md:col-10 col:10">
-                                                <label htmlFor="username2" className="label-input-sm">Client* </label>
-                                                <InputText id="username2" aria-describedby="username2-help" name='code_cli' value={infoFacture.nom_cli} readOnly />
-                                                {verfChamp.nom_cli ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
-                                            </div>
-                                            <div className="field   lg:col-1 md:col-2 col:2">
-                                                <ChoixClient url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} typeclient={infoFacture.type} />
-                                            </div>
-
-
-                                            <div className="field   lg:col-2 md:col-8 col:12">
-                                                <label htmlFor="username2" className="label-input-sm" style={{ color: infoFacture.type == 'L2' ? 'grey' : null }} >  P.en Charge(%)</label>
-                                                <InputNumber id="username2" aria-describedby="username2-help" name='pec' min={0} max={100} value={infoFacture.pec} onValueChange={(e) => { calculeMis(totalMt, infoFacture.remise, e.target.value); }} disabled={infoFacture.type == 'L2' ? true : false} />
-                                            </div>
-                                            <div className="field   lg:col-2 md:col-8 col:12">
-                                                <label htmlFor="username2" className="label-input-sm">Remise(%)</label>
-                                                <InputNumber id="username2" aria-describedby="username2-help" name='remise' min={0} max={100} value={infoFacture.remise} onValueChange={(e) => { calculeMis(totalMt, e.target.value, infoFacture.pec); }} />
-                                            </div>
                                         </div>
                                     </div>
 
                                 </Fieldset>
                             </div>
-                          
-                                <div className="field   lg:col-12 md:col-12 col:12 my-1 flex flex-column">
-                                    <Fieldset legend="Examens éffectuées">
-                                        <DataTable value={infoExamen} scrollable scrollHeight="350px" loading={charge} responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun resultat !"} style={{ fontSize: '0.98em' }} >
-                                            <Column field='lib_examen' header={'Libellé'} style={{ fontWeight: '600' }}></Column>
-                                            <Column field={'code_tarif'} header={'Cotation'} style={{ fontWeight: '600' }}></Column>
-                                            <Column field={'quantite'} header="Quantité" style={{ fontWeight: '600' }}></Column>
-                                            <Column field='montant' header="P.U"></Column>
-                                            <Column field='date_exam' header="Date examen"></Column>
-                                            <Column field='type' header="Type"></Column>
-                                        </DataTable>
-                                    </Fieldset>
-                                </div>
-                          
+
+                            <div className="field   lg:col-12 md:col-12 col:12 my-1 flex flex-column">
+                                <Fieldset legend="Examens éffectuées">
+                                    <DataTable value={infoExamen} scrollable scrollHeight="350px" loading={charge} responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun resultat !"} style={{ fontSize: '0.98em' }} >
+                                        <Column field='lib_examen' header={'Libellé'} style={{ fontWeight: '600' }}></Column>
+                                        <Column field={'code_tarif'} header={'Cotation'} style={{ fontWeight: '600' }}></Column>
+                                        <Column field={'quantite'} header="Quantité" style={{ fontWeight: '600' }}></Column>
+                                        <Column field='montant' header="P.U"></Column>
+                                        <Column field='date_exam' header="Date examen"></Column>
+                                        <Column field='type' header="Type"></Column>
+                                    </DataTable>
+                                </Fieldset>
+                            </div>
+
                             <div className="field   lg:col-12 md:col-12 col:12 my-1 flex flex-column ">
                                 <div className="grid h-full justify-content-evenly">
-                                    <div className="field   lg:col-4 md:col-12 col:12 my-1 flex flex-column">
-                                        <Fieldset legend="Reglement">
+                                    <div className="field   lg:col-6 md:col-9 col:9 my-1 flex flex-column">
+                                        <Fieldset legend="Facturation" className='montant' style={{ backgroundColor: 'rgb(241 242 243 / 81%)' }} >
                                             <div className="card">
                                                 <div className="p-fluid px-4 formgrid grid">
-                                                    <div className="field lg:col-10 md:col-10 col:10">
-                                                        <label htmlFor="username2" className="label-input-sm">Reglement </label>
-                                                        <InputText id="username2" aria-describedby="username2-help" name='code_cli' value={infoFacture.nomreglement} readOnly />
-                                                    </div>
-                                                    <div className="field   lg:col-2 md:col-2 col:2">
-                                                        <ChoixReglement url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} />
-                                                    </div>
-                                                    <div className="field   lg:col-12 md:col-12 col:12">
-                                                        <label htmlFor="username2" className="label-input-sm">Montant</label>
-                                                        <InputNumber id="username2" aria-describedby="username2-help" name='montantreglement' value={infoFacture.montantreglement} min={0} max={montantPatient}
-                                                            onValueChange={(e) => { calculMtPatient(e) }}
-                                                        />
-                                                    </div>
-                                                    <div className="field   lg:col-12 md:col-12 col:12">
-                                                        <label htmlFor="username2" className="label-input-sm">N° Chèque	</label>
-                                                        <InputText id="username2" aria-describedby="username2-help" name='rib' value={infoFacture.rib} onChange={(e) => { setinfoFacture({ ...infoFacture, rib: (e.target.value).toUpperCase() }) }} />
-                                                    </div>
-
-                                                    {infoFacture.montantRestPatient == '0' || infoFacture.montantRestPatient == infoFacture.montant_patient || resteVerf == '0' ? null :
-                                                        <div className="field   lg:col-12 md:col-12 col:12">
-                                                            <hr />
-                                                            <label htmlFor="username2" className="label-input-sm">Reste a payer par le patient	</label>
-                                                            <InputText id="username2" aria-describedby="username2-help" name='rib' value={infoFacture.montantRestPatient} readOnly />
-                                                        </div>
-                                                    }
-                                                </div>
-                                            </div>
-                                        </Fieldset>
-                                    </div>
-                                    <div className="field   lg:col-5 md:col-12 col:12 my-1 flex flex-column">
-                                        <Fieldset legend="Facturation" className='montant' style={{backgroundColor:'#dfdfdfcf'}} >
-                                            <div className="card">
-                                                <div className="p-fluid px-4 formgrid grid">
-                                                    <div className="field   lg:col-12 md:col-12 col:12">
-                                                        <label htmlFor="username2" className="label-input-sm">Total(en Ar)</label>
+                                                    <div className="field   lg:col-4 md:col-12 col:12">
+                                                        <label htmlFor="username2" className="label-input-sm">Total(Ar)</label>
                                                         <InputText id="username2" aria-describedby="username2-help" name='montant_brute' value={infoFacture.montant_brute} readOnly />
                                                     </div>
-                                                    <div className="field   lg:col-12 md:col-12 col:12">
+                                                    <div className="field   lg:col-4 md:col-12 col:12">
                                                         <label htmlFor="username2" className="label-input-sm">Remise <i style={{ fontWeight: '700' }}> {infoFacture.remise}% </i> (en Ar) </label>
                                                         <InputText id="username2" aria-describedby="username2-help" name='montant_remise' value={infoFacture.montant_remise} readOnly />
                                                     </div>
-                                                    <div className="field   lg:col-12 md:col-12 col:12">
-                                                        <label htmlFor="username2" className="label-input-sm">Montant net(en Ar)</label>
-                                                        <InputText id="username2" aria-describedby="username2-help" name='montant_net' value={infoFacture.montant_net} readOnly />
+                                                    <div className="field   lg:col-4 md:col-12 col:12">
+                                                        <label htmlFor="username2" className="label-input-sm">Montant net(Ar)</label>
+                                                        <InputText id="username2" aria-describedby="username2-help" name='montant_net' value={infoFacture.montant_net} style={{ fontWeight: '600', borderColor: '#a1a2a7' }} readOnly />
                                                     </div>
-                                                    <div className="field   lg:col-12 md:col-12 col:12">
-                                                        <label htmlFor="username2" className="label-input-sm">A Payer par le patient(en Ar)</label>
-                                                        <InputText id="username2" aria-describedby="username2-help" name='montant_patient' style={{ fontWeight: '600', borderColor: 'grey' }} value={infoFacture.montant_patient} readOnly />
+                                                    <div className="field   lg:col-6 md:col-12 col:12">
+                                                        <label htmlFor="username2" className="label-input-sm">A Payer par le patient(Ar)</label>
+                                                        <InputText id="username2" aria-describedby="username2-help" name='montant_patient' style={{ fontWeight: '600', borderColor: '#383737' }} value={infoFacture.montant_patient} readOnly />
                                                     </div>
-                                                    <div className="field   lg:col-12 md:col-12 col:12">
-                                                        <label htmlFor="username2" className="label-input-sm">Montant pris en charge <i style={{ fontWeight: '700' }}> {infoFacture.pec}% </i> (en Ar)</label>
-                                                        <InputText id="username2" aria-describedby="username2-help" name='montant_pech' style={{ fontWeight: '600', borderColor: 'grey' }} value={infoFacture.montant_pech} readOnly />
+                                                    <div className="field   lg:col-6 md:col-12 col:12">
+                                                        <label htmlFor="username2" className="label-input-sm">Montant pris en charge <i style={{ fontWeight: '700' }}> {infoFacture.pec}% </i> (Ar)</label>
+                                                        <InputText id="username2" aria-describedby="username2-help" name='montant_pech' style={{ fontWeight: '600', borderColor: '#383737' }} value={infoFacture.montant_pech} readOnly />
                                                     </div>
                                                 </div>
                                             </div>
@@ -505,7 +486,28 @@ export default function RFacture(props) {
                     <div className='flex mt-3 mr-4 justify-content-center '>
                         <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-success ' tooltip="Valider l'examen" style={{ cursor: 'pointer' }} label={chargeV.chupdate ? 'Veuillez attendez...' : 'Valider'}
                             onClick={() => {
-                                onVerfeCh()
+                                if ((infoFacture.pec == '0' || infoFacture.pec == '' || infoFacture.pec == null) && (infoFacture.remise == '0' || infoFacture.remise == '' || infoFacture.remise == null)) {
+                                    const accept = () => {
+                                        onVerfeCh()
+                                    }
+                                    const reject = () => {
+                                        return null;
+                                    }
+                                    confirmDialog({
+                                        message: 'Prise en charge 0% et Remise  0% ?',
+                                        header: '',
+                                        icon: 'pi pi-exclamation-circle',
+                                        acceptClassName: 'p-button-success',
+                                        acceptLabel: 'Ok , Valider',
+                                        rejectLabel: 'Annuler',
+                                        accept,
+                                        reject
+                                    });
+
+                                }else{
+                                    onVerfeCh();
+                                }
+
                             }} />
                         <ReactToPrint trigger={() =>
                             <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-primary ml-5 ' label={'Imprimer'} disabled={printDesact} />

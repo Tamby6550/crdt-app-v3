@@ -101,7 +101,7 @@ export default function ChangementTarif(props) {
     }
     return (
         <>
-            <Button icon={PrimeIcons.PENCIL} className='p-buttom-sm p-1 mr-2 mt-5 p-button-warning ' tooltip='Changement de Tarif' tooltipOptions={{ position: 'top' }}
+            <Button icon={PrimeIcons.PENCIL} className='p-buttom-sm p-1 ml-2 p-button-warning ' tooltip='Modifier le Tarif' tooltipOptions={{ position: 'top' }}
                 onClick={() => {
                     const accept = () => {
                         onClick('displayBasic2');
@@ -139,22 +139,6 @@ export default function ChangementTarif(props) {
 
                                     setverfChamp(false);
                                     onUpdateTarif();
-                                    // const accept = () => {
-                                    // }
-                                    // const reject = () => {
-                                    //     return false;
-                                    // }
-                                    // confirmDialog({
-                                    //     message: 'Vous voulez changer vraiment \n le Tarif :'+props.ancientarif +' ==> '+ infoNecess.tarif ,
-                                    //     header: 'Confirmation  ',
-                                    //     icon: 'pi pi-exclamation-circle',
-                                    //     acceptClassName: 'p-button-danger',
-                                    //     acceptLabel: 'Changer',
-                                    //     rejectLabel: 'Annuler',
-                                    //     accept,
-                                    //     reject
-                                    // });
-
                                 }
                             }} />
                         </div>

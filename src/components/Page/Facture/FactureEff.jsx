@@ -11,6 +11,8 @@ import axios from 'axios';
 import { Toast } from 'primereact/toast';
 import { Tag } from 'primereact/tag';
 import FFactureVoir from './FactureEff/FFactureVoir';
+import Reglement from './FactureEff/Reglement'
+
 export default function FactureEff(props) {
 
     //Chargement de données
@@ -69,6 +71,8 @@ export default function FactureEff(props) {
             <div className='flex flex-row justify-content-between align-items-center m-0 '>
                 <div className='my-0  py-2'>
                 <FFactureVoir url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
+                <Reglement url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
+
                 </div>
             </div>
         )
