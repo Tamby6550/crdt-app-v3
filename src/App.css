@@ -165,6 +165,9 @@ ul.p-submenu-list.p-panelmenu-root-submenu {
   border: 1px solid #ced4da;
   border-radius: .25rem; */
 }
+.p-fluid .p-inputtext{
+  height: 20px;
+}
 
 .label-input-sm {
   font-size: 1em;

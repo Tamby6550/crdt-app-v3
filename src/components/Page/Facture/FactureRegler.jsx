@@ -10,15 +10,14 @@ import { InputText } from 'primereact/inputtext';
 import axios from 'axios';
 import { Toast } from 'primereact/toast';
 import { Tag } from 'primereact/tag';
-import FFactureVoir from './FactureEff/FFactureVoir';
-import Reglement from './FactureEff/Reglement'
 
-export default function FactureEff(props) {
+
+export default function FactureNonRegler(props) {
 
     //Chargement de données
     const [charge, setCharge] = useState(false);
     const [refreshData, setrefreshData] = useState(0);
-    const [listFactureEff, setlistFactureEff] = useState([{ numero: '', date_arr: '', id_patient: '', type_pat: '', verf_exam: '', nom: '', date_naiss: '', telephone: '' }]);
+    const [listeFactureRegle, setlisteFactureRegle] = useState([{ numero: '', date_arr: '', id_patient: '', type_pat: '', verf_exam: '', nom: '', date_naiss: '', telephone: '' }]);
     const [infoReherche, setinfoReherche] = useState({ numero_arr: '', date_arr: '', date_naiss: '', nom: '' })
 
     /**Style css */
@@ -46,20 +45,20 @@ export default function FactureEff(props) {
     //Get List patient
     const loadData = async () => {
 
-        await axios.get(props.url + `getEffectFacture`)
+        await axios.get(props.url + `getFactureRegler`)
             .then(
                 (result) => {
                     onVide();
                     setrefreshData(0);
                     setCharge(false);
-                    setlistFactureEff(result.data);
+                    setlisteFactureRegle(result.data);
                 }
             );
     }
 
     useEffect(() => {
         setCharge(true);
-        setlistFactureEff([{ nom: 'Chargement de données...' }])
+        setlisteFactureRegle([{ nom: 'Chargement de données...' }])
         setTimeout(() => {
             loadData();
         }, 800)
@@ -70,8 +69,8 @@ export default function FactureEff(props) {
         return (
             <div className='flex flex-row justify-content-between align-items-center m-0 '>
                 <div className='my-0  py-2'>
-                <FFactureVoir url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
-                <Reglement url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
+                {/* <FFactureVoir url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
+                <Reglement url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} /> */}
 
                 </div>
             </div>
@@ -97,7 +96,7 @@ export default function FactureEff(props) {
 
             <div className="flex flex-column justify-content-center" >
 
-                <DataTable header={header} showGridlines  globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listFactureEff} loading={charge} scrollable scrollHeight="550px" responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun examen à éffectuées"} >
+                <DataTable header={header} showGridlines  globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listeFactureRegle} loading={charge} scrollable scrollHeight="550px" responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun examen à éffectuées"} >
 
                     <Column field='num_fact' header={'N° Facture'} style={{ fontWeight: '700' }}></Column>
                     <Column field={'date_facture'} header="Date Facture" style={{ fontWeight: '600' }} ></Column>

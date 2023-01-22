@@ -13,13 +13,14 @@ import { InputText } from 'primereact/inputtext'
 import { RadioButton } from 'primereact/radiobutton'
 
 import { InputNumber } from 'primereact/inputnumber'
-import ChoixReglement from '../../Facture/FactureNon/ChoixReglement';
+import ChoixReglement from '../PatientNonFact/ChoixReglement';
 import moment from 'moment/moment';
-import ChangementTarif from '../../Facture/FactureNon/ChoixReglement';
+import ChangementTarif from '../PatientNonFact/ChoixReglement';
 import { BlockUI } from 'primereact/blockui';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import ReactToPrint from 'react-to-print'
 import FormatF from '../FormatF';
+import Impression from './Impression';
 
 export default function RFacture(props) {
 
@@ -38,7 +39,7 @@ export default function RFacture(props) {
 
     //Declaration useSatate
     //Chargement de données
-    const [chargeV, setchargeV] = useState({ chupdate: false })
+    const [chRegle, setchRegle] = useState(false)
     const [charge, setCharge] = useState(false);
     const [listReglement, setlistReglement] = useState([
         {
@@ -67,15 +68,46 @@ export default function RFacture(props) {
         reste_pec: "",
         reste: ""
     });
+    const [dataReglement, setdataReglement] = useState({
+        num_facture: '',
+        reglement_id: '0',
+        nomreglement: '',
+        type_reglmnt: '',
+        montantreglement: '0',
+        rib: null,
+        num_arriv: '',
+        date_arriv: ''
+    })
 
     const [resteVerf, setresteVerf] = useState('0')
-    const [typePC, settypePC] = useState({ pat: true, cli: false })
+    const [typePC, settypePC] = useState({ pat: false, cli: false })
     const [montantPatient, setmontantPatient] = useState(0)
     const [verfChamp, setverfChamp] = useState({ nom_presc: false, nom_cli: false });
     const [aujourd, setaujourd] = useState();
 
+    const onVideReglement = () => {
+        settypePC({ pat: false, cli: false });
+        setdataReglement({
+            num_facture: props.data.num_fact,
+            num_arriv: props.data.numero,
+            date_arriv: props.data.date_arr,
+            reglement_id: '0',
+            nomreglement: '',
+            type_reglmnt: '',
+            montantreglement: '0',
+            rib: ''
+        });
+    }
     const onVide = () => {
-
+        settypePC({ pat: false, cli: false });
+        setdataReglement({
+            num_facture: '',
+            reglement_id: '0',
+            nomreglement: '',
+            type_reglmnt: '',
+            montantreglement: '0',
+            rib: null
+        });
         setinfoFacture({
             num_facture: "",
             date_examen: "",
@@ -98,16 +130,52 @@ export default function RFacture(props) {
     const mienregsitrerMtPatient = (mt) => {
         setmontantPatient(mt);
     }
-    const calculMtPatient = (e) => {
-        let v2 = e.target.value;
-        let v1 = montantPatient;
-        let s = v1 - v2;
-        // setinfoFacture({ ...infoFacture, montant_patient: format(s, 2, " "), montantreglement: e.target.value });
-        setinfoFacture({ ...infoFacture, montantRestPatient: format(s, 2, " "), montantreglement: e.target.value });
-        setresteVerf('1');
-        // console.log(infoFacture.montantRestPatient);
+
+    const bddialogReglement = (msg) => {
+        return (
+            <div className='flex flex-column justify-content-center align-items-center m-0 '>
+                <h4> {msg} </h4>
+            </div>
+        )
     }
 
+    const montantReglementVerf = (e) => {
+        if (!/^\d*$/.test(e.target.value)) {
+            e.preventDefault();
+            return;
+        }
+        if (dataReglement.type_reglmnt == 'P') {
+
+            if (parseInt(e.target.value) > parseInt(infoFacture.reste_patient)) {
+                e.preventDefault();
+                confirmDialog({
+                    message: bddialogReglement('Le reste de montant du patient est ' + format(infoFacture.reste_patient, 2, " ")),
+                    header: '',
+                    icon: 'pi pi-exclamation-circle',
+                    acceptClassName: 'p-button-info',
+                    acceptLabel: 'Ok',
+                    rejectLabel: '_',
+                });
+
+                return;
+            }
+        } else {
+            if (parseInt(e.target.value) > parseInt(infoFacture.reste_pec)) {
+                e.preventDefault();
+
+                confirmDialog({
+                    message: bddialogReglement('Le reste de montant du client est  ' + format(infoFacture.reste_pec, 2, " ")),
+                    header: '',
+                    icon: 'pi pi-exclamation-circle',
+                    acceptClassName: 'p-button-info',
+                    acceptLabel: 'Ok',
+                    rejectLabel: '_',
+                });
+                return;
+            }
+        }
+        setdataReglement({ ...dataReglement, montantreglement: e.target.value });
+    };
 
 
 
@@ -125,13 +193,15 @@ export default function RFacture(props) {
             );
     }
     const loadReglemnt = async (num_facture) => {
-
+        setCharge(true)
         await axios.get(props.url + `getListReglementFacture/${num_facture}`)
             .then(
                 (results) => {
+
                     setlistReglement(results.data);
                     setBlockedPanel(false);
-                    console.log(results.data)
+                    setCharge(false)
+                    onVideReglement();
                 }
             );
     }
@@ -139,6 +209,7 @@ export default function RFacture(props) {
 
     const chargementData = () => {
         setBlockedPanel(true);
+        setdataReglement({ ...dataReglement, num_arriv: props.data.numero, date_arriv: props.data.date_arr, num_facture: props.data.num_fact });
         let num_facture = (props.data.num_fact).split('/');
         let conv_num_f = num_facture[0] + '-' + num_facture[1] + '-' + num_facture[2];
         // setCharge(true);
@@ -178,6 +249,9 @@ export default function RFacture(props) {
     const onHide = (name) => {
         dialogFuncMap[`${name}`](false);
         onVide();
+        if (chRegle) {
+            props.changecharge('1');
+        }
     }
 
     const renderFooter = (name) => {
@@ -207,52 +281,109 @@ export default function RFacture(props) {
         </div>
     )
 
+    const bodyConfirme = () => {
+        return (
+            <div>
+                <label className='m-2'>Reglement fait par : <strong className='m-1'>{dataReglement.type_reglmnt == 'P' ? 'Patient' : 'Client'}</strong> </label> <hr />
+                <label className='m-2'>Type règlement : <strong className='m-1'>{dataReglement.nomreglement}</strong> </label> <hr />
+                <label className='m-2'>Montant : <strong className='m-1'>{format(dataReglement.montantreglement, 0, " ")} Ar </strong> </label><hr />
+                <label className='m-2'>RIB : <strong className='m-1'>{dataReglement.rib == '' ? '-' : dataReglement.rib}</strong> </label>
+            </div>
+        );
+    }
+
     const onVerfeCh = () => {
-        if (infoFacture.type == 'L2') {
-            if (infoFacture.code_presc == '') {
-                setverfChamp({ nom_presc: true, nom_cli: false })
-            } else {
-                console.log('first')
-                onInsertFacture();
-            }
-        } else {
-            if (infoFacture.code_presc == '' && infoFacture.code_cli == '') {
-                setverfChamp({ nom_presc: true, nom_cli: true })
-            }
-            if (infoFacture.code_cli == '' && infoFacture.code_presc != '') {
-                setverfChamp({ nom_presc: false, nom_cli: true })
-            }
-            if (infoFacture.code_cli != '' && infoFacture.code_presc == '') {
-                setverfChamp({ nom_presc: true, nom_cli: false })
-            }
-            if (infoFacture.code_cli != '' && infoFacture.code_presc != '') {
-                onInsertFacture();
-            }
+        if ((typePC.cli == false && typePC.pat == false) || dataReglement.type_reglmnt == '') {
+            confirmDialog({
+                message: bddialogReglement('Réglement fait par qui ?'),
+                header: '',
+                icon: 'pi pi-exclamation-circle',
+                acceptClassName: 'p-button-info',
+                acceptLabel: 'Ok',
+                rejectLabel: '_',
+            });
         }
+        else if (dataReglement.reglement_id == '0' || dataReglement.nomreglement == '') {
+            confirmDialog({
+                message: bddialogReglement('Veuillez choisir le type de réglement'),
+                header: '',
+                icon: 'pi pi-exclamation-circle',
+                acceptClassName: 'p-button-info',
+                acceptLabel: 'Ok',
+                rejectLabel: '_',
+            });
+        }
+        else if ((parseInt(dataReglement.montantreglement) + 0) == 0 || dataReglement.montantreglement == '') {
+            confirmDialog({
+                message: bddialogReglement('Veuillez entrer le montant de réglement'),
+                header: '',
+                icon: 'pi pi-exclamation-circle',
+                acceptClassName: 'p-button-info',
+                acceptLabel: 'Ok',
+                rejectLabel: '_',
+            });
+        } else {
+            const accept = () => {
+                onInsertReglement();
+            }
+            const reject = () => {
+                onVideReglement();
+                return null;
+            }
+            confirmDialog({
+                message: bodyConfirme,
+                header: '',
+                icon: 'pi pi-exclamation-circle',
+                acceptClassName: 'p-button-success',
+                acceptLabel: 'Confirmer et ajouter',
+                rejectLabel: 'Annuler',
+                accept,
+                reject
+            });
+
+        }
+
     }
 
 
 
-    const onInsertFacture = async () => {
+    const onInsertReglement = async () => {
 
-        setchargeV({ chupdate: true });
-        await axios.post(props.url + 'insertFacture', infoFacture)
+        setCharge(true);
+        await axios.post(props.url + 'insertReglementFacture', dataReglement)
             .then(res => {
-                notificationAction(res.data.etat, 'Facture ', res.data.message);//message avy @back
-                setchargeV({ chupdate: false });
-                setverfChamp({ nom_presc: false, nom_cli: false })
+                //message avy @back
+
+                notificationAction(res.data.etat, 'Règlement ', res.data.message);
+
                 setTimeout(() => {
-                    onHide('displayBasic2');
-                    props.changecharge(1);
-                }, 600)
-                console.log(res.data)
+                    chargementData();
+                    if (res.data.regle == '1') {
+                        setchRegle(true)
+                    }
+
+                }, 900)
             })
             .catch(err => {
                 console.log(err);
                 //message avy @back
                 notificationAction('error', 'Erreur', err.data.message);
-                setchargeV({ chupdate: false });
+                setCharge(false);
             });
+    }
+
+
+
+    const bodyBoutton = (data) => {
+        return (
+            <div className='flex flex-row justify-content-between align-items-center m-0 '>
+                <div className='my-0  py-2'>
+                    {/* <FFactureVoir url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
+                <Reglement url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} /> */}
+                    <Impression url={props.url} data={data}  />
+                </div>
+            </div>
+        )
     }
 
     return (
@@ -262,20 +393,17 @@ export default function RFacture(props) {
 
             <Dialog header={renderHeader('displayBasic2')} maximizable visible={displayBasic2} className="lg:col-10 col-10 md:col-11 sm:col-12 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
                 <BlockUI blocked={blockedPanel} template={<ProgressSpinner />}>
-                    <div className="ml-4 mr-4 style-modal-tamby" >
-                        <div className="grid h-full">
+                    <div className="ml-4 mr-4 style-modal-tamby"  >
+                        <div className="grid h-full" >
                             <div className="field   lg:col-12 md:col-12 col:12 my-1 flex flex-column">
-                                <Fieldset style={{ backgroundColor: 'white' }} >
+                                <Fieldset style={{ backgroundColor: 'white', fontSize: '1.1em' }} >
                                     <div className="card">
                                         <div className="p-fluid  formgrid grid">
 
                                             <div className="field   lg:col-4 md:col-4 col:12 my-1 flex flex-column">
                                                 <div className="p-fluid px-4 formgrid grid">
                                                     <div className="field   lg:col-12 md:col-12 col:12 m-0 p-0">
-                                                        {/* <div className="field   lg:col-12 md:col-12 col:12 m-0 p-0">
-                                                            <label htmlFor="username2" style={{ fontWeight: '500' }} className="label-input-sm">N° Facture</label>
-                                                            <InputText id="username2" aria-describedby="username2-help" name='patient' value={infoFacture.num_facture} style={{ border: '1px solid grey' }} readOnly />
-                                                        </div> */}
+
                                                         <div className="field   lg:col-12 md:col-12 col:12 m-0 p-0">
                                                             <label className="label-input-sm">Date Examen</label>
                                                             <InputText id="username2" aria-describedby="username2-help" name='patient' value={infoFacture.date_examen} s readOnly />
@@ -325,7 +453,6 @@ export default function RFacture(props) {
                                                         <label htmlFor="username2" className="label-input-sm">Client</label>
                                                         <InputText id="username2" aria-describedby="username2-help" name='patient' value={infoFacture.client} readOnly />
                                                     </div>
-
                                                 </div>
                                             </div>
 
@@ -346,7 +473,7 @@ export default function RFacture(props) {
                                                     </div>
 
                                                     {/* MONTANT REGLE */}
-                                                    <div className="field   lg:col-5 md:col-4 sm:col:6 col:6 my-1 flex flex-column">
+                                                    <div className="field   lg:col-4 md:col-4 sm:col:6 col:6 my-1 flex flex-column">
                                                         <div className="field   lg:col-12 md:col-12 col:12 m-0 p-0 flex flex-row justify-content-evenly align-items-center" >
                                                             <label htmlFor="username2" className="label-input-sm " style={{ fontWeight: '500' }}>Montant Reglé  Patient:</label>
                                                             <InputText id="username2" aria-describedby="username2-help" style={{ width: '180px', border: '1px solid #939090' }} name='patient' value={format(infoFacture.montant_patient_regle, 2, " ")} readOnly />
@@ -358,17 +485,17 @@ export default function RFacture(props) {
                                                     </div>
 
                                                     {/* RESTE  */}
-                                                    <div className="field   lg:col-3 md:col-4 col:12 my-1 flex flex-column">
-                                                        <div className="field   lg:col-12 md:col-12 col:12 m-0 p-0 flex flex-row justify-content-between align-items-center" >
+                                                    <div className="field   lg:col-4 md:col-4 col:12 my-1 flex flex-column">
+                                                        <div className="field   lg:col-12 md:col-12 col:12 m-0 p-0 flex flex-row justify-content-evenly align-items-center" >
                                                             <label htmlFor="username2" className="label-input-sm " style={{ fontWeight: '500' }}>Reste  Patient:</label>
                                                             <InputText id="username2" aria-describedby="username2-help" style={{ width: '170px', border: '1px solid #939090' }} name='patient' value={format(infoFacture.reste_patient, 2, " ")} readOnly />
                                                         </div>
-                                                        <div className="field   lg:col-12 md:col-12 col:12 mt-2 p-0 flex flex-row justify-content-between align-items-center" >
+                                                        <div className="field   lg:col-12 md:col-12 col:12 mt-2 p-0 flex flex-row justify-content-evenly align-items-center" >
                                                             <label htmlFor="username2" className="label-input-sm " style={{ fontWeight: '500' }} >Reste  Client:</label>
                                                             <InputText id="username2" aria-describedby="username2-help" style={{ width: '170px', border: '1px solid #939090' }} name='patient' value={format(infoFacture.reste_pec, 2, " ")} readOnly />
                                                         </div>
                                                         <hr className='col-12' />
-                                                        <div className="field   lg:col-12 md:col-12 col:12 mt-2 p-0 flex flex-row justify-content-between align-items-center" >
+                                                        <div className="field   lg:col-12 md:col-12 col:12 mt-2 p-0 flex flex-row justify-content-evenly align-items-center" >
                                                             <label htmlFor="username2" className="label-input-sm " style={{ fontWeight: '700' }} >Reste  :</label>
                                                             <InputText id="username2" aria-describedby="username2-help" style={{ width: '170px', border: '1px solid #2a2b2c' }} name='patient' value={format(infoFacture.reste, 2, " ")} readOnly />
                                                         </div>
@@ -382,62 +509,78 @@ export default function RFacture(props) {
                                 </Fieldset>
                             </div>
                             <div className="field   lg:col-12 md:col-12 col:12 my-1 flex flex-column ">
-                                <div className="grid h-full justify-content-evenly">
-                                    <div className="field   lg:col-4 md:col-8 sm:col-12 col-12 my-1 flex flex-column">
-                                        <Fieldset legend="Reglement">
-                                            <div className="card ">
-                                                <div className="p-fluid px-4 formgrid grid">
-                                                    <div className="field   lg:col-12 md:col-12 col:12 my-1 flex flex-column">
+                                <div className="p-fluid  formgrid grid justify-content-between ">
+                                    <div className="field   lg:col-4 md:col-12 sm:col-12 col-2 my-1 ">
+                                        <Fieldset legend="Ajout Règlement" style={{ backgroundColor: '#d3d3d3' }} >
+                                            <div className="field   lg:col-12 md:col-12 col:12 my-1 flex flex-column p-0 m-0">
 
-                                                        <div className="field lg:col-12 md:col-9 col:10 m-0 p-0 flex flex-row justify-content-between  align-items-center">
-                                                            <label htmlFor="username2" className="label-input-sm">Réglement fait par :</label>
-                                                            <div className='m-1 flex flex-row align-items-center mb-3'>
-                                                                <div className='m-0 align-items-center'>
-                                                                    <label htmlFor="">Patient</label>
-                                                                    <RadioButton checked={typePC.pat} name='a' className='ml-2' onChange={() => { settypePC({ pat: true, cli: false }) }} />
-                                                                </div>
-                                                                <div className='m-0 ml-5 align-items-center'>
-                                                                    <label htmlFor="">Client</label>
-                                                                    <RadioButton checked={typePC.cli} name='a' className='ml-2' onChange={() => { settypePC({ pat: false, cli: true }) }} />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="field lg:col-12 md:col-9 col:10 m-0 p-0 flex flex-row justify-content-between  align-items-center">
-                                                            <label htmlFor="username2" className="label-input-sm">Type Reglement : </label>
-                                                            <div className='m-1 flex flex-row align-items-center '>
-                                                                <InputText id="username2" aria-describedby="username2-help" style={{ width: '190px' }} name='code_cli' value={infoFacture.nomreglement} readOnly />
-                                                                <ChoixReglement url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} />
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="field lg:col-12 md:col-9 col:10 m-0 p-0 mt-2 flex flex-row lg:justify-content-between align-items-center">
-                                                            <label htmlFor="username2" className="label-input-sm">Montant : </label>
-                                                            <InputNumber id="username2" aria-describedby="username2-help" name='montantreglement' style={{ width: '70%' }} value={infoFacture.montantreglement} min={0} max={montantPatient}
-                                                                onValueChange={(e) => { calculMtPatient(e) }}
+                                                <div className="field lg:col-12 md:col-9 col:10 m-0 p-0 flex flex-row   align-items-center">
+                                                    <label htmlFor="username2" className="label-input-sm">Réglement fait par :</label>
+                                                    <div className='m-1 flex flex-row align-items-center mb-3 ml-5'>
+                                                        <div className='m-0 align-items-center'>
+                                                            <label htmlFor="">Patient</label>
+                                                            <RadioButton checked={typePC.pat} name='a' className='ml-2'
+                                                                onChange={() => {
+                                                                    settypePC({ pat: true, cli: false });
+                                                                    setdataReglement({ ...dataReglement, type_reglmnt: 'P', montantreglement: '0' });
+                                                                }}
                                                             />
                                                         </div>
-                                                        <div className="field lg:col-12 md:col-9 col:10 m-0 p-0 mt-2 flex flex-row lg:justify-content-between align-items-center">
-                                                            <label htmlFor="username2" className="label-input-sm mr-2">N° Chèque	: </label>
-                                                            <InputText id="username2" aria-describedby="username2-help" style={{ width: '70%' }} name='rib' value={infoFacture.rib} onChange={(e) => { setinfoFacture({ ...infoFacture, rib: (e.target.value).toUpperCase() }) }} />
+                                                        <div className='m-0 ml-5 align-items-center'>
+                                                            <label htmlFor="">Client</label>
+                                                            <RadioButton checked={typePC.cli} name='a' className='ml-2'
+                                                                onChange={() => {
+                                                                    settypePC({ pat: false, cli: true });
+                                                                    setdataReglement({ ...dataReglement, type_reglmnt: 'C', montantreglement: '0' });
+                                                                }}
+                                                            />
                                                         </div>
                                                     </div>
-
                                                 </div>
+                                                <div className="field lg:col-12 md:col-9 col:10 m-0 p-0 flex flex-column  ">
+                                                    <hr className='m-0 mb-1 p-0' />
+                                                    <label htmlFor="username2" className="label-input-sm">Type Reglement : </label>
+                                                    <div className='m-1 flex flex-row align-items-center '>
+                                                        <InputText id="username2" style={{ height: '25px' }} aria-describedby="username2-help" name='code_cli' value={dataReglement.nomreglement} readOnly />
+                                                        <ChoixReglement url={props.url} reglement='ok' dataReglement={dataReglement} setdataReglement={setdataReglement} />
+                                                    </div>
+                                                </div>
+
+                                                <div className="field lg:col-12 md:col-9 col:10 m-0 p-0 mt-2 flex flex-column ">
+                                                    <label htmlFor="username2" className="label-input-sm">Montant : </label>
+                                                    <InputText id="username2" aria-describedby="username2-help" name='montantreglement' style={{ height: '25px' }} value={dataReglement.montantreglement}
+                                                        onChange={(e) => { montantReglementVerf(e) }}
+                                                    />
+                                                </div>
+                                                <div className="field lg:col-12 md:col-9 col:10 m-0 p-0 mt-2 flex flex-column">
+                                                    <label htmlFor="username2" className="label-input-sm mr-2">N° Chèque	: </label>
+                                                    <InputText id="username2" aria-describedby="username2-help" style={{ height: '25px' }} name='rib' value={dataReglement.rib} onChange={(e) => { setdataReglement({ ...dataReglement, rib: (e.target.value).toUpperCase() }) }} />
+                                                </div>
+                                            </div>
+                                            <div className='flex mt-3 mr-4 justify-content-center '>
+
+                                                <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-success ' disabled={infoFacture.reste == '0' || infoFacture.reste == 0 ? true : false} tooltip="Ajouter reglement " tooltipOptions={{ position: 'top' }} style={{ cursor: 'pointer' }} label={charge ? '...' : 'Ajouter'}
+                                                    onClick={() => {
+
+                                                        onVerfeCh()
+                                                    }} />
+                                                <ReactToPrint trigger={() =>
+                                                    <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-primary ml-5 ' label={'Imprimer'} disabled={printDesact} />
+                                                } content={() => document.getElementById("scan")} />
                                             </div>
                                         </Fieldset>
                                     </div>
-
-
-
-                                    <div className="field   lg:col-12 md:col-9 col:9 my-1 flex flex-column">
-                                        <Fieldset legend="Historique reglement" className='montant' style={{ backgroundColor: 'rgb(241 242 243 / 81%)' }} >
-                                            <DataTable value={listReglement} scrollable scrollHeight="350px" loading={charge} responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun resultat !"} style={{ fontSize: '0.98em' }} >
+                                    <div className="field   lg:col-8 md:col-12 col:12 my-1 flex flex-column pl-4">
+                                        <Fieldset legend="Hisorique de dérnière règlement(s)" className='montant' style={{ backgroundColor: 'rgb(241 242 243 / 81%)' }} >
+                                            <DataTable value={listReglement} scrollable scrollHeight="250px" loading={charge} responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun réglement "} style={{ fontSize: '0.98em' }} >
                                                 <Column field='num_fact' header={'N° Fact'}></Column>
                                                 <Column field={'montant'} header={'Montant'} ></Column>
                                                 <Column field={'reglement'} header="Reglement"></Column>
                                                 <Column field='rib' header="RIB"></Column>
                                                 <Column field='date_reglement' header="Date"></Column>
                                                 <Column field='type_rglmt' header="Type"></Column>
+                                                <Column header="Action" body={bodyBoutton} align={'left'}></Column>
+
                                             </DataTable>
                                         </Fieldset>
                                     </div>
@@ -445,17 +588,17 @@ export default function RFacture(props) {
                             </div>
 
                         </div>
-                        <hr />
+
                     </div>
-                    <div className='flex mt-3 mr-4 justify-content-center '>
-                        <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-success ' tooltip="Valider l'examen" style={{ cursor: 'pointer' }} label={chargeV.chupdate ? 'Veuillez attendez...' : 'Valider'}
+                    {/* <div className='flex mt-3 mr-4 justify-content-center '>
+                        <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-success ' tooltip="Valider l'examen" style={{ cursor: 'pointer' }} label={charge ? 'Veuillez attendez...' : 'Valider reglement'}
                             onClick={() => {
                                 onVerfeCh()
                             }} />
                         <ReactToPrint trigger={() =>
                             <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-primary ml-5 ' label={'Imprimer'} disabled={printDesact} />
                         } content={() => document.getElementById("scan")} />
-                    </div>
+                    </div> */}
                 </BlockUI>
             </Dialog >
         </>

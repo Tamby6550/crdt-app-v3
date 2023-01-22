@@ -54,8 +54,13 @@ export default function ChoixReglement(props) {
 
                     <Button icon={PrimeIcons.CHECK_CIRCLE} className='p-buttom-sm p-1 p-button-primary ' tooltip='Choisir' tooltipOptions={{ position: 'top' }}
                         onClick={() => {
-                            props.setinfoFacture({ ...props.infoFacture, reglement_id: data.reglement_id, nomreglement: data.libelle })
-                            onHide('displayBasic2')
+                            if (props.reglement=='ok') {
+                                props.setdataReglement({ ...props.dataReglement, reglement_id: data.reglement_id, nomreglement: data.libelle })
+                            }else{
+                                props.setinfoFacture({ ...props.infoFacture, reglement_id: data.reglement_id, nomreglement: data.libelle })
+                            }
+                            
+                            onHide('displayBasic2');
                         }} />
                 </div>
             </div>

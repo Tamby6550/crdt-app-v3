@@ -151,6 +151,7 @@ export default function FFactureVoir(props) {
                         montantRestPresc: format(result.data.reste_pec, 2, " "),
                         montantRest: format(result.data.reste, 2, " ")
                     });
+                    console.log(result.data)
                     setTimeout(() => {
                         loadData(props.data.numero);
                     }, 900)

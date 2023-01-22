@@ -101,7 +101,7 @@ export default function ChangementTarif(props) {
     }
     return (
         <>
-            <Button icon={PrimeIcons.PENCIL} className='p-buttom-sm p-1 ml-2 p-button-warning ' tooltip='Modifier le Tarif' tooltipOptions={{ position: 'top' }}
+            <Button icon={PrimeIcons.PENCIL} className='p-buttom-sm p-1  p-button-warning ' tooltip='Modifier le Tarif' tooltipOptions={{ position: 'top' }}
                 onClick={() => {
                     const accept = () => {
                         onClick('displayBasic2');
