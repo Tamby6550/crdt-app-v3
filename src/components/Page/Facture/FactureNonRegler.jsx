@@ -97,7 +97,7 @@ export default function FactureNonRegler(props) {
 
             <div className="flex flex-column justify-content-center" >
 
-                <DataTable header={header} showGridlines  globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listFactureEff} loading={charge} scrollable scrollHeight="550px" responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun examen à éffectuées"} >
+                <DataTable header={header}   globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listFactureEff} loading={charge} scrollable scrollHeight="550px" responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun examen à éffectuées"} >
 
                     <Column field='num_fact' header={'N° Facture'} style={{ fontWeight: '700' }}></Column>
                     <Column field={'date_facture'} header="Date Facture" style={{ fontWeight: '600' }} ></Column>

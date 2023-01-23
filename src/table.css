@@ -1,0 +1,12 @@
+.table-col {
+    border-bottom:1px solid rgb(145, 145, 146); 
+    }
+td { 
+    /* border-bottom:1px;
+    border-style:solid; 
+    border-color:black; */
+    padding: 5px;
+}
+.recu-imprime{
+    zoom: 75%;
+}

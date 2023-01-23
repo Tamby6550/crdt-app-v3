@@ -279,7 +279,7 @@ export default function FFactureVoir(props) {
     return (
         <>
             <Toast ref={toastTR} position="top-right" />
-            <Button icon={PrimeIcons.EYE} className='p-buttom-sm p-1 mr-2 p-button-info ' tooltip='Voir' tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementData() }} />
+            <Button icon={PrimeIcons.EYE} className='p-buttom-sm p-1 mr-2 p-button-secondary ' tooltip='Voir' tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementData() }} />
 
             <Dialog header={renderHeader('displayBasic2')} maximizable visible={displayBasic2} className="lg:col-11 md:col-11 sm:col-12 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
                 <BlockUI blocked={blockedPanel} template={<ProgressSpinner />}>

@@ -225,7 +225,7 @@ export default function RFacture(props) {
     }
     /**Style css */
     const stylebtnRec = {
-        fontSize: '1rem', padding: ' 0.8375rem 0.975rem', backgroundColor: '#a79d34', border: '1px solid #a79d34'
+        fontSize: '1rem', padding: ' 0.8375rem 0.975rem', backgroundColor: 'rgb(9 167 120)', border: '1px solid rgb(9 167 120)'
     };
     const stylebtnDetele = {
         fontSize: '1rem', padding: ' 0.8375rem 0.975rem', backgroundColor: 'rgb(195 46 46 / 85%)', border: '1px solid #d32f2fa1'
@@ -378,18 +378,25 @@ export default function RFacture(props) {
         return (
             <div className='flex flex-row justify-content-between align-items-center m-0 '>
                 <div className='my-0  py-2'>
-                    {/* <FFactureVoir url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
-                <Reglement url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} /> */}
-                    <Impression url={props.url} data={data}  />
+                    {console.log(data.ajr)}
+                    {data.ajr == data.date_reglement ?
+                        <Impression url={props.url} data={data}
+                            charge={charge} patient={infoFacture.patient} client={infoFacture.client} format={format}
+                            restPat={infoFacture.reste_patient}
+                            restClie={infoFacture.reste_pec} />
+                        :
+                        null
+                    }
                 </div>
             </div>
         )
     }
 
+  
     return (
         <>
             <Toast ref={toastTR} position="top-right" />
-            <Button icon={PrimeIcons.PLUS} className='p-buttom-sm p-1 mr-2 p-button-info ' tooltip='Ajout facture' tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementData() }} />
+            <Button icon={PrimeIcons.PLUS} className='p-buttom-sm p-1 mr-2 p-button-info ' label='reglement' tooltip='Ajout règlement' style={stylebtnRec} tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementData() }} />
 
             <Dialog header={renderHeader('displayBasic2')} maximizable visible={displayBasic2} className="lg:col-10 col-10 md:col-11 sm:col-12 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
                 <BlockUI blocked={blockedPanel} template={<ProgressSpinner />}>
@@ -561,12 +568,9 @@ export default function RFacture(props) {
 
                                                 <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-success ' disabled={infoFacture.reste == '0' || infoFacture.reste == 0 ? true : false} tooltip="Ajouter reglement " tooltipOptions={{ position: 'top' }} style={{ cursor: 'pointer' }} label={charge ? '...' : 'Ajouter'}
                                                     onClick={() => {
-
                                                         onVerfeCh()
                                                     }} />
-                                                <ReactToPrint trigger={() =>
-                                                    <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-primary ml-5 ' label={'Imprimer'} disabled={printDesact} />
-                                                } content={() => document.getElementById("scan")} />
+
                                             </div>
                                         </Fieldset>
                                     </div>

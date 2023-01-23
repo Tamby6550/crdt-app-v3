@@ -1,5 +1,6 @@
 import logo from './images/crdt.jpg';
 import './App.css';
+import './table.css';
 import Header from './components/Header/Header';
 import { Button } from 'primereact/button'
 import { Card } from 'primereact/card';
