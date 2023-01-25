@@ -84,10 +84,10 @@ export default function VoirCompteRendu(props) {
                 }
             )
                 .catch((e) => {
-                    console.log('hello'+e)
+                    console.log('hello' + e)
                 })
         } catch (error) {
-            console.log('kjsdljf'+error)
+            console.log('kjsdljf' + error)
         }
     }
     const getData = async () => {
@@ -182,8 +182,8 @@ export default function VoirCompteRendu(props) {
 
         return (
             <div>
-                <h4 className='mb-1'>Compte Rendu  
-                {/* : <i style={{ fontWeight: '800', color: 'black' }} >Date d'arrivée : {props.date_arriv} , numéro : {props.num_arriv} , Combinaison : {numQr} </i>  */}
+                <h4 className='mb-1'>Compte Rendu
+                    {/* : <i style={{ fontWeight: '800', color: 'black' }} >Date d'arrivée : {props.date_arriv} , numéro : {props.num_arriv} , Combinaison : {numQr} </i>  */}
                 </h4>
                 <hr />
             </div>
@@ -221,7 +221,7 @@ export default function VoirCompteRendu(props) {
                     <div className='mb-3'>
                         <BundledEditor
                             onInit={(evt, editor) => editorRef.current = editor}
-                            initialValue={recHtml === null ? '<h1>'+textchrg+'</h1>' : recHtml}
+                            initialValue={recHtml === null ? '<h1>' + textchrg + '</h1>' : recHtml}
                             init={{
                                 height: 500,
                                 menubar: false,
@@ -246,8 +246,8 @@ export default function VoirCompteRendu(props) {
             </Dialog>
             <div className='hidden'>
                 <div id="scann" ref={(el) => (reportTemplateRef = el)}>
-                    <div className="flex justify-content-end w-100">
-                        <div id="print" style={{ fontSize: '1.4em' }}></div>
+                    <div id="print" style={{ fontSize: '1.4em' }}></div>
+                    <div className='w-100 flex justify-content-end'>
                         <div style={{ width: "45px", height: "45px" }}>
                             <QRCode
                                 size={256}

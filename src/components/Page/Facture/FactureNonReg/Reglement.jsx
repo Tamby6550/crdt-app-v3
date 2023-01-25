@@ -11,7 +11,7 @@ import { Dialog } from 'primereact/dialog';
 import axios from 'axios'
 import { InputText } from 'primereact/inputtext'
 import { RadioButton } from 'primereact/radiobutton'
-
+import Modifier from './Modifier';
 import { InputNumber } from 'primereact/inputnumber'
 import ChoixReglement from '../PatientNonFact/ChoixReglement';
 import moment from 'moment/moment';
@@ -27,8 +27,11 @@ export default function RFacture(props) {
     const { format } = FormatF();
 
     const [blockedPanel, setBlockedPanel] = useState(true);
-    const [printDesact, setprintDesact] = useState(true)
+    //Miverifie hoe nanao reglement ve izy alohany hiquité
+    const [verffaireReglmnt, setverffaireReglmnt] = useState(false)
 
+    const [verfbtnajoutreglmn, setverfbtnajoutreglmn] = useState(false)
+    
 
 
     function poucentage(val, pourc) {
@@ -39,6 +42,7 @@ export default function RFacture(props) {
 
     //Declaration useSatate
     //Chargement de données
+    //Miverifie hoe vita 100% ve ny paymant anle reglement
     const [chRegle, setchRegle] = useState(false)
     const [charge, setCharge] = useState(false);
     const [listReglement, setlistReglement] = useState([
@@ -249,7 +253,7 @@ export default function RFacture(props) {
     const onHide = (name) => {
         dialogFuncMap[`${name}`](false);
         onVide();
-        if (chRegle) {
+        if (chRegle||verffaireReglmnt) {
             props.changecharge('1');
         }
     }
@@ -358,8 +362,13 @@ export default function RFacture(props) {
 
                 setTimeout(() => {
                     chargementData();
+                    
+                    //Raha ohatra vo sambany vo  nanao reglement
+                    if (props.data.nbrergl== 0) {
+                        setverffaireReglmnt(true);
+                    }
                     if (res.data.regle == '1') {
-                        setchRegle(true)
+                        setchRegle(true);
                     }
 
                 }, 900)
@@ -378,21 +387,29 @@ export default function RFacture(props) {
         return (
             <div className='flex flex-row justify-content-between align-items-center m-0 '>
                 <div className='my-0  py-2'>
-                    {console.log(data.ajr)}
+                 
                     {data.ajr == data.date_reglement ?
-                        <Impression url={props.url} data={data}
-                            charge={charge} patient={infoFacture.patient} client={infoFacture.client} format={format}
-                            restPat={infoFacture.reste_patient}
-                            restClie={infoFacture.reste_pec} />
+                        <>
+                            <Impression url={props.url} data={data}
+                                charge={charge} patient={infoFacture.patient} client={infoFacture.client} format={format}
+                                restPat={infoFacture.reste_patient}
+                                restClie={infoFacture.reste_pec} />
+                        </>
                         :
                         null
                     }
+                    <Modifier data={data} url={props.url}
+                        num_arriv={props.data.numero}
+                        date_arriv={props.data.date_arr}
+                        chargementData={chargementData}
+                        
+                    />
                 </div>
             </div>
         )
     }
 
-  
+
     return (
         <>
             <Toast ref={toastTR} position="top-right" />
@@ -528,6 +545,19 @@ export default function RFacture(props) {
                                                             <label htmlFor="">Patient</label>
                                                             <RadioButton checked={typePC.pat} name='a' className='ml-2'
                                                                 onChange={() => {
+                                                                    if (infoFacture.reste_patient=='0' || infoFacture.reste=='0') {
+                                                                        setverfbtnajoutreglmn(true);
+                                                                        confirmDialog({
+                                                                            message: bddialogReglement('Montant patient réglés !'),
+                                                                            header: '',
+                                                                            icon: 'pi pi-exclamation-circle',
+                                                                            acceptClassName: 'p-button-info',
+                                                                            acceptLabel: 'Ok',
+                                                                            rejectLabel: '_',
+                                                                        });
+                                                                    }else{
+                                                                        setverfbtnajoutreglmn(false);
+                                                                    }
                                                                     settypePC({ pat: true, cli: false });
                                                                     setdataReglement({ ...dataReglement, type_reglmnt: 'P', montantreglement: '0' });
                                                                 }}
@@ -537,6 +567,19 @@ export default function RFacture(props) {
                                                             <label htmlFor="">Client</label>
                                                             <RadioButton checked={typePC.cli} name='a' className='ml-2'
                                                                 onChange={() => {
+                                                                    if (infoFacture.reste_pec=='0' || infoFacture.reste=='0') {
+                                                                        setverfbtnajoutreglmn(true);
+                                                                        confirmDialog({
+                                                                            message: bddialogReglement('Montant client réglés !'),
+                                                                            header: '',
+                                                                            icon: 'pi pi-exclamation-circle',
+                                                                            acceptClassName: 'p-button-info',
+                                                                            acceptLabel: 'Ok',
+                                                                            rejectLabel: '_',
+                                                                        });
+                                                                    }else{
+                                                                        setverfbtnajoutreglmn(false);
+                                                                    }
                                                                     settypePC({ pat: false, cli: true });
                                                                     setdataReglement({ ...dataReglement, type_reglmnt: 'C', montantreglement: '0' });
                                                                 }}
@@ -566,7 +609,9 @@ export default function RFacture(props) {
                                             </div>
                                             <div className='flex mt-3 mr-4 justify-content-center '>
 
-                                                <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-success ' disabled={infoFacture.reste == '0' || infoFacture.reste == 0 ? true : false} tooltip="Ajouter reglement " tooltipOptions={{ position: 'top' }} style={{ cursor: 'pointer' }} label={charge ? '...' : 'Ajouter'}
+                                                <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-success ' 
+                                                disabled={verfbtnajoutreglmn} 
+                                                tooltip="Ajouter reglement " tooltipOptions={{ position: 'top' }} style={{ cursor: 'pointer' }} label={charge ? '...' : 'Ajouter'}
                                                     onClick={() => {
                                                         onVerfeCh()
                                                     }} />
@@ -600,7 +645,7 @@ export default function RFacture(props) {
                                 onVerfeCh()
                             }} />
                         <ReactToPrint trigger={() =>
-                            <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-primary ml-5 ' label={'Imprimer'} disabled={printDesact} />
+                            <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-primary ml-5 ' label={'Imprimer'} disabled={verffaireReglmnt} />
                         } content={() => document.getElementById("scan")} />
                     </div> */}
                 </BlockUI>
