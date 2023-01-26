@@ -13,9 +13,18 @@ import { Tag } from 'primereact/tag';
 import FFactureVoir from './FactureNonReg/FFactureVoir';
 import Reglement from './FactureNonReg/Reglement'
 import ModifReglement from './FactureNonReg/ModifReglement'
+import ImpressionFact from './FactureNonReg/ImpressionFact';
+
+
 export default function FactureNonRegler(props) {
 
+    function poucentage(val, pourc) {
+        let res = (pourc*100) / val;
+        return (res).toFixed(0);
+    }
+
     //Chargement de données
+    const [chRetour, setchRetour] = useState(false)
     const [charge, setCharge] = useState(false);
     const [refreshData, setrefreshData] = useState(0);
     const [listFactureEff, setlistFactureEff] = useState([{ numero: '', date_arr: '', id_patient: '', type_pat: '', verf_exam: '', nom: '', date_naiss: '', telephone: '' }]);
@@ -29,11 +38,14 @@ export default function FactureNonRegler(props) {
         fontSize: '1rem', padding: ' 0.8375rem 0.975rem', backgroundColor: 'rgb(195 46 46 / 85%)', border: '1px solid #d32f2fa1'
     };
     const stylebtnRetourner = {
-        fontSize: '1rem', padding: ' 0.8375rem 0.975rem', backgroundColor: 'rgb(195 153 46 / 85%)', border: '1px solid rgb(211 152 47 / 63%)'
+        fontSize: '1rem', padding: ' 0.8375rem 0.975rem', backgroundColor: 'rgb(195 46 46 / 85%)', border: '1px solid rgb(195 46 46 / 85%)'
     };
     /**Style css */
 
     const toastTR = useRef(null);
+    const notificationAction = (etat, titre, message) => {
+        toastTR.current.show({ severity: etat, summary: titre, detail: message, life: 8000 });
+    }
     /*Notification Toast */
 
 
@@ -79,6 +91,34 @@ export default function FactureNonRegler(props) {
         )
     }
 
+    const bodyV = (data) => {
+        return (
+            <div className='flex flex-row justify-content-between align-items-center m-0 '>
+                {data.jourj==data.date_fverf? 
+                // <Tag severity='success'>
+                    <Tag severity='success' icon={PrimeIcons.CHECK_CIRCLE}></Tag>
+                :
+                null
+                }
+            </div>
+        )
+    }
+    const bodyPat = (data) => {
+        return (
+            <div className='flex flex-row justify-content-between align-items-center m-0 '>
+                <label htmlFor="">{poucentage(data.totalpat, data.rpatient)}%</label>
+            </div>
+        )
+    }
+    const bodyClient = (data) => {
+        return (
+            <div className='flex flex-row justify-content-between align-items-center m-0 '>
+                {/* {isNaN(data.totalpec)?'aaa' :'rr'} */}
+                <label htmlFor="">{poucentage(data.totalpec, data.rclient)=='NaN'? '-' :poucentage(data.totalpec, data.rclient)+'%'}</label>
+            </div>
+        )
+    }
+
     const bodyBoutton = (data) => {
         return (
             <div className='flex flex-row justify-content-between align-items-center m-0 '>
@@ -87,25 +127,26 @@ export default function FactureNonRegler(props) {
 
                     <Reglement url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
                     <ModifReglement url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
+                    <ImpressionFact url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
                     {data.nbrergl == 0 ?
                         <Button icon={PrimeIcons.REPLAY} className='p-buttom-sm p-1 ' style={stylebtnRetourner} tooltip='Retourner' tooltipOptions={{ position: 'top' }}
                             onClick={() => {
-
                                 const accept = async () => {
-                                    // setchRetour(true);
-                                    // await axios.put(props.url + 'validationExamen', { num_arriv: data.numero, date_arriv: data.date_arr, verfexamen: '1' })
-                                    //     .then(res => {
-                                    //         notificationAction(res.data.etat, 'Deplacement de patient', 'Patient bien retouné dans la liste de patient en attente de validation ');//message avy @back
-                                    //         setchRetour(false);
-                                    //         setTimeout(() => {
-                                    //             setrefreshData('1')
-                                    //         }, 600)
-                                    //     })
-                                    //     .catch(err => {
-                                    //         console.log(err);
-                                    //         notificationAction('error', 'Erreur', err.data.message);//message avy @back
-                                    //         setchRetour(false);
-                                    //     });
+
+                                    await axios.put(props.url + 'retourFactNonRegleEnNonPaye', { num_arriv: data.numero, date_arriv: data.date_arr, num_facture: data.num_fact })
+                                        .then(res => {
+                                            //message avy @back
+                                            notificationAction(res.data.etat, 'Deplacement de patient', 'Patient bien retouné dans la liste de patient en attente de validation ');
+                                            setTimeout(() => {
+                                                setrefreshData('1');
+                                            }, 300)
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                            //message avy @back
+                                            notificationAction('error', 'Erreur', err.data.message);
+
+                                        });
                                 }
                                 const reject = () => {
                                     return null;
@@ -121,7 +162,8 @@ export default function FactureNonRegler(props) {
                                     reject
                                 });
                             }} />
-                        :null}
+                        : null}
+
                 </div>
             </div>
         )
@@ -146,14 +188,17 @@ export default function FactureNonRegler(props) {
 
             <div className="flex flex-column justify-content-center" >
                 <DataTable header={header} autoLayout globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listFactureEff} loading={charge} className='bg-white' emptyMessage={"Aucun examen à éffectuées"} >
+                    <Column body={bodyV} header={''} style={{ fontWeight: '700' }}></Column>
                     <Column field='num_fact' header={'N° Facture'} style={{ fontWeight: '700' }}></Column>
                     <Column field={'date_facture'} header="Date Facture" style={{ fontWeight: '600' }} ></Column>
-                    <Column field='numero' header={'Numéro d\'Arrivée'} style={{ fontWeight: '600' }} ></Column>
+                    <Column field='numero' header={'N° Arrivée'} style={{ fontWeight: '600' }} ></Column>
                     <Column field={'date_arr'} header={'Date d\'Arrivée'} style={{ fontWeight: '600' }}></Column>
+                    <Column field={'date_examen'} header="Date Examen" style={{ fontWeight: '600' }}></Column>
                     <Column field='nom' header="Nom"></Column>
                     <Column field='date_naiss' header="Date_Naiss"></Column>
                     <Column field='type_patient' header="Tarif"></Column>
-                    <Column field={'date_examen'} header="Date Examen" style={{ fontWeight: '600' }}></Column>
+                    <Column body={bodyPat} header="Regl-Pat"></Column>
+                    <Column body={bodyClient} header="Regl-Cli"></Column>
                     <Column header="Action" body={bodyBoutton} align={'left'}></Column>
                 </DataTable>
             </div>

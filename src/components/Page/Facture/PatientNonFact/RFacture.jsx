@@ -207,7 +207,7 @@ export default function RFacture(props) {
             .then(
                 (results) => {
                     setinfoExamen(results.data.all);
-                    settotalMt(results.data.total)
+                    settotalMt(results.data.total);
                     setaujourd(results.data.datej);
                     setBlockedPanel(false);
                     calcule(result, results.data.total, results.data.datej)
@@ -390,24 +390,24 @@ export default function RFacture(props) {
                                                     <div className='flex lg:flex-row md:flex-column justify-content-between flex-column col-12 p-0'>
                                                         <div className="field   lg:col-4 md:col-12 col:12 m-0 p-0">
                                                             <label htmlFor="username2" className="label-input-sm">N° arriv *</label>
-                                                            <InputText id="username2" style={{backgroundColor: '#efefef'}} aria-describedby="username2-help" name='num_arriv' value={infoFacture.num_arriv} readOnly />
+                                                            <InputText id="username2" style={{ backgroundColor: '#efefef' }} aria-describedby="username2-help" name='num_arriv' value={infoFacture.num_arriv} readOnly />
                                                         </div>
                                                         <div className="field   lg:col-6 md:col-12 col:12 m-0 p-0">
                                                             <label htmlFor="username2" className="label-input-sm">Date arriv*</label>
-                                                            <InputText id="username2" style={{backgroundColor: '#efefef'}} aria-describedby="username2-help" name='num_arriv' value={infoFacture.date_arriv} readOnly />
+                                                            <InputText id="username2" style={{ backgroundColor: '#efefef' }} aria-describedby="username2-help" name='num_arriv' value={infoFacture.date_arriv} readOnly />
                                                         </div>
                                                     </div>
 
                                                     <div className='flex lg:flex-row md:flex-column justify-content-between flex-column col-12 m-0 p-0'>
                                                         <div className="field   lg:col-8 md:col-8 col:8">
                                                             <label htmlFor="username2" className="label-input-sm">Patient*</label>
-                                                            <InputText id="username2" style={{backgroundColor: '#efefef'}} aria-describedby="username2-help" name='patient' value={infoFacture.patient} readOnly />
+                                                            <InputText id="username2" style={{ backgroundColor: '#efefef' }} aria-describedby="username2-help" name='patient' value={infoFacture.patient} readOnly />
                                                         </div>
 
                                                         <div className="field   lg:col-4 md:col-8 col:4  p-0">
                                                             <label htmlFor="username2" className="label-input-sm mt-2">Tarif*</label>
                                                             <div className='m-0 flex flex-row align-items-center  '>
-                                                                <InputText id="username2"style={{backgroundColor: '#efefef'}}  aria-describedby="username2-help" name='type' value={infoFacture.type} readOnly />
+                                                                <InputText id="username2" style={{ backgroundColor: '#efefef' }} aria-describedby="username2-help" name='type' value={infoFacture.type} readOnly />
                                                                 <ChangementTarif settarifCh={settarifCh} setrefreshData={props.changecharge} url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} setBlockedPanel={setBlockedPanel} loadData={loadDataFact} ancientarif={infoFacture.type} examen={infoExamen} id_patient={props.data.id_patient} num_arriv={props.data.numero} date_arriv={props.data.date_arr} />
                                                             </div>
                                                         </div>
@@ -436,7 +436,7 @@ export default function RFacture(props) {
                                                     <div className="field   lg:col-12 md:col-12 col:12 m-0 p-0">
                                                         <label htmlFor="username2" className="label-input-sm">Prescripteur*</label>
                                                         <div className='m-0 flex flex-row align-items-center  '>
-                                                            <InputText id="username2" style={{backgroundColor: '#efefef'}} aria-describedby="username2-help" name='code_presc' value={infoFacture.nom_presc} className={verfChamp.nom_presc ? "form-input-css-tamby p-invalid" : "form-input-css-tamby"} readOnly />
+                                                            <InputText id="username2" style={{ backgroundColor: '#efefef' }} aria-describedby="username2-help" name='code_presc' value={infoFacture.nom_presc} className={verfChamp.nom_presc ? "form-input-css-tamby p-invalid" : "form-input-css-tamby"} readOnly />
                                                             <ChoixPrescr url={props.url} infoFacture={infoFacture} setverfChamp={setverfChamp} verfChamp={verfChamp} setinfoFacture={setinfoFacture} />
                                                             {verfChamp.nom_presc ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
                                                         </div>
@@ -445,7 +445,7 @@ export default function RFacture(props) {
                                                     <div className="field   lg:col-12 md:col-12 col:12 m-0 p-0">
                                                         <label htmlFor="username2" className="label-input-sm mt-2">Client* </label>
                                                         <div className='m-0 flex flex-row align-items-center  '>
-                                                            <InputText id="username2" style={{backgroundColor: '#efefef'}} aria-describedby="username2-help" className={verfChamp.nom_cli ? "form-input-css-tamby p-invalid" : "form-input-css-tamby"} name='code_cli' value={infoFacture.nom_cli} readOnly />
+                                                            <InputText id="username2" style={{ backgroundColor: '#efefef' }} aria-describedby="username2-help" className={verfChamp.nom_cli ? "form-input-css-tamby p-invalid" : "form-input-css-tamby"} name='code_cli' value={infoFacture.nom_cli} readOnly />
                                                             <ChoixClient url={props.url} infoFacture={infoFacture} setverfChamp={setverfChamp} verfChamp={verfChamp} setinfoFacture={setinfoFacture} typeclient={infoFacture.type} />
                                                             {verfChamp.nom_cli ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
                                                         </div>
@@ -480,23 +480,23 @@ export default function RFacture(props) {
                                                 <div className="p-fluid px-4 formgrid grid">
                                                     <div className="field   lg:col-4 md:col-12 col:12">
                                                         <label htmlFor="username2" className="label-input-sm">Total(Ar)</label>
-                                                        <InputText id="username2"  aria-describedby="username2-help" style={{backgroundColor: '#efefef'}} name='montant_brute' value={infoFacture.montant_brute} readOnly />
+                                                        <InputText id="username2" aria-describedby="username2-help" style={{ backgroundColor: '#efefef' }} name='montant_brute' value={infoFacture.montant_brute} readOnly />
                                                     </div>
                                                     <div className="field   lg:col-4 md:col-12 col:12">
                                                         <label htmlFor="username2" className="label-input-sm">Remise <i style={{ fontWeight: '700' }}> {infoFacture.remise}% </i> (en Ar) </label>
-                                                        <InputText id="username2"  aria-describedby="username2-help" style={{backgroundColor: '#efefef'}} name='montant_remise' value={infoFacture.montant_remise} readOnly />
+                                                        <InputText id="username2" aria-describedby="username2-help" style={{ backgroundColor: '#efefef' }} name='montant_remise' value={infoFacture.montant_remise} readOnly />
                                                     </div>
                                                     <div className="field   lg:col-4 md:col-12 col:12">
                                                         <label htmlFor="username2" className="label-input-sm">Montant net(Ar)</label>
-                                                        <InputText id="username2"  aria-describedby="username2-help" name='montant_net' value={infoFacture.montant_net} style={{ fontWeight: '600', borderColor: '#a1a2a7',backgroundColor: '#efefef' }} readOnly />
+                                                        <InputText id="username2" aria-describedby="username2-help" name='montant_net' value={infoFacture.montant_net} style={{ fontWeight: '600', borderColor: '#a1a2a7', backgroundColor: '#efefef' }} readOnly />
                                                     </div>
                                                     <div className="field   lg:col-6 md:col-12 col:12">
-                                                        <label htmlFor="username2" className="label-input-sm" style={{fontWeight:'600'}} >A Payer par le patient(Ar)</label>
-                                                        <InputText id="username2"  aria-describedby="username2-help" name='montant_patient' style={{ fontWeight: '600', borderColor: '#383737',backgroundColor: '#efefef' }} value={infoFacture.montant_patient} readOnly />
+                                                        <label htmlFor="username2" className="label-input-sm" style={{ fontWeight: '600' }} >A Payer par le patient(Ar)</label>
+                                                        <InputText id="username2" aria-describedby="username2-help" name='montant_patient' style={{ fontWeight: '600', borderColor: '#383737', backgroundColor: '#efefef' }} value={infoFacture.montant_patient} readOnly />
                                                     </div>
                                                     <div className="field   lg:col-6 md:col-12 col:12">
-                                                        <label htmlFor="username2" className="label-input-sm"  style={{fontWeight:'600'}}>Montant pris en charge <i style={{ fontWeight: '700' }}> {infoFacture.pec}% </i> (Ar)</label>
-                                                        <InputText id="username2"  aria-describedby="username2-help" name='montant_pech' style={{ fontWeight: '600', borderColor: '#383737',backgroundColor: '#efefef' }} value={infoFacture.montant_pech} readOnly />
+                                                        <label htmlFor="username2" className="label-input-sm" style={{ fontWeight: '600' }}>Montant pris en charge <i style={{ fontWeight: '700' }}> {infoFacture.pec}% </i> (Ar)</label>
+                                                        <InputText id="username2" aria-describedby="username2-help" name='montant_pech' style={{ fontWeight: '600', borderColor: '#383737', backgroundColor: '#efefef' }} value={infoFacture.montant_pech} readOnly />
                                                     </div>
                                                 </div>
                                             </div>
@@ -512,30 +512,27 @@ export default function RFacture(props) {
                         <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-success ' tooltip="Valider l'examen" style={{ cursor: 'pointer' }} label={chargeV.chupdate ? 'Veuillez attendez...' : 'Valider'}
                             onClick={() => {
                                 // if ((infoFacture.pec == '0' || infoFacture.pec == '' || infoFacture.pec == null) && (infoFacture.remise == '0' || infoFacture.remise == '' || infoFacture.remise == null)) {
-                                    const accept = () => {
-                                        onVerfeCh()
-                                    }
-                                    const reject = () => {
-                                        return null;
-                                    }
-                                    confirmDialog({
-                                        message: bodyConfirme,
-                                        header: '',
-                                        icon: 'pi pi-exclamation-circle',
-                                        acceptClassName: 'p-button-success',
-                                        acceptLabel: 'Ok , Valider',
-                                        rejectLabel: 'Annuler',
-                                        accept,
-                                        reject
-                                    });
+                                const accept = () => {
+                                    onVerfeCh()
+                                }
+                                const reject = () => {
+                                    return null;
+                                }
+                                confirmDialog({
+                                    message: bodyConfirme,
+                                    header: '',
+                                    icon: 'pi pi-exclamation-circle',
+                                    acceptClassName: 'p-button-success',
+                                    acceptLabel: 'Ok , Valider',
+                                    rejectLabel: 'Annuler',
+                                    accept,
+                                    reject
+                                });
                                 // } else {
                                 //     onVerfeCh();
                                 // }
 
                             }} />
-                        <ReactToPrint trigger={() =>
-                            <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-primary ml-5 ' label={'Imprimer'} disabled={printDesact} />
-                        } content={() => document.getElementById("scan")} />
                     </div>
                 </BlockUI>
             </Dialog >

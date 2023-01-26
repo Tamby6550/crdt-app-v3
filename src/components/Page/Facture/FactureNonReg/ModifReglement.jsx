@@ -355,7 +355,7 @@ export default function ModifReglement(props) {
             <Toast ref={toastTR} position="top-right" />
             <Button icon={PrimeIcons.PENCIL} className='p-buttom-sm p-1 mr-2 p-button-secondary ' tooltip='Modifier ' tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementDataPEC() }} />
 
-            <Dialog header={renderHeader('displayBasic2')} maximizable visible={displayBasic2} className="lg:col-7 md:col-9 sm:col-12 col-12 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
+            <Dialog header={renderHeader('displayBasic2')} maximizable visible={displayBasic2} className={props.data.nbrergl == 0 ? "lg:col-7 md:col-9 sm:col-12 col-12 p-0":"lg:col-5 md:col-8 sm:col-12 col-12 p-0"} footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
                 <BlockUI blocked={blockedPanel} template={<ProgressSpinner />}>
                     {props.data.nbrergl == 0 ?
                         <div className='col-12 grid px-5'>
@@ -366,7 +366,7 @@ export default function ModifReglement(props) {
                                 <div className="field   lg:col-6 md:col-6 flex flex-column  col:12 m-0 p-0">
                                     <label htmlFor="username2" className="label-input-sm" style={{ color: infoFacture.type == 'L2' ? 'grey' : null }} >  P.en Charge(%)</label>
                                     <InputText id="username2" aria-describedby="username2-help" name='pec' value={infoFacture.pec}
-                                        onChange={(e) => { calculeMis(totalMt, infoFacture.remise, e.target.value, e); }} disabled={infoFacture.type == 'L2' ? true : false} />
+                                        onChange={(e) => { calculeMis(totalMt, infoFacture.remise, e.target.value, e); }} disabled={props.data.type_patient == 'L2' ? true : false} />
                                 </div>
                                 <div className="field   lg:col-6 md:col-6 ml-4  flex flex-column col:12 m-0 p-0">
                                     <label htmlFor="username2" className="label-input-sm">Remise(%)</label>
