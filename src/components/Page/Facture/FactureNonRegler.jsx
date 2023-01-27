@@ -14,13 +14,13 @@ import FFactureVoir from './FactureNonReg/FFactureVoir';
 import Reglement from './FactureNonReg/Reglement'
 import ModifReglement from './FactureNonReg/ModifReglement'
 import ImpressionFact from './FactureNonReg/ImpressionFact';
-
+import Recherche from './FactureNonReg/Recherche';
 
 export default function FactureNonRegler(props) {
 
     function poucentage(val, pourc) {
-        let res = (pourc*100) / val;
-        return (res).toFixed(0);
+        let res = (pourc * 100) / val;
+        return (res).toFixed(2);
     }
 
     //Chargement de données
@@ -28,7 +28,7 @@ export default function FactureNonRegler(props) {
     const [charge, setCharge] = useState(false);
     const [refreshData, setrefreshData] = useState(0);
     const [listFactureEff, setlistFactureEff] = useState([{ numero: '', date_arr: '', id_patient: '', type_pat: '', verf_exam: '', nom: '', date_naiss: '', telephone: '' }]);
-    const [infoReherche, setinfoReherche] = useState({ numero_arr: '', date_arr: '', date_naiss: '', nom: '' })
+    const [infoReherche, setinfoReherche] = useState({ num_facture: '', date_facture: '', nom_patient:'', nom_client: '', numero_arr: '', date_arr: '', date_naiss: ''})
 
     /**Style css */
     const stylebtnRec = {
@@ -54,7 +54,7 @@ export default function FactureNonRegler(props) {
         setrefreshData(value)
     }
     const onVide = () => {
-        setinfoReherche({ numero_arr: '', date_arr: '', date_naiss: '', nom: '' })
+        setinfoReherche({ num_facture: '', date_facture: '', nom_patient:'', nom_client: '', numero_arr: '', date_arr: '', date_naiss: '' })
     }
 
     //Get List patient
@@ -78,7 +78,7 @@ export default function FactureNonRegler(props) {
         setlistFactureEff([{ nom: 'Chargement de données...' }])
         setTimeout(() => {
             loadData();
-        }, 800)
+        }, 1000)
     }, [refreshData]);
 
 
@@ -94,11 +94,11 @@ export default function FactureNonRegler(props) {
     const bodyV = (data) => {
         return (
             <div className='flex flex-row justify-content-between align-items-center m-0 '>
-                {data.jourj==data.date_fverf? 
-                // <Tag severity='success'>
+                {data.jourj == data.date_fverf ?
+                    // <Tag severity='success'>
                     <Tag severity='success' icon={PrimeIcons.CHECK_CIRCLE}></Tag>
-                :
-                null
+                    :
+                    null
                 }
             </div>
         )
@@ -106,7 +106,7 @@ export default function FactureNonRegler(props) {
     const bodyPat = (data) => {
         return (
             <div className='flex flex-row justify-content-between align-items-center m-0 '>
-                <label htmlFor="">{poucentage(data.totalpat, data.rpatient)}%</label>
+                <strong htmlFor="">{poucentage(data.totalpat, data.rpatient)}%</strong>
             </div>
         )
     }
@@ -114,7 +114,7 @@ export default function FactureNonRegler(props) {
         return (
             <div className='flex flex-row justify-content-between align-items-center m-0 '>
                 {/* {isNaN(data.totalpec)?'aaa' :'rr'} */}
-                <label htmlFor="">{poucentage(data.totalpec, data.rclient)=='NaN'? '-' :poucentage(data.totalpec, data.rclient)+'%'}</label>
+                <strong htmlFor="">{poucentage(data.totalpec, data.rclient) == 'NaN' ? '-' : poucentage(data.totalpec, data.rclient) + '%'}</strong>
             </div>
         )
     }
@@ -172,8 +172,36 @@ export default function FactureNonRegler(props) {
 
 
     const header = (
+
         <div className='flex flex-row justify-content-center align-items-center m-0 '>
-            <h3 className='m-3'>Liste Patient Non Facturées</h3>
+            <h3 className='m-3'>Liste Patient Non Facturées (3 dernier jour)</h3>
+        </div>
+    )
+    const headerReherche = (
+        <div className='flex flex-row justify-content-between align-items-center m-0 '>
+            <div className='my-0 flex  py-2'>
+                <Recherche icon={PrimeIcons.SEARCH} setCharge={setCharge} setlistFactureEff={setlistFactureEff} changecharge={changecharge} url={props.url} infoReherche={infoReherche} setinfoReherche={setinfoReherche} />
+                {infoReherche.num_facture == "" && infoReherche.date_facture == "" && infoReherche.nom_patient == "" && infoReherche.nom_client == ""
+                    && infoReherche.numero_arr == "" && infoReherche.date_arr == "" ? null :
+                    <label className='ml-5 mt-2'>
+                        Resultat de recherche ,
+                        Numéro facture : <i style={{ fontWeight: '700' }}>"{(infoReherche.num_facture)}"</i>  ,
+                        Date facture : <i style={{ fontWeight: '700' }}>"{(infoReherche.date_facture)}"</i>,
+                        Numéro d'arrivé : <i style={{ fontWeight: '700' }}>"{(infoReherche.numero_arr)}"</i>,
+                        Date d'arrivé : <i style={{ fontWeight: '700' }}>"{(infoReherche.date_arr)}"</i>,
+                        Nom Patient : <i style={{ fontWeight: '700' }}>"{(infoReherche.nom_patient)}"</i>,
+                        Nom client : <i style={{ fontWeight: '700' }}>"{(infoReherche.nom_client)}"</i>,
+                    </label>}
+            </div>
+            {infoReherche.num_facture != "" || infoReherche.date_facture != "" || infoReherche.nom_patient != "" || infoReherche.nom_client != ""
+                || infoReherche.numero_arr != "" || infoReherche.date_arr != "" ?
+                <Button icon={PrimeIcons.REFRESH} className='p-buttom-sm p-1 p-button-warning ' tooltip='actualiser' tooltipOptions={{ position: 'top' }} onClick={() => setrefreshData(1)} />
+                :
+                <>
+                    <h3 className='m-3'>Liste Patient Non Facturées (3 dernier jour)</h3>
+                    <h3 className='m-3' style={{ visibility: 'hidden' }} >Examens éffectuées</h3>
+                </>
+            }
         </div>
     )
 
@@ -187,7 +215,7 @@ export default function FactureNonRegler(props) {
             <ConfirmDialog />
 
             <div className="flex flex-column justify-content-center" >
-                <DataTable header={header} autoLayout globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listFactureEff} loading={charge} className='bg-white' emptyMessage={"Aucun examen à éffectuées"} >
+                <DataTable header={headerReherche} autoLayout globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listFactureEff} loading={charge} className='bg-white' emptyMessage={"Aucun examen à éffectuées"} >
                     <Column body={bodyV} header={''} style={{ fontWeight: '700' }}></Column>
                     <Column field='num_fact' header={'N° Facture'} style={{ fontWeight: '700' }}></Column>
                     <Column field={'date_facture'} header="Date Facture" style={{ fontWeight: '600' }} ></Column>

@@ -10,7 +10,9 @@ import { InputText } from 'primereact/inputtext';
 import axios from 'axios';
 import { Toast } from 'primereact/toast';
 import { Tag } from 'primereact/tag';
-
+import FFactureVoir from './FactureNonReg/FFactureVoir';
+import ModifReglement from './FactureNonReg/ModifReglement'
+import ImpressionFact from './FactureNonReg/ImpressionFact';
 
 export default function FactureNonRegler(props) {
 
@@ -41,7 +43,7 @@ export default function FactureNonRegler(props) {
     const onVide = () => {
         setinfoReherche({ numero_arr: '', date_arr: '', date_naiss: '', nom: '' })
     }
-   
+
     //Get List patient
     const loadData = async () => {
 
@@ -61,7 +63,7 @@ export default function FactureNonRegler(props) {
         setlisteFactureRegle([{ nom: 'Chargement de données...' }])
         setTimeout(() => {
             loadData();
-        }, 800)
+        }, 1000)
     }, [refreshData]);
 
 
@@ -69,15 +71,15 @@ export default function FactureNonRegler(props) {
         return (
             <div className='flex flex-row justify-content-between align-items-center m-0 '>
                 <div className='my-0  py-2'>
-                {/* <FFactureVoir url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
-                <Reglement url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} /> */}
-
+                    <FFactureVoir url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
+                    <ModifReglement url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
+                    <ImpressionFact url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
                 </div>
             </div>
         )
     }
 
-  
+
 
     const header = (
         <div className='flex flex-row justify-content-center align-items-center m-0 '>
@@ -85,7 +87,7 @@ export default function FactureNonRegler(props) {
         </div>
     )
 
-  
+
     // const header1 = header();
 
     //Global filters
@@ -96,12 +98,12 @@ export default function FactureNonRegler(props) {
 
             <div className="flex flex-column justify-content-center" >
 
-                <DataTable header={header} showGridlines  globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listeFactureRegle} loading={charge} scrollable scrollHeight="550px" responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun examen à éffectuées"} >
+                <DataTable header={header} showGridlines globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listeFactureRegle} loading={charge} scrollable scrollHeight="550px" responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun examen à éffectuées"} >
 
                     <Column field='num_fact' header={'N° Facture'} style={{ fontWeight: '700' }}></Column>
                     <Column field={'date_facture'} header="Date Facture" style={{ fontWeight: '600' }} ></Column>
                     <Column field='numero' header={'Numéro d\'Arrivée'} style={{ fontWeight: '600' }} ></Column>
-                    <Column field={'date_arr'} header={'Date d\'Arrivée'}   style={{ fontWeight: '600' }}></Column>
+                    <Column field={'date_arr'} header={'Date d\'Arrivée'} style={{ fontWeight: '600' }}></Column>
                     <Column field='nom' header="Nom"></Column>
                     <Column field='date_naiss' header="Date_Naiss"></Column>
                     <Column field='type_patient' header="Tarif"></Column>

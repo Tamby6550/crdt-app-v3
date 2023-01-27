@@ -10,48 +10,31 @@ import { Fieldset } from 'primereact/fieldset';
 import { Dialog } from 'primereact/dialog';
 import axios from 'axios'
 import { InputText } from 'primereact/inputtext'
+import { RadioButton } from 'primereact/radiobutton'
+import Modifier from './Modifier';
 import { InputNumber } from 'primereact/inputnumber'
+import ChoixReglement from '../PatientNonFact/ChoixReglement';
 import moment from 'moment/moment';
+import ChangementTarif from '../PatientNonFact/ChoixReglement';
 import { BlockUI } from 'primereact/blockui';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import ReactToPrint from 'react-to-print'
+import FormatF from '../FormatF';
+import Impression from './Impression';
 
 export default function FFactureVoir(props) {
 
-    const [blockedPanel, setBlockedPanel] = useState(true);
-    const [printDesact, setprintDesact] = useState(true)
+    const { format } = FormatF();
 
-    function numberV(value) {
-        let numberValue = parseFloat(value.replace(/[^0-9.-]+/g, ""));
-        return numberValue;
-    }
-    function format(valeur, decimal, separateur) {
-        var deci = Math.round(Math.pow(10, decimal) * (Math.abs(valeur) - Math.floor(Math.abs(valeur))));
-        var val = Math.floor(Math.abs(valeur));
-        if ((decimal == 0) || (deci == Math.pow(10, decimal))) {
-            val = Math.floor(Math.abs(valeur));
-            deci = 0;
-        }
-        var val_format = val + "";
-        var nb = val_format.length;
-        for (var i = 1; i < 4; i++) {
-            if (val >= Math.pow(10, (3 * i))) {
-                val_format = val_format.substring(0, nb - (3 * i)) + separateur + val_format.substring(nb - (3 * i));
-            }
-        }
-        if (decimal > 0) {
-            var decim = "";
-            for (var j = 0; j < (decimal - deci.toString().length); j++) {
-                decim += "0";
-            }
-            deci = decim + deci.toString();
-            val_format = val_format + "." + deci;
-        }
-        if (parseFloat(valeur) < 0) {
-            val_format = "-" + val_format;
-        }
-        return val_format;
-    }
+    const [blockedPanel, setBlockedPanel] = useState(true);
+    //Miverifie hoe nanao reglement ve izy alohany hiquité
+    const [verffaireReglmnt, setverffaireReglmnt] = useState(false)
+
+    const [verfbtnajoutreglmn, setverfbtnajoutreglmn] = useState(false)
+
+    //Data examen
+    const [infoExamen, setinfoExamen] = useState([{ num_facture: '', patient: '', type: '', code_cli: '', pec: '', remise: '', code_presc: '' }]);
+
 
     function poucentage(val, pourc) {
         let res = (val * pourc) / 100;
@@ -61,110 +44,195 @@ export default function FFactureVoir(props) {
 
     //Declaration useSatate
     //Chargement de données
-    const [chargeV, setchargeV] = useState({ chupdate: false })
+    //Miverifie hoe vita 100% ve ny paymant anle reglement
+    const [chRegle, setchRegle] = useState(false)
     const [charge, setCharge] = useState(false);
-    const [infoExamen, setinfoExamen] = useState({ num_facture: '', patient: '', type: '', code_cli: '', pec: '', remise: '', code_presc: '' });
+    const [listReglement, setlistReglement] = useState([
+        {
+            num_fact: "",
+            montant: "",
+            reglement: "",
+            rib: "",
+            date_reglement: "",
+            type_rglmt: ""
+        }
+    ]);
     const [infoFacture, setinfoFacture] = useState({
-        num_facture: '', date_facture: '', patient: '', type: '', type_facture: '0',
-        reglement_id: '0', nomreglement: '', montantreglementpat: '0', rib: '',
-        code_cli: '', nom_cli: '', pec: '0', remise: '0', montantRestPresc: '0', montantRest: '0',
-        code_presc: '', nom_presc: '',
-        num_arriv: '', date_arriv: '',
-        montant_brute: '0', montant_net: '0', status: '',
-        montant_patient: '0', montant_pech: '0', montant_remise: '0', montantRestPatient: '0', montant_pec_regle: '0'
+        num_facture: "",
+        date_examen: "",
+        montant_net: "",
+        client: "",
+        patient: "",
+        status: "",
+        remise: null,
+        pec: "",
+        montant_patient: "",
+        montant_patient_regle: "",
+        reste_patient: "",
+        montant_pec: "",
+        montant_pec_regle: "",
+        reste_pec: "",
+        reste: ""
     });
+    const [dataReglement, setdataReglement] = useState({
+        num_facture: '',
+        reglement_id: '0',
+        nomreglement: '',
+        type_reglmnt: '',
+        montantreglement: '0',
+        rib: null,
+        num_arriv: '',
+        date_arriv: ''
+    })
+
+    const [resteVerf, setresteVerf] = useState('0')
+    const [typePC, settypePC] = useState({ pat: false, cli: false })
     const [montantPatient, setmontantPatient] = useState(0)
     const [verfChamp, setverfChamp] = useState({ nom_presc: false, nom_cli: false });
-    const [totalMt, settotalMt] = useState(0);
     const [aujourd, setaujourd] = useState();
 
+    const onVideReglement = () => {
+        settypePC({ pat: false, cli: false });
+        setdataReglement({
+            num_facture: props.data.num_fact,
+            num_arriv: props.data.numero,
+            date_arriv: props.data.date_arr,
+            reglement_id: '0',
+            nomreglement: '',
+            type_reglmnt: '',
+            montantreglement: '0',
+            rib: ''
+        });
+    }
     const onVide = () => {
+        settypePC({ pat: false, cli: false });
+        setdataReglement({
+            num_facture: '',
+            reglement_id: '0',
+            nomreglement: '',
+            type_reglmnt: '',
+            montantreglement: '0',
+            rib: null
+        });
         setinfoFacture({
-            num_facture: '', date_facture: '', patient: '', type: '', type_facture: '0',
-            reglement_id: '0', nomreglement: '', montantreglementpat: '0', rib: '',
-            code_cli: '', nom_cli: '', pec: '0', remise: '0',
-            code_presc: '', nom_presc: '', montantRest: '0', montantRest: '0',
-            num_arriv: '', date_arriv: '',
-            montant_brute: '0', montant_net: '0', status: '',
-            montant_patient: '0', montant_pech: '0', montant_remise: '0', montantRestPatient: '0', montant_pec_regle: '0'
+            num_facture: "",
+            date_examen: "",
+            montant_net: "",
+            client: "",
+            patient: "",
+            status: "",
+            remise: null,
+            pec: "",
+            montant_patient: "",
+            montant_patient_regle: "",
+            reste_patient: "",
+            montant_pec: "",
+            montant_pec_regle: "",
+            reste_pec: "",
+            reste: ""
         })
     }
 
     const mienregsitrerMtPatient = (mt) => {
         setmontantPatient(mt);
     }
-    const calculMtPatient = (e) => {
-        let v2 = e.target.value;
-        let v1 = montantPatient;
-        let s = v1 - v2;
-        // setinfoFacture({ ...infoFacture, montant_patient: format(s, 2, " "), montantreglementpat: e.target.value });
-        setinfoFacture({ ...infoFacture, montantRestPatient: format(s, 2, " "), montantreglementpat: e.target.value });
-        // console.log(infoFacture.montantRestPatient);
+
+    const bddialogReglement = (msg) => {
+        return (
+            <div className='flex flex-column justify-content-center align-items-center m-0 '>
+                <h4> {msg} </h4>
+            </div>
+        )
     }
 
+    const montantReglementVerf = (e) => {
+        if (!/^\d*$/.test(e.target.value)) {
+            e.preventDefault();
+            return;
+        }
+        if (dataReglement.type_reglmnt == 'P') {
 
-    //Get List Examen
-    const loadData = async (numero) => {
-        let dt = (props.data.date_arr).split('/');
-        let cmpltDate = dt[0] + '-' + dt[1] + '-' + dt[2];
-        await axios.get(props.url + `getPatientExamenFacture/${numero}&${cmpltDate}`)
+            if (parseInt(e.target.value) > parseInt(infoFacture.reste_patient)) {
+                e.preventDefault();
+                confirmDialog({
+                    message: bddialogReglement('Le reste de montant du patient est ' + format(infoFacture.reste_patient, 2, " ")),
+                    header: '',
+                    icon: 'pi pi-exclamation-circle',
+                    acceptClassName: 'p-button-info',
+                    acceptLabel: 'Ok',
+                    rejectLabel: '_',
+                });
+
+                return;
+            }
+        } else {
+            if (parseInt(e.target.value) > parseInt(infoFacture.reste_pec)) {
+                e.preventDefault();
+
+                confirmDialog({
+                    message: bddialogReglement('Le reste de montant du client est  ' + format(infoFacture.reste_pec, 2, " ")),
+                    header: '',
+                    icon: 'pi pi-exclamation-circle',
+                    acceptClassName: 'p-button-info',
+                    acceptLabel: 'Ok',
+                    rejectLabel: '_',
+                });
+                return;
+            }
+        }
+        setdataReglement({ ...dataReglement, montantreglement: e.target.value });
+    };
+
+
+    const loadDataExamen = async () => {
+        let numeroarr =props.data.numero;
+        let datearr =(props.data.date_arr).split('/');
+        let conv_date_arr = datearr[0] + '-' + datearr[1] + '-' + datearr[2];
+        await axios.get(props.url + `getPatientExamenFacture/${numeroarr}&${conv_date_arr}`)
             .then(
                 (results) => {
                     setinfoExamen(results.data.all);
-                    settotalMt(results.data.total)
-                    setaujourd(results.data.datej);
                     setBlockedPanel(false);
-                    setCharge(false);
                 }
             );
     }
 
-    //Get List numfacture et tarif
-    const loadDataFact = async () => {
-        let numf = (props.data.num_fact).split('/');
-        let cmpltFact = numf[0] + '-' + numf[1] + '-' + numf[2];
-        setBlockedPanel(true);
-        await axios.get(props.url + `getInfoPatientFacture/${cmpltFact}`)
+    const loadData = async (num_facture) => {
+
+        await axios.get(props.url + `getInfoPatientReglementFacture/${num_facture}`)
             .then(
-                (result) => {
-                    setinfoFacture({
-                        ...infoFacture,
-                        num_facture: result.data.num_fact,
-                        date_facture: props.data.date_facture,
-                        patient: result.data.patient,
-                        type: result.data.type_client,
-                        nomreglement: result.data.reglemnt,
-                        montantreglementpat: format(result.data.montant_patient_regle, 2, " "),
-                        nom_cli: result.data.client,
-                        pec: result.data.pec,
-                        remise: result.data.remise,
-                        nom_presc: result.data.presc,
-                        num_arriv: result.data.num_arriv,
-                        date_arriv: props.data.date_arr,
-                        montant_brute: format(result.data.montant_brute, 2, " "),
-                        montant_net: format(result.data.montant_net, 2, " "),
-                        montant_patient: format(result.data.montant_patient, 2, " "),
-                        montant_pech: format(result.data.montant_pec, 2, " "),
-                        montantRestPatient: format(result.data.reste_patient, 2, " "),
-                        montant_pec_regle: format(result.data.montant_pec_regle, 2, " "),
-                        code_cli: result.data.code_cli, status: result.data.status,
-                        montantRestPresc: format(result.data.reste_pec, 2, " "),
-                        montantRest: format(result.data.reste, 2, " ")
-                    });
-                    console.log(result.data)
+                (results) => {
+                    setinfoFacture(results.data);
                     setTimeout(() => {
-                        loadData(props.data.numero);
-                    }, 900)
+                        loadReglemnt(num_facture);
+                    }, 200)
                 }
             );
     }
+    const loadReglemnt = async (num_facture) => {
+        setCharge(true)
+        await axios.get(props.url + `getListReglementFacture/${num_facture}`)
+            .then(
+                (results) => {
+                    loadDataExamen();
+                    setlistReglement(results.data);
+                   
+                    setCharge(false);
+                    onVideReglement();
+                }
+            );
+    }
+
 
     const chargementData = () => {
-        setCharge(true);
-        setinfoExamen([{ quantite: 'Chargement de données...' }]);
+        setBlockedPanel(true);
+        setdataReglement({ ...dataReglement, num_arriv: props.data.numero, date_arriv: props.data.date_arr, num_facture: props.data.num_fact });
+        let num_facture = (props.data.num_fact).split('/');
+        let conv_num_f = num_facture[0] + '-' + num_facture[1] + '-' + num_facture[2];
+        // setCharge(true);
         setTimeout(() => {
-            loadDataFact()
-        }, 200)
+            loadData(conv_num_f);
+        }, 300)
     }
 
     const toastTR = useRef(null);
@@ -174,7 +242,7 @@ export default function FFactureVoir(props) {
     }
     /**Style css */
     const stylebtnRec = {
-        fontSize: '1rem', padding: ' 0.8375rem 0.975rem', backgroundColor: '#a79d34', border: '1px solid #a79d34'
+        fontSize: '1rem', padding: ' 0.8375rem 0.975rem', backgroundColor: 'rgb(16 113 205)', border: '1px solid rgb(16 113 205)'
     };
     const stylebtnDetele = {
         fontSize: '1rem', padding: ' 0.8375rem 0.975rem', backgroundColor: 'rgb(195 46 46 / 85%)', border: '1px solid #d32f2fa1'
@@ -197,11 +265,10 @@ export default function FFactureVoir(props) {
     }
     const onHide = (name) => {
         dialogFuncMap[`${name}`](false);
-        props.setrefreshData(1);
         onVide();
-        setchargeV({ chupdate: false });
-        setverfChamp({ nom_presc: false, nom_cli: false })
-
+        if (chRegle || verffaireReglmnt) {
+            props.changecharge('1');
+        }
     }
 
     const renderFooter = (name) => {
@@ -216,7 +283,7 @@ export default function FFactureVoir(props) {
         return (
             <div>
                 <center>
-                    <h4 className='mb-1'>Information Facture  </h4>
+                    <h3 className='mb-1'>Facture n° {infoFacture.num_facture}, Détails</h3>
                 </center>
                 <hr />
             </div>
@@ -231,233 +298,279 @@ export default function FFactureVoir(props) {
         </div>
     )
 
+    const bodyConfirme = () => {
+        return (
+            <div>
+                <label className='m-2'>Reglement fait par : <strong className='m-1'>{dataReglement.type_reglmnt == 'P' ? 'Patient' : 'Client'}</strong> </label> <hr />
+                <label className='m-2'>Type règlement : <strong className='m-1'>{dataReglement.nomreglement}</strong> </label> <hr />
+                <label className='m-2'>Montant : <strong className='m-1'>{format(dataReglement.montantreglement, 0, " ")} Ar </strong> </label><hr />
+                <label className='m-2'>RIB : <strong className='m-1'>{dataReglement.rib == '' ? '-' : dataReglement.rib}</strong> </label>
+            </div>
+        );
+    }
+
     const onVerfeCh = () => {
-        if (infoFacture.type == 'L2') {
-            if (infoFacture.code_presc == '') {
-                setverfChamp({ nom_presc: true, nom_cli: false })
-            } else {
-                console.log('first')
-                onInsertFacture();
-            }
-        } else {
-            if (infoFacture.code_presc == '') {
-                setverfChamp({ nom_presc: true, nom_cli: false })
-            }
-            if (infoFacture.code_cli == '') {
-                setverfChamp({ nom_presc: false, nom_cli: true })
-            }
-            if (infoFacture.code_cli != '' && infoFacture.code_presc != '') {
-                onInsertFacture();
-            }
+        if ((typePC.cli == false && typePC.pat == false) || dataReglement.type_reglmnt == '') {
+            confirmDialog({
+                message: bddialogReglement('Réglement fait par qui ?'),
+                header: '',
+                icon: 'pi pi-exclamation-circle',
+                acceptClassName: 'p-button-info',
+                acceptLabel: 'Ok',
+                rejectLabel: '_',
+            });
         }
+        else if (dataReglement.reglement_id == '0' || dataReglement.nomreglement == '') {
+            confirmDialog({
+                message: bddialogReglement('Veuillez choisir le type de réglement'),
+                header: '',
+                icon: 'pi pi-exclamation-circle',
+                acceptClassName: 'p-button-info',
+                acceptLabel: 'Ok',
+                rejectLabel: '_',
+            });
+        }
+        else if ((parseInt(dataReglement.montantreglement) + 0) == 0 || dataReglement.montantreglement == '') {
+            confirmDialog({
+                message: bddialogReglement('Veuillez entrer le montant de réglement'),
+                header: '',
+                icon: 'pi pi-exclamation-circle',
+                acceptClassName: 'p-button-info',
+                acceptLabel: 'Ok',
+                rejectLabel: '_',
+            });
+        } else {
+            const accept = () => {
+                onInsertReglement();
+            }
+            const reject = () => {
+                onVideReglement();
+                return null;
+            }
+            confirmDialog({
+                message: bodyConfirme,
+                header: '',
+                icon: 'pi pi-exclamation-circle',
+                acceptClassName: 'p-button-success',
+                acceptLabel: 'Confirmer et ajouter',
+                rejectLabel: 'Annuler',
+                accept,
+                reject
+            });
+
+        }
+
     }
 
 
 
-    const onInsertFacture = async () => {
+    const onInsertReglement = async () => {
 
-        setchargeV({ chupdate: true });
-        await axios.post(props.url + 'insertFacture', infoFacture)
+        setCharge(true);
+        await axios.post(props.url + 'insertReglementFacture', dataReglement)
             .then(res => {
-                notificationAction(res.data.etat, 'Facture ', res.data.message);//message avy @back
-                setchargeV({ chupdate: false });
-                setverfChamp({ nom_presc: false, nom_cli: false })
+                //message avy @back
+
+                notificationAction(res.data.etat, 'Règlement ', res.data.message);
+
                 setTimeout(() => {
-                    onHide('displayBasic2');
-                    props.changecharge(1);
-                }, 600)
-                console.log(res.data)
+                    chargementData();
+
+                    //Raha ohatra vo sambany vo  nanao reglement
+                    if (props.data.nbrergl == 0) {
+                        setverffaireReglmnt(true);
+                    }
+                    if (res.data.regle == '1') {
+                        setchRegle(true);
+                    }
+
+                }, 900)
             })
             .catch(err => {
                 console.log(err);
                 //message avy @back
                 notificationAction('error', 'Erreur', err.data.message);
-                setchargeV({ chupdate: false });
+                setCharge(false);
             });
     }
+
+
+
 
     return (
         <>
             <Toast ref={toastTR} position="top-right" />
-            <Button icon={PrimeIcons.EYE} className='p-buttom-sm p-1 mr-2 p-button-info ' tooltip='Voir' tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementData() }} />
+            <Button icon={PrimeIcons.EYE} className='p-buttom-sm p-1 mr-2 p-button-info ' tooltip='Détails' style={stylebtnRec} tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementData() }} />
 
-            <Dialog header={renderHeader('displayBasic2')} maximizable visible={displayBasic2} className="lg:col-11 md:col-11 sm:col-12 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
+            <Dialog header={renderHeader('displayBasic2')} maximizable visible={displayBasic2} className="lg:col-10 col-10 md:col-11 sm:col-12 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
                 <BlockUI blocked={blockedPanel} template={<ProgressSpinner />}>
-                    <div className="ml-4 mr-4 style-modal-tamby" >
-                        <div className="grid h-full">
-                            <div className="field   lg:col-4 md:col-12 col:12 my-1 flex flex-column">
-                                <Fieldset legend="Facture" >
+                    <div className="ml-4 mr-4 style-modal-tamby"  >
+                        <div className="grid h-full" >
+                            <div className="field   lg:col-12 md:col-12 col:12 my-1 flex flex-column">
+                                <Fieldset title='Info Patient' style={{ backgroundColor: 'white', fontSize: '1.1em' }} >
                                     <div className="card">
-                                        <div className="p-fluid px-4 formgrid grid">
-                                            <div className="field   lg:col-5 md:col-12 col:12">
-                                                <label htmlFor="username2" className="label-input-sm">Numéro Facture</label>
-                                                <InputText id="username2" aria-describedby="username2-help" name='num_facture' value={infoFacture.num_facture} readOnly />
-                                                {/* {verfChamp.num_facture ? <small id="username2-help" className="p-error block">Champ vide !</small> : null} */}
-                                            </div>
-                                            <div className="field   lg:col-3 md:col-12 col:12">
-                                                <label htmlFor="username2" className="label-input-sm">N° arrivée</label>
-                                                <InputText id="username2" aria-describedby="username2-help" name='num_arriv' value={infoFacture.num_arriv} readOnly />
-                                                {/* {verfChamp.num_arriv ? <small id="username2-help" className="p-error block">Champ vide !</small> : null} */}
-                                            </div>
-                                            <div className="field   lg:col-4 md:col-12 col:12">
-                                                <label htmlFor="username2" className="label-input-sm">Date d'arrivée</label>
-                                                <InputText id="username2" aria-describedby="username2-help" name='num_arriv' value={infoFacture.date_arriv} readOnly />
-                                                {/* {verfChamp.date_arriv ? <small id="username2-help" className="p-error block">Champ vide !</small> : null} */}
-                                            </div>
+                                        <div className="p-fluid  formgrid grid">
 
-                                        </div>
-                                        <div className="card">
-                                            <div className="p-fluid px-4 formgrid grid">
-                                                <div className="field   lg:col-7 md:col-12 col:12">
-                                                    <label htmlFor="username2" className="label-input-sm">Patient</label>
-                                                    <InputText id="username2" aria-describedby="username2-help" name='patient' value={infoFacture.patient} readOnly />
-                                                    {/* {verfChamp.patient ? <small id="username2-help" className="p-error block">Champ vide !</small> : null} */}
-                                                </div>
-
-                                                <div className="field   lg:col-2 md:col-3 col:2">
-                                                    <label htmlFor="username2" className="label-input-sm">Tarif</label>
-                                                    <InputText id="username2" aria-describedby="username2-help" name='type' value={infoFacture.type} readOnly />
-                                                    {/* {verfChamp.type ? <small id="username2-help" className="p-error block">Champ vide !</small> : null} */}
-
-                                                </div>
-                                                <div className="field   lg:col-2 md:col-3 col:2">
-                                                    {/* <ChangementTarif setrefreshData={props.changecharge} url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} setBlockedPanel={setBlockedPanel} loadData={loadDataFact} ancientarif={infoFacture.type} examen={infoExamen} id_patient={props.data.id_patient} num_arriv={props.data.numero} date_arriv={props.data.date_arr} /> */}
-                                                </div>
-
-                                                <div className="field   lg:col-10 md:col-10 col:10">
-                                                    <label htmlFor="username2" className="label-input-sm">Client </label>
-                                                    <InputText id="username2" aria-describedby="username2-help" name='code_cli' value={infoFacture.nom_cli} readOnly />
-                                                    {/* {verfChamp.nom_cli ? <small id="username2-help" className="p-error block">Champ vide !</small> : null} */}
-                                                </div>
-                                                <div className="field   lg:col-2 md:col-2 col:2">
-                                                    {/* <ChoixClient url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} typeclient={infoFacture.type} /> */}
-                                                </div>
-                                                <div className="field   lg:col-4 md:col-8 col:12">
-                                                    <label htmlFor="username2" className="label-input-sm"  >  P.en Charge(%)</label>
-                                                    <InputNumber id="username2" aria-describedby="username2-help" name='pec' min={0} max={100} value={infoFacture.pec} readOnly />
-                                                </div>
-                                                <div className="field   lg:col-4 md:col-8 col:12">
-                                                    <label htmlFor="username2" className="label-input-sm">Remise(%)</label>
-                                                    <InputNumber id="username2" aria-describedby="username2-help" name='remise' min={0} max={100} value={infoFacture.remise} readOnly />
-                                                </div>
-                                                <div className="field   lg:col-8 md:col-10 col:10">
-                                                    <label htmlFor="username2" className="label-input-sm">Prescripteur*</label>
-                                                    <InputText id="username2" aria-describedby="username2-help" name='code_presc' value={infoFacture.nom_presc} readOnly />
-                                                    {/* {verfChamp.nom_presc ? <small id="username2-help" className="p-error block">Champ vide !</small> : null} */}
-                                                </div>
-                                                <div className="field   lg:col-2 md:col-2 col:2">
-                                                    {/* <ChoixPrescr url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} /> */}
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </Fieldset>
-                            </div>
-                            <div className="field   lg:col-8 md:col-12 col:12 my-1 flex flex-column">
-                                <div className="grid h-full">
-                                    <div className="field   lg:col-6 md:col-12 col:12 my-1 flex flex-column">
-                                        <Fieldset legend="Reglement">
-                                            <div className="card">
+                                            <div className="field   lg:col-4 md:col-4 col:12 my-1 flex flex-column">
                                                 <div className="p-fluid px-4 formgrid grid">
-                                                    <div className="field lg:col-10 md:col-10 col:10">
-                                                        <label htmlFor="username2" className="label-input-sm">Reglement </label>
-                                                        <InputText id="username2" aria-describedby="username2-help" name='code_cli' value={infoFacture.nomreglement} readOnly />
-                                                    </div>
-                                                    <div className="field   lg:col-2 md:col-2 col:2">
-                                                        {/* <ChoixReglement url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} /> */}
-                                                    </div>
-                                                    <div className="field   lg:col-12 md:col-12 col:12">
-                                                        <div className="p-fluid  formgrid grid">
-                                                            <div className="field   lg:col-5 md:col-12 col:12">
-                                                                <label htmlFor="username2" className="label-input-sm">Montant regle par patient</label>
-                                                                <InputText id="username2" aria-describedby="username2-help" name='montantreglementpat' value={infoFacture.montantreglementpat} />
-                                                                <label htmlFor="username2" className="label-input-sm">Reste a payer par le patient</label>
-                                                                <InputText id="username2" aria-describedby="username2-help" name='montantreglementpat' value={infoFacture.montantRestPatient} />
+                                                    <div className="field   lg:col-12 md:col-12 col:12 m-0 p-0">
+
+                                                        <div className="field   lg:col-12 md:col-12 col:12 m-0 p-0">
+                                                            <label className="label-input-sm">Date Examen</label>
+                                                            <InputText id="username2" aria-describedby="username2-help" name='patient' value={props.data.date_examen} s readOnly />
+                                                        </div>
+                                                        <div className='flex lg:flex-row md:flex-column justify-content-between flex-column col-12 p-0'>
+                                                            <div className="field   lg:col-4 md:col-12 col:12 m-0 p-0">
+                                                                <label style={{ fontWeight: '500' }} className="label-input-sm">Prise en charge	 </label>
+                                                                <InputText id="username2" aria-describedby="username2-help" style={{ border: '1px solid grey' }} value={infoFacture.pec+'%'} readOnly />
                                                             </div>
-                                                            <div className="field   lg:col-1 md:col-0 col:0">
-                                                            <hr style={{ rotate: '90deg',width:'auto' }} />
-                                                            </div>
-                                                            <div className="field   lg:col-6 md:col-12 col:12">
-                                                             
-                                                                <label htmlFor="username2" className="label-input-sm">Montant regle par client</label>
-                                                                <InputText id="username2" aria-describedby="username2-help" name='montantreglementpat' value={infoFacture.montant_pec_regle} />
-                                                                <label htmlFor="username2" className="label-input-sm">Reste a payer par le client</label>
-                                                                <InputText id="username2" aria-describedby="username2-help" name='montantreglementpat' value={infoFacture.montantRestPresc} />
+                                                            <div className="field   lg:col-4 md:col-12 col:12 m-0 p-0">
+                                                                <label htmlFor="username2" style={{ fontWeight: '500' }} className="label-input-sm">Remise</label>
+                                                                <InputText id="username2" aria-describedby="username2-help" n style={{ border: '1px solid grey' }} value={infoFacture.remise+'%'} readOnly />
                                                             </div>
                                                         </div>
+                                                        <div className='flex lg:flex-row md:flex-column justify-content-between flex-column col-12 p-0'>
+                                                            <div className="field   lg:col-7 md:col-12 col:12 m-0 p-0">
+                                                                <label style={{ fontWeight: '500' }} className="label-input-sm">Montant Net	 </label>
+                                                                <InputText id="username2" aria-describedby="username2-help" style={{ border: '1px solid grey' }} value={format(infoFacture.montant_net, 2, " ")} readOnly />
+                                                            </div>
+                                                            <div className="field   lg:col-4 md:col-12 col:12 m-0 p-0">
+                                                                <label htmlFor="username2" style={{ fontWeight: '500' }} className="label-input-sm">Status</label>
+                                                                <InputText id="username2" aria-describedby="username2-help" n style={{ border: '1px solid grey' }} value={infoFacture.status} readOnly />
+                                                            </div>
+                                                        </div>
+                                                       
                                                     </div>
-                                                    {/* <div className="field   lg:col-12 md:col-12 col:12">
-                                                        <label htmlFor="username2" className="label-input-sm">N° Chèque	</label>
-                                                        <InputText id="username2" aria-describedby="username2-help" name='rib' value={infoFacture.rib} onChange={(e) => { setinfoFacture({ ...infoFacture, rib: (e.target.value).toUpperCase() }) }} />
-                                                    </div> */}
-
-
-                                                    <div className="field   lg:col-12 md:col-12 col:12">
-                                                        <hr />
-                                                        <label htmlFor="username2" className="label-input-sm">Reste a payer	</label>
-                                                        <InputText id="username2" aria-describedby="username2-help" name='rib' value={infoFacture.montantRest} readOnly />
-                                                    </div>
-
                                                 </div>
                                             </div>
+
+                                            {/* NUMERO ARRIVE */}
+                                            <div className="field   lg:col-3 md:col-4 col:12 my-1 flex flex-column">
+                                                <div className="p-fluid px-4 formgrid grid">
+                                                    <div className="field   lg:col-12 md:col-12 sm:col:12 m-0 p-0">
+                                                        <label htmlFor="username2" className="label-input-sm">N° arriv </label>
+                                                        <InputText id="username2" aria-describedby="username2-help" name='num_arriv' value={props.data.numero} readOnly />
+                                                    </div>
+                                                    <div className="field   lg:col-12 md:col-12 sm:col:12 m-0 p-0 ">
+                                                        <label htmlFor="username2" className="label-input-sm">Date arriv</label>
+                                                        <InputText id="username2" aria-describedby="username2-help" name='num_arriv' value={props.data.date_arr} readOnly />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* PATIENT CLIENT */}
+                                            <div className="field   lg:col-5 md:col-4 col:12 my-1 flex flex-column">
+                                                <div className="p-fluid px-4 formgrid grid">
+                                                    <div className='flex lg:flex-row md:flex-column justify-content-between flex-column col-12 p-0'>
+                                                        <div className="field   lg:col-8 md:col-8 col:12 m-0 p-0">
+                                                            <label htmlFor="username2" className="label-input-sm">Patient</label>
+                                                            <InputText id="username2" aria-describedby="username2-help" name='patient' value={infoFacture.patient} readOnly />
+                                                        </div>
+                                                        <div className="field   lg:col-3 md:col-4 col:12 m-0 p-0">
+                                                            <label htmlFor="username2" className="label-input-sm">Type Client</label>
+                                                            <InputText id="username2" aria-describedby="username2-help" name='patient' value={props.data.type_patient} readOnly />
+                                                        </div>
+                                                    </div>
+                                                    <div className="field   lg:col-12 md:col-12 col:12 m-0 p-0">
+                                                        <label htmlFor="username2" className="label-input-sm">Client</label>
+                                                        <InputText id="username2" aria-describedby="username2-help" name='patient' value={infoFacture.client} readOnly />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* REGLEMENT */}
+                                            <div className="field   lg:col-12 md:col-12 col:12  flex flex-column pl-4 m-0" style={{ border: '1px solid #f3f3f3', backgroundColor: '#F7F7F5' }}>
+                                                <div className="p-fluid  formgrid grid">
+
+                                                    {/* MONTANT A REGLER */}
+                                                    <div className="field   lg:col-4 md:col-4 sm:col:6 col:6 my-1 flex flex-column">
+                                                        <div className="field   lg:col-12 md:col-12 col:12 m-0 p-0 flex flex-row justify-content-between align-items-center" >
+                                                            <label htmlFor="username2" className="label-input-sm " style={{ fontWeight: '500' }}>Montant à régler par le patient :</label>
+                                                            <InputText id="username2" aria-describedby="username2-help" style={{ width: '180px', border: '1px solid #939090' }} name='patient' value={format(infoFacture.montant_patient, 2, " ")} readOnly />
+                                                        </div>
+                                                        <div className="field   lg:col-12 md:col-12 col:12 mt-2 p-0 flex flex-row justify-content-between align-items-center" >
+                                                            <label htmlFor="username2" className="label-input-sm " style={{ fontWeight: '500' }}>Montant prise en charge	 :</label>
+                                                            <InputText id="username2" aria-describedby="username2-help" style={{ width: '180px', border: '1px solid #939090' }} name='patient' value={format(infoFacture.montant_pec, 2, " ")} readOnly />
+                                                        </div>
+                                                    </div>
+
+                                                    {/* MONTANT REGLE */}
+                                                    <div className="field   lg:col-4 md:col-4 sm:col:6 col:6 my-1 flex flex-column">
+                                                        <div className="field   lg:col-12 md:col-12 col:12 m-0 p-0 flex flex-row justify-content-evenly align-items-center" >
+                                                            <label htmlFor="username2" className="label-input-sm " style={{ fontWeight: '500' }}>Montant Reglé  Patient:</label>
+                                                            <InputText id="username2" aria-describedby="username2-help" style={{ width: '180px', border: '1px solid #939090' }} name='patient' value={format(infoFacture.montant_patient_regle, 2, " ")} readOnly />
+                                                        </div>
+                                                        <div className="field   lg:col-12 md:col-12 col:12 mt-2 p-0 flex flex-row justify-content-evenly align-items-center" >
+                                                            <label htmlFor="username2" className="label-input-sm " style={{ fontWeight: '500' }}>Montant Reglé  Client:</label>
+                                                            <InputText id="username2" aria-describedby="username2-help" style={{ width: '180px', border: '1px solid #939090' }} name='patient' value={format(infoFacture.montant_pec_regle, 2, " ")} readOnly />
+                                                        </div>
+                                                    </div>
+
+                                                    {/* RESTE  */}
+                                                    <div className="field   lg:col-4 md:col-4 col:12 my-1 flex flex-column">
+                                                        <div className="field   lg:col-12 md:col-12 col:12 m-0 p-0 flex flex-row justify-content-evenly align-items-center" >
+                                                            <label htmlFor="username2" className="label-input-sm " style={{ fontWeight: '500' }}>Reste  Patient:</label>
+                                                            <InputText id="username2" aria-describedby="username2-help" style={{ width: '170px', border: '1px solid #939090' }} name='patient' value={format(infoFacture.reste_patient, 2, " ")} readOnly />
+                                                        </div>
+                                                        <div className="field   lg:col-12 md:col-12 col:12 mt-2 p-0 flex flex-row justify-content-evenly align-items-center" >
+                                                            <label htmlFor="username2" className="label-input-sm " style={{ fontWeight: '500' }} >Reste  Client:</label>
+                                                            <InputText id="username2" aria-describedby="username2-help" style={{ width: '170px', border: '1px solid #939090' }} name='patient' value={format(infoFacture.reste_pec, 2, " ")} readOnly />
+                                                        </div>
+                                                        <hr className='col-12' />
+                                                        <div className="field   lg:col-12 md:col-12 col:12 mt-2 p-0 flex flex-row justify-content-evenly align-items-center" >
+                                                            <label htmlFor="username2" className="label-input-sm " style={{ fontWeight: '700' }} >Reste  :</label>
+                                                            <InputText id="username2" aria-describedby="username2-help" style={{ width: '170px', border: '1px solid #2a2b2c' }} name='patient' value={format(infoFacture.reste, 2, " ")} readOnly />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <center style={{ fontWeight: '600' }} >en Ar</center>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </Fieldset>
+                            </div>
+                            <div className="field   lg:col-12 md:col-12 col:12 my-1 flex flex-column ">
+                                <div className="p-fluid  formgrid grid justify-content-between ">
+                                    <div className="field   lg:col-12 md:col-12 col:12 my-1 flex flex-column">
+                                        <Fieldset legend="Examens éffectuées">
+                                            <DataTable value={infoExamen} scrollable scrollHeight="250px" loading={charge} responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun examen"} style={{ fontSize: '0.98em' }} >
+                                                <Column field='lib_examen' header={'Libellé'} style={{ fontWeight: '600' }}></Column>
+                                                <Column field={'code_tarif'} header={'Cotation'} style={{ fontWeight: '600' }}></Column>
+                                                <Column field={'quantite'} header="Quantité" style={{ fontWeight: '600' }}></Column>
+                                                <Column field='montant' header="P.U"></Column>
+                                                <Column field='date_exam' header="Date examen"></Column>
+                                                <Column field='type' header="Type"></Column>
+                                            </DataTable>
                                         </Fieldset>
                                     </div>
-                                    <div className="field   lg:col-6 md:col-12 col:12 my-1 flex flex-column">
-                                        <Fieldset legend="Compte" className='montant'>
-                                            <div className="card">
-                                                <div className="p-fluid px-4 formgrid grid">
-                                                    <div className="field   lg:col-12 md:col-12 col:12">
-                                                        <label htmlFor="username2" className="label-input-sm">Total(en Ar)</label>
-                                                        <InputText id="username2" aria-describedby="username2-help" name='montant_brute' value={infoFacture.montant_brute} readOnly />
-                                                    </div>
-                                                    {/* <div className="field   lg:col-12 md:col-12 col:12">
-                                                        <label htmlFor="username2" className="label-input-sm">Remise <i style={{ fontWeight: '700' }}> {infoFacture.remise}% </i> (en Ar) </label>
-                                                        <InputText id="username2" aria-describedby="username2-help" name='montant_remise' value={infoFacture.montant_remise} readOnly />
-                                                    </div> */}
-                                                    <div className="field   lg:col-12 md:col-12 col:12">
-                                                        <label htmlFor="username2" className="label-input-sm">
-                                                            Montant net(en Ar)
-                                                            {infoFacture.remise != null ? ' ,avec remise ' + infoFacture.remise + ' %' : null}
-                                                        </label>
-                                                        <InputText id="username2" aria-describedby="username2-help" name='montant_net' value={infoFacture.montant_net} readOnly />
-                                                    </div>
-                                                    <div className="field   lg:col-12 md:col-12 col:12">
-                                                        <label htmlFor="username2" className="label-input-sm">A Payer par le patient(en Ar)</label>
-                                                        <InputText id="username2" aria-describedby="username2-help" name='montant_patient' style={{ fontWeight: '600', borderColor: 'grey' }} value={infoFacture.montant_patient} readOnly />
-                                                    </div>
-                                                    <div className="field   lg:col-12 md:col-12 col:12">
-                                                        <label htmlFor="username2" className="label-input-sm">Montant pris en charge <i style={{ fontWeight: '700' }}> {infoFacture.pec}% </i> (en Ar)</label>
-                                                        <InputText id="username2" aria-describedby="username2-help" name='montant_pech' style={{ fontWeight: '600', borderColor: 'grey' }} value={infoFacture.montant_pech} readOnly />
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <div className="field   lg:col-12 md:col-12 col:12 my-1 flex flex-column">
+                                        <Fieldset legend="Hisorique de dérnière règlement(s)" className='montant' style={{ backgroundColor: 'rgb(241 242 243 / 81%)' }} >
+                                            <DataTable value={listReglement} scrollable scrollHeight="190px" loading={charge} responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun réglement "} style={{ fontSize: '0.98em' }} >
+                                                <Column field='num_fact' header={'N° Fact'}></Column>
+                                                <Column field={'montant'} header={'Montant'} ></Column>
+                                                <Column field={'reglement'} header="Reglement"></Column>
+                                                <Column field='rib' header="RIB"></Column>
+                                                <Column field='date_reglement' header="Date"></Column>
+                                                <Column field='type_rglmt' header="Type"></Column>
+                                            </DataTable>
                                         </Fieldset>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
-                        <hr />
-                        <div className="grid h-full">
-                            <div className="field   lg:col-12 md:col-12 col:12 my-1 flex flex-column">
-                                <Fieldset legend="Examens éffectuées">
-                                    <DataTable value={infoExamen} scrollable scrollHeight="350px" loading={charge} responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun resultat !"} style={{ fontSize: '0.98em' }} >
-                                        <Column field='lib_examen' header={'Libellé'} style={{ fontWeight: '600' }}></Column>
-                                        <Column field={'code_tarif'} header={'Cotation'} style={{ fontWeight: '600' }}></Column>
-                                        <Column field={'quantite'} header="Quantité" style={{ fontWeight: '600' }}></Column>
-                                        <Column field='montant' header="P.U"></Column>
-                                        <Column field='date_exam' header="Date examen"></Column>
-                                        <Column field='type' header="Type"></Column>
-                                    </DataTable>
-                                </Fieldset>
-                            </div>
-                        </div>
+
                     </div>
-                    <div className='flex mt-3 mr-4 justify-content-center '>
+                    {/* <div className='flex mt-3 mr-4 justify-content-center '>
+                        <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-success ' tooltip="Valider l'examen" style={{ cursor: 'pointer' }} label={charge ? 'Veuillez attendez...' : 'Valider reglement'}
+                            onClick={() => {
+                                onVerfeCh()
+                            }} />
                         <ReactToPrint trigger={() =>
-                            <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-primary ml-5 ' label={'Imprimer'} />
+                            <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-primary ml-5 ' label={'Imprimer'} disabled={verffaireReglmnt} />
                         } content={() => document.getElementById("scan")} />
-                    </div>
+                    </div> */}
                 </BlockUI>
             </Dialog >
         </>

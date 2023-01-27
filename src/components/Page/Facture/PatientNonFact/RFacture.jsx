@@ -407,7 +407,7 @@ export default function RFacture(props) {
                                                         <div className="field   lg:col-4 md:col-8 col:4  p-0">
                                                             <label htmlFor="username2" className="label-input-sm mt-2">Tarif*</label>
                                                             <div className='m-0 flex flex-row align-items-center  '>
-                                                                <InputText id="username2" style={{ backgroundColor: '#efefef' }} aria-describedby="username2-help" name='type' value={infoFacture.type} readOnly />
+                                                                <InputText id="username2" style={{ backgroundColor: 'rgb(251 251 251)' }} aria-describedby="username2-help" name='type' value={infoFacture.type} readOnly />
                                                                 <ChangementTarif settarifCh={settarifCh} setrefreshData={props.changecharge} url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} setBlockedPanel={setBlockedPanel} loadData={loadDataFact} ancientarif={infoFacture.type} examen={infoExamen} id_patient={props.data.id_patient} num_arriv={props.data.numero} date_arriv={props.data.date_arr} />
                                                             </div>
                                                         </div>
@@ -436,7 +436,7 @@ export default function RFacture(props) {
                                                     <div className="field   lg:col-12 md:col-12 col:12 m-0 p-0">
                                                         <label htmlFor="username2" className="label-input-sm">Prescripteur*</label>
                                                         <div className='m-0 flex flex-row align-items-center  '>
-                                                            <InputText id="username2" style={{ backgroundColor: '#efefef' }} aria-describedby="username2-help" name='code_presc' value={infoFacture.nom_presc} className={verfChamp.nom_presc ? "form-input-css-tamby p-invalid" : "form-input-css-tamby"} readOnly />
+                                                            <InputText id="username2" style={{ backgroundColor: 'rgb(251 251 251)' }} aria-describedby="username2-help" name='code_presc' value={infoFacture.nom_presc} className={verfChamp.nom_presc ? "form-input-css-tamby p-invalid" : "form-input-css-tamby"} readOnly />
                                                             <ChoixPrescr url={props.url} infoFacture={infoFacture} setverfChamp={setverfChamp} verfChamp={verfChamp} setinfoFacture={setinfoFacture} />
                                                             {verfChamp.nom_presc ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
                                                         </div>
@@ -445,7 +445,7 @@ export default function RFacture(props) {
                                                     <div className="field   lg:col-12 md:col-12 col:12 m-0 p-0">
                                                         <label htmlFor="username2" className="label-input-sm mt-2">Client* </label>
                                                         <div className='m-0 flex flex-row align-items-center  '>
-                                                            <InputText id="username2" style={{ backgroundColor: '#efefef' }} aria-describedby="username2-help" className={verfChamp.nom_cli ? "form-input-css-tamby p-invalid" : "form-input-css-tamby"} name='code_cli' value={infoFacture.nom_cli} readOnly />
+                                                            <InputText id="username2" style={{ backgroundColor: 'rgb(251 251 251)' }} aria-describedby="username2-help" className={verfChamp.nom_cli ? "form-input-css-tamby p-invalid" : "form-input-css-tamby"} name='code_cli' value={infoFacture.nom_cli} readOnly />
                                                             <ChoixClient url={props.url} infoFacture={infoFacture} setverfChamp={setverfChamp} verfChamp={verfChamp} setinfoFacture={setinfoFacture} typeclient={infoFacture.type} />
                                                             {verfChamp.nom_cli ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
                                                         </div>

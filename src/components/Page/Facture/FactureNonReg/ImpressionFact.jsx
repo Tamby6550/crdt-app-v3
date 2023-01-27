@@ -8,6 +8,8 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import axios from 'axios'
 import "../../../../facture.css";
 import moment from 'moment/moment';
+import { NumberToLetter } from 'convertir-nombre-lettre';
+
 
 export default function ImpressionFact(props) {
 
@@ -45,7 +47,7 @@ export default function ImpressionFact(props) {
         return (
             <div>
                 <center>
-                    <h4>Fact</h4>
+                    <h4>Facture</h4>
                 </center>
             </div>
         );
@@ -95,7 +97,8 @@ export default function ImpressionFact(props) {
         code_presc: '', nom_presc: '',
         num_arriv: '', date_arriv: '',
         montant_brute: '0', montant_net: '0', status: '',
-        montant_patient: '0', montant_pech: '0', montant_remise: '0', montantRestPatient: '0', montant_pec_regle: '0',net_pec:'vide',net_mtnet:'vide'
+        montant_patient: '0', montant_pech: '0', montant_remise: '0', montantRestPatient: '0', montant_pec_regle: '0', net_pec: 'vide', net_mtnet: 'vide',
+        rc: '', stat: '', cif: '', nif: '',
     });
     const [totalMt, settotalMt] = useState(0);
     const [aujourd, setaujourd] = useState(moment().format('LL'));
@@ -108,8 +111,8 @@ export default function ImpressionFact(props) {
             code_presc: '', nom_presc: '', montantRest: '0', montantRest: '0',
             num_arriv: '', date_arriv: '',
             montant_brute: '0', montant_net: '0', status: '',
-            montant_patient: '0', montant_pech: '0', montant_remise: '0', montantRestPatient: '0', montant_pec_regle: '0',net_pec:'',
-            net_mtnet:'',
+            montant_patient: '0', montant_pech: '0', montant_remise: '0', montantRestPatient: '0', montant_pec_regle: '0', net_pec: '',
+            net_mtnet: '', rc: '', stat: '', cif: '', nif: ''
         })
     }
 
@@ -124,7 +127,7 @@ export default function ImpressionFact(props) {
                 (results) => {
                     setinfoExamen(results.data.all);
                     settotalMt(results.data.total)
-                   
+
                     setBlockedPanel(false);
                     setCharge(false);
                 }
@@ -145,8 +148,8 @@ export default function ImpressionFact(props) {
         await axios.get(props.url + `getInfoPatientFacture/${cmpltFact}`)
             .then(
                 (result) => {
-                   
-                    let remises_ =  poucentage(result.data.montant_brute, result.data.remise);
+
+                    let remises_ = poucentage(result.data.montant_brute, result.data.remise);
                     let mtremises = result.data.montant_brute - remises_;
                     setinfoFacture({
                         ...infoFacture,
@@ -172,8 +175,12 @@ export default function ImpressionFact(props) {
                         code_cli: result.data.code_cli, status: result.data.status,
                         montantRestPresc: format(result.data.reste_pec, 2, " "),
                         montantRest: format(result.data.reste, 2, " "),
-                        net_pec:result.data.net_pec,
-                        net_mtnet:result.data.net_mtnet
+                        net_pec: result.data.net_pec,
+                        net_mtnet: result.data.net_mtnet,
+                        rc: result.data.rc,
+                        stat: result.data.stat,
+                        cif: result.data.cif,
+                        nif: result.data.nif,
                     });
                     setTimeout(() => {
                         loadData(props.data.numero);
@@ -182,12 +189,26 @@ export default function ImpressionFact(props) {
             );
     }
 
+
     const chargementData = () => {
         setCharge(true);
         setinfoExamen([{ quantite: 'Chargement de données...' }]);
         setTimeout(() => {
             loadDataFact()
         }, 200)
+    }
+
+    function manisyLettre(nb) {
+        let nombre = (format(nb, 2, "")).toString().split('.');
+        let ren = 0;
+        if (parseInt(nombre[1]) > 0) {
+            ren = NumberToLetter(parseInt(nombre[0])) + ' Ariary ' + NumberToLetter(parseInt(nombre[1]))
+        } else {
+            ren = NumberToLetter(parseInt(nombre[0]))
+        }
+        let firstLetter = ren.charAt(0).toUpperCase();
+        let nlettren = firstLetter + ren.slice(1);
+        return nlettren
     }
 
     return (
@@ -210,12 +231,12 @@ export default function ImpressionFact(props) {
                             >
                                 <tr class="Input1">
                                     <td width="317" height="23">
-                                        <strong>RC:</strong>
+                                        <strong>RC: {infoFacture.rc == null ? '' : infoFacture.rc} </strong>
                                         <br />
-                                        <strong>STAT:</strong>
+                                        <strong>STAT: {infoFacture.stat == null ? '' : infoFacture.stat}</strong>
                                         <br />
-                                        <strong>CIF:</strong> <br />
-                                        <strong>NIF:</strong>
+                                        <strong>CIF: {infoFacture.cif == null ? '' : infoFacture.cif}</strong> <br />
+                                        <strong>NIF: {infoFacture.nif == null ? '' : infoFacture.nif}</strong>
                                     </td>
 
                                     <td width="425">
@@ -250,7 +271,7 @@ export default function ImpressionFact(props) {
                                         <strong>PRISE EN CHARGE : </strong>
                                     </td>
                                     <td width="74%" rowspan="4" class="table">
-                                        {infoFacture.nom_cli==null? '-' :infoFacture.nom_cli} ({infoFacture.pec}%)
+                                        {infoFacture.nom_cli == null ? '-' : infoFacture.nom_cli} ({infoFacture.pec}%)
                                     </td>
                                 </tr>
                             </table>
@@ -282,13 +303,13 @@ export default function ImpressionFact(props) {
                                     </td>
                                     <td align="right" class="table" style={{ padding: "0px" }}>
                                         {infoExamen.map((element) => (
-                                            <div style={{ width: "100%", borderTop: "0.3px solid black" , padding:'2px'}}>
+                                            <div style={{ width: "100%", borderTop: "0.3px solid black", padding: '2px' }}>
                                                 {element.montant === null ||
                                                     element.montant === "" ||
                                                     element.montant === undefined ? (
                                                     <>vide</>
                                                 ) : (
-                                                    <>{ format(element.montant,2,' ')}</>
+                                                    <>{format(element.montant, 2, ' ')}</>
                                                 )}
                                             </div>
                                         ))}
@@ -352,7 +373,8 @@ export default function ImpressionFact(props) {
                                 <tr>
                                     <td width="428">
                                         Arrêté la présente facture à la somme de: <br />
-                                        {infoFacture.montant_pech=='0.00'?infoFacture.net_mtnet :infoFacture.net_pec}  
+                                        <label style={{ fontWeight: '700' }}>/{infoFacture.montant_pech == '0.00' ? manisyLettre(infoFacture.net_mtnet) : manisyLettre(infoFacture.net_pec)}/</label>
+
                                     </td>
                                     <td width="199">&nbsp;</td>
                                     <td width="78">&nbsp;</td>

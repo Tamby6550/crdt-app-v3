@@ -35,7 +35,7 @@ export default function Modifier(props) {
         rib: null,
         num_arriv: '',
         date_arriv: '',
-        date_reglmnt:''
+        date_reglmnt: ''
     })
 
     const toastTR = useRef(null);
@@ -46,12 +46,12 @@ export default function Modifier(props) {
 
     const chargeDataReglement = () => {
 
-        if (props.data.type_rglmt=='P') {
+        if (props.data.type_rglmt == 'P') {
             settypePC({ pat: true, cli: false });
-        }else{
+        } else {
             settypePC({ pat: false, cli: true });
         }
-        
+
         setdataReglement({
             num_facture: props.data.num_fact,
             num_arriv: props.num_arriv,
@@ -141,7 +141,7 @@ export default function Modifier(props) {
             e.preventDefault();
             return;
         }
-    
+
         setdataReglement({ ...dataReglement, montantreglement: e.target.value });
     };
     /* Modal */
@@ -159,7 +159,7 @@ export default function Modifier(props) {
     }
     const onHide = (name) => {
         dialogFuncMap[`${name}`](false);
-      
+
     }
 
     const renderFooter = (name) => {
@@ -196,7 +196,7 @@ export default function Modifier(props) {
                     props.chargementData();
                     onHide('displayBasic2');
                 }, 400)
-                
+
             })
             .catch(err => {
                 console.log(err);
@@ -205,15 +205,17 @@ export default function Modifier(props) {
                 setCharge(false);
             });
     }
+
+
     return (
         <>
             <Toast ref={toastTR} position="top-right" />
-            <Button icon={PrimeIcons.PENCIL} className='p-buttom-sm p-1 mr-2 p-button-secondary ' tooltip='Modifier' tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargeDataReglement()}} />
+            <Button icon={PrimeIcons.PENCIL} className='p-buttom-sm p-1 mr-2 p-button-secondary ' tooltip='Modifier' tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargeDataReglement() }} />
 
             <Dialog header={renderHeader('displayBasic2')} maximizable visible={displayBasic2} className="lg:col-4 md:col-5 sm:col-8 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
                 <div className="field  col-12 ">
 
-                    <Fieldset  style={{ backgroundColor: 'rgb(247 247 247)' }} >
+                    <Fieldset style={{ backgroundColor: 'rgb(247 247 247)' }} >
                         <div className="field   lg:col-12 md:col-12 col:12 my-1 flex flex-column p-0 m-0">
 
                             <div className="field lg:col-12 md:col-9 col:10 m-0 p-0 flex flex-row   align-items-center">
@@ -223,18 +225,67 @@ export default function Modifier(props) {
                                         <label htmlFor="">Patient</label>
                                         <RadioButton checked={typePC.pat} name='a' className='ml-2'
                                             onChange={() => {
-                                                settypePC({ pat: true, cli: false });
-                                                setdataReglement({ ...dataReglement, type_reglmnt: 'P' });
-                                            }} readOnly
+
+                                                if (dataReglement.montantreglement > parseFloat(props.patient_reste)) {
+                                                  
+                                                    confirmDialog({
+                                                        message: bddialogReglement('Reste  montant du Patient : "' + format(props.patient_reste, 2, " ")+'" est inférieur "'+format(dataReglement.montantreglement, 2, " ")+'" , Vous ne pouvez pas faire le changement reglement.' ),
+                                                        header: '',
+                                                        icon: 'pi pi-exclamation-circle',
+                                                        acceptClassName: 'p-button-info',
+                                                        acceptLabel: 'Ok',
+                                                        rejectLabel: '_',
+                                                    });
+
+                                                    settypePC({ ...typePC, pat: false });
+                                                } else {
+                                                    confirmDialog({
+                                                        message: bddialogReglement('Il reste  : ' + format((parseFloat(props.patient_reste)-parseFloat(dataReglement.montantreglement)), 2, " ") +' Ar '),
+                                                        header: '',
+                                                        icon: 'pi pi-exclamation-circle',
+                                                        acceptClassName: 'p-button-success',
+                                                        acceptLabel: 'Ok ',
+                                                        rejectLabel: '_',
+                                                    });
+
+                                                    settypePC({ pat: true, cli: false });
+                                                    setdataReglement({ ...dataReglement, type_reglmnt: 'P' });
+                                                }
+
+                                            }}
                                         />
                                     </div>
                                     <div className='m-0 ml-5 align-items-center'>
                                         <label htmlFor="">Client</label>
                                         <RadioButton checked={typePC.cli} name='a' className='ml-2'
                                             onChange={() => {
-                                                settypePC({ pat: false, cli: true });
-                                                setdataReglement({ ...dataReglement, type_reglmnt: 'C'});
-                                            }} readOnly
+                                                if (dataReglement.montantreglement > parseFloat(props.client_reste)) {
+                                                 
+                                                    confirmDialog({
+                                                        message: bddialogReglement('Reste montant du Client : "' + format(props.client_reste, 2, " ") + ' Ar " est inférieur "'+format(dataReglement.montantreglement, 2, " ")+'" Ar montant règlement , Vous ne pouvez pas faire le changement de reglement' ),
+                                                        header: '',
+                                                        icon: 'pi pi-times',
+                                                        acceptClassName: 'p-button-info',
+                                                        acceptLabel: 'Ok',
+                                                        rejectLabel: '_',
+                                                    });
+
+                                                    settypePC({ ...typePC, cli: false });
+                                                }else{
+                                                    confirmDialog({
+                                                        message: bddialogReglement('Il reste  : ' + format(parseFloat(props.client_reste)-(parseFloat(dataReglement.montantreglement)), 2, " ")+' !'),
+                                                        header: '',
+                                                        icon: 'pi pi-exclamation-circle',
+                                                        acceptClassName: 'p-button-success',
+                                                        acceptLabel: 'Ok ',
+                                                        rejectLabel: '_',
+                                                    });
+
+                                                    settypePC({ pat: false, cli: true });
+                                                    setdataReglement({ ...dataReglement, type_reglmnt: 'C' });
+                                                }
+                                              
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -250,7 +301,7 @@ export default function Modifier(props) {
 
                             <div className="field lg:col-12 md:col-9 col:10 m-0 p-0 mt-2 flex flex-column ">
                                 <label htmlFor="username2" className="label-input-sm">Montant : </label>
-                                <InputText id="username2" aria-describedby="username2-help" name='montantreglement' style={{ height: '25px',backgroundColor: '#ebebeb' }} value={dataReglement.montantreglement}
+                                <InputText id="username2" aria-describedby="username2-help" name='montantreglement' style={{ height: '25px', backgroundColor: '#ebebeb' }} value={dataReglement.montantreglement}
                                     onChange={(e) => { montantReglementVerf(e) }} readOnly
                                 />
                             </div>

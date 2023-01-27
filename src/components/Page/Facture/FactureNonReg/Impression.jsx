@@ -5,6 +5,8 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column'
 import ReactToPrint from 'react-to-print'
 import { Dialog } from 'primereact/dialog';
+import { NumberToLetter } from 'convertir-nombre-lettre';
+
 
 export default function Impression(props) {
 
@@ -30,6 +32,20 @@ export default function Impression(props) {
     }
 
 
+    function manisyLettre(nb) {
+        let nombre = (nb).toString().split('.');
+        let ren = 0;
+
+        if (parseInt(nombre[1]) > 0) {
+            ren = NumberToLetter(parseInt(nombre[0])) + ' Ariary ' + NumberToLetter(parseInt(nombre[1]))
+        } else {
+            ren = NumberToLetter(parseInt(nombre[0]))
+        }
+        let firstLetter = ren.charAt(0).toUpperCase();
+        let nlettren = firstLetter + ren.slice(1);
+        return nlettren;
+    }
+
     const renderHeader = (name) => {
         return (
             <div>
@@ -48,11 +64,17 @@ export default function Impression(props) {
             <Dialog header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-5 md:col-5 col-5 p-0" onHide={() => onHide('displayBasic2')}  >
                 <div className='recu-imprime' style={{ padding: '50px', border: '1px solid black' }} >
                     <div id="scan" style={{ color: 'rgb(38 38 38)' }} >
+                        <div className='crdt co-12' style={{ position: 'absolute', zIndex: '-1' }}>
+                            <h1>CRDT</h1>
+                            <h1>CRDT</h1>
+                            <h1>CRDT</h1>
+                            <h1>CRDT</h1>
+                            <h1>CRDT</h1>
+                            <h1>CRDT</h1>
+                        </div>
                         <div className="flex justify-content-center formgrid grid w-100 " style={{ border: '2px solid white' }}>
                             <div className="field  col-12 flex flex-column align-items-center m-0 mb-5 p-0">
-                                {/* <div className="field col-12 " style={{ border: '1px solid white', textAlign: 'center' }}>
-                                    <label style={{ fontSize: '1.3em' }} >Antananarivo,le Samedi 07 Janvier 2023</label>
-                                </div> */}
+
                                 <div className="field col-12 m-0 p-0" style={{ border: '1px solid white', textAlign: 'center' }} >
                                     <h3 className='m-2' >{("Reçu  reglement , date : " + props.data.date_reglement).toUpperCase()}</h3>
                                 </div>
@@ -104,12 +126,16 @@ export default function Impression(props) {
                                 </div>
                                 <center className='mt-3 p-2'>
                                     <label style={{ fontSize: '1.3em' }}>Arrêté la présente récu à la somme de:</label> <br />
-                                    <label style={{ fontSize: '1.3em',fontWeight:'600' }}>{props.data.net}</label><br />
+                                    <label style={{ fontSize: '1.3em', fontWeight: '700' }}>
+                                        /{manisyLettre(props.data.net)} /
+                                        {/* {NumberToLetter(parseFloat(props.data.net).toFixed(0))} Ar  */}
+
+                                    </label><br />
 
                                 </center>
-                                <center  className='mt-5'>
+                                <center className='mt-5'>
 
-                                    <label  style={{ fontSize: '1.3em'}} >Pour le CRDT</label>
+                                    <label style={{ fontSize: '1.3em' }} >Pour le CRDT</label>
                                 </center>
                             </div>
                         </div>

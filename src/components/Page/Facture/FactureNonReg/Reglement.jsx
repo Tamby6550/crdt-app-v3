@@ -144,13 +144,13 @@ export default function RFacture(props) {
     }
 
     const montantReglementVerf = (e) => {
-        if (!/^\d*$/.test(e.target.value)) {
+        if (!/^\d*\.?\d*$/.test(e.target.value)) {
             e.preventDefault();
             return;
         }
         if (dataReglement.type_reglmnt == 'P') {
 
-            if (parseInt(e.target.value) > parseInt(infoFacture.reste_patient)) {
+            if (parseFloat(e.target.value) > parseFloat(infoFacture.reste_patient)) {
                 e.preventDefault();
                 confirmDialog({
                     message: bddialogReglement('Le reste de montant du patient est ' + format(infoFacture.reste_patient, 2, " ")),
@@ -164,7 +164,7 @@ export default function RFacture(props) {
                 return;
             }
         } else {
-            if (parseInt(e.target.value) > parseInt(infoFacture.reste_pec)) {
+            if (parseFloat(e.target.value) > parseFloat(infoFacture.reste_pec)) {
                 e.preventDefault();
 
                 confirmDialog({
@@ -363,10 +363,11 @@ export default function RFacture(props) {
                 setTimeout(() => {
                     chargementData();
                     
-                    //Raha ohatra vo sambany vo  nanao reglement
-                    if (props.data.nbrergl== 0) {
-                        setverffaireReglmnt(true);
-                    }
+                    setverffaireReglmnt(true);
+                    // //Raha ohatra vo sambany vo  nanao reglement
+                    // if (props.data.nbrergl== 0) {
+                    //     setverffaireReglmnt(true);
+                    // }
                     if (res.data.regle == '1') {
                         setchRegle(true);
                     }
@@ -402,6 +403,8 @@ export default function RFacture(props) {
                         num_arriv={props.data.numero}
                         date_arriv={props.data.date_arr}
                         chargementData={chargementData}
+                        patient_reste={infoFacture.reste_patient}
+                        client_reste={infoFacture.reste_pec}
                         
                     />
                 </div>
@@ -548,7 +551,7 @@ export default function RFacture(props) {
                                                                     if (infoFacture.reste_patient=='0' || infoFacture.reste=='0') {
                                                                         setverfbtnajoutreglmn(true);
                                                                         confirmDialog({
-                                                                            message: bddialogReglement('Montant patient réglés !'),
+                                                                            message: bddialogReglement('Montant patient déjà réglé !'),
                                                                             header: '',
                                                                             icon: 'pi pi-exclamation-circle',
                                                                             acceptClassName: 'p-button-info',
