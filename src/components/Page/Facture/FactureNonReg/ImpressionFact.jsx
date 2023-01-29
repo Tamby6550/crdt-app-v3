@@ -217,11 +217,18 @@ export default function ImpressionFact(props) {
 
             <Dialog header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-7 md:col-10 col-11 p-0" onHide={() => onHide('displayBasic2')}  >
                 <BlockUI blocked={blockedPanel} template={<ProgressSpinner />}>
-                    <div className='recu-imprime' style={{ padding: '50px', border: '1px solid black' }} >
+                    <div className='recu-imprime' style={{ padding: '50px', border: '1px solid black'}} >
+
                         <div
                             className="facture w-100 h-100"
+                            style={{ position: 'relative' }}
                             ref={(el) => (reportTemplateRef = el)}
                         >
+                            <div className='crdt co-12 ' style={{ position: 'absolute', paddingTop: '35%',alignItems:'center',width:'100%'  }}>
+                                <center>
+                                    <h1 className='m-0' style={{ fontSize: '15em', color: 'rgb(0 0 0 / 9%)'}}>CRDT</h1>
+                                </center>
+                            </div>
                             <table
                                 width="100%"
                                 height="130"

@@ -202,7 +202,8 @@ export default function ModifReglement(props) {
                         num_arriv={props.data.numero}
                         date_arriv={props.data.date_arr}
                         chargementData={chargementData}
-
+                        patient_reste={data.reste_patient}
+                        client_reste={data.reste_client}
                     />
                 </div>
             </div>
@@ -211,6 +212,7 @@ export default function ModifReglement(props) {
 
 
     /**Resak Pec sy remise */
+    const [verfChamp, setverfChamp] = useState(false)
     const [montantPatient, setmontantPatient] = useState(0)
     const [totalMt, settotalMt] = useState(0);
     const [infoExamen, setinfoExamen] = useState([{ num_facture: '', patient: '', type: '', code_cli: '', pec: '', remise: '', code_presc: '' }]);
@@ -219,7 +221,11 @@ export default function ModifReglement(props) {
         pec: '0', remise: '0',
         num_arriv: '', date_arriv: '',
         montant_brute: '0', montant_net: '0',
-        montant_patient: '0', montant_pech: '0', montant_remise: '0', montantRestPatient: '0'
+        montant_patient: '0', montant_pech: '0', montant_remise: '0', montantRestPatient: '0',
+        code_presc: '',
+        code_cli: '',
+        nom_client: '',
+        nom_presc: '',
     });
 
 
@@ -284,7 +290,7 @@ export default function ModifReglement(props) {
             }, 100);
         }
     }
-    const calcule = (total, datefact, pec_remise) => {
+    const calcule = (total, datefact, pec_remise, res) => {
         let mtremise = 0;
         let mtnet = 0;
         let mtpat = 0;
@@ -320,7 +326,12 @@ export default function ModifReglement(props) {
         setinfoFacture({
             ...infoFacture, num_facture: props.data.num_fact, date_facture: moment(datefact).format('DD/MM/YYYY'), pec: pec_remise.pec, remise: pec_remise.remise,
             num_arriv: props.data.numero, date_arriv: props.data.date_arr, patient: props.data.nom,
-            montant_brute: format(total, 2, " "), montant_remise: format(mtremise, 2, " "), montant_net: format(mtnet, 2, " "), montant_patient: format(mtpat, 2, " "), montant_pech: format(mtpec, 2, " ")
+            montant_brute: format(total, 2, " "), montant_remise: format(mtremise, 2, " "), montant_net: format(mtnet, 2, " "),
+            montant_patient: format(mtpat, 2, " "), montant_pech: format(mtpec, 2, " "),
+            code_presc: res.code_presc,
+            code_cli: res.code_client,
+            nom_cli: res.nom_client,
+            nom_presc: res.nom_presc,
         });
 
         mienregsitrerMtPatient(total);
@@ -331,10 +342,10 @@ export default function ModifReglement(props) {
         await axios.get(props.url + `getPatientExamenFacture/${props.data.numero}&${cmpltDate}`)
             .then(
                 (results) => {
-                    console.log(results.data.total)
+                    // console.log(results.data.total)
                     setinfoExamen(results.data.all);
                     settotalMt(results.data.total)
-                    calcule(results.data.total, results.data.datej, results.data.pec_rmise);
+                    calcule(results.data.total, results.data.datej, results.data.pec_rmise, results.data.pec_rmise);
                     setCharge(false);
                     chargementData()
                 }
@@ -355,25 +366,44 @@ export default function ModifReglement(props) {
             <Toast ref={toastTR} position="top-right" />
             <Button icon={PrimeIcons.PENCIL} className='p-buttom-sm p-1 mr-2 p-button-secondary ' tooltip='Modifier ' tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementDataPEC() }} />
 
-            <Dialog header={renderHeader('displayBasic2')} maximizable visible={displayBasic2} className={props.data.nbrergl == 0 ? "lg:col-7 md:col-9 sm:col-12 col-12 p-0":"lg:col-5 md:col-8 sm:col-12 col-12 p-0"} footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
+            <Dialog header={renderHeader('displayBasic2')} maximizable visible={displayBasic2} className={props.data.nbrergl == 0 ? "lg:col-7 md:col-9 sm:col-12 col-12 p-0" : "lg:col-5 md:col-8 sm:col-12 col-12 p-0"} footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
                 <BlockUI blocked={blockedPanel} template={<ProgressSpinner />}>
                     {props.data.nbrergl == 0 ?
                         <div className='col-12 grid px-5'>
                             <div className='col-12'>
                                 <center> <u><h3 className='m-1'>Modification Prise en charge et Remise</h3></u> </center>
                             </div>
-                            <div className='col-12 flex flex-row px-5' >
-                                <div className="field   lg:col-6 md:col-6 flex flex-column  col:12 m-0 p-0">
-                                    <label htmlFor="username2" className="label-input-sm" style={{ color: infoFacture.type == 'L2' ? 'grey' : null }} >  P.en Charge(%)</label>
-                                    <InputText id="username2" aria-describedby="username2-help" name='pec' value={infoFacture.pec}
-                                        onChange={(e) => { calculeMis(totalMt, infoFacture.remise, e.target.value, e); }} disabled={props.data.type_patient == 'L2' ? true : false} />
-                                </div>
-                                <div className="field   lg:col-6 md:col-6 ml-4  flex flex-column col:12 m-0 p-0">
-                                    <label htmlFor="username2" className="label-input-sm">Remise(%)</label>
-                                    <InputText id="username2" aria-describedby="username2-help" name='remise' value={infoFacture.remise}
-                                        onChange={(e) => {
-                                            calculeMis(totalMt, e.target.value, infoFacture.pec, e);
-                                        }} />
+                            <div className='col-12  px-5' style={{alignItems:'center'}} >
+                                <div className='grid flex flex-row justify-content-evenly'>
+                                    <div className="field   lg:col-5 md:col-5 flex flex-column  col:12 m-0 p-0">
+                                        <label htmlFor="username2" className="label-input-sm" style={{ color: infoFacture.type == 'L2' ? 'grey' : null }} >  P.en Charge(%)</label>
+                                        <InputText id="username2" aria-describedby="username2-help" name='pec' value={infoFacture.pec}
+                                            onChange={(e) => { calculeMis(totalMt, infoFacture.remise, e.target.value, e); }} disabled={props.data.type_patient == 'L2' ? true : false} />
+                                    </div>
+                                    <div className="field   lg:col-5 md:col-5  flex flex-column col:12 m-0 p-0">
+                                        <label htmlFor="username2" className="label-input-sm">Remise(%)</label>
+                                        <InputText id="username2" aria-describedby="username2-help" name='remise' value={infoFacture.remise}
+                                            onChange={(e) => {
+                                                calculeMis(totalMt, e.target.value, infoFacture.pec, e);
+                                            }} />
+                                    </div>
+
+                                    <div className="field  lg:col-5 md:col-5  m-0  p-0">
+                                        <label htmlFor="username2" className="label-input-sm mt-2">Prescripteur*</label>
+                                        <div className='m-0 flex flex-row align-items-center  '>
+                                            <InputText id="username2" style={{ backgroundColor: 'rgb(251 251 251)',width:'100%' }} aria-describedby="username2-help" name='code_presc' value={infoFacture.nom_presc} className={"form-input-css-tamby"} readOnly />
+                                            <ChoixPrescr setverfChamp={setverfChamp} url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} />
+                                        </div>
+                                    </div>
+
+                                    <div className="field  lg:col-5 md:col-5  m-0 p-0">
+                                        <label htmlFor="username2" className="label-input-sm mt-2">Client*</label>
+                                        <div className='m-0 flex flex-row align-items-center  '>
+                                            <InputText id="username2" style={{ backgroundColor: 'rgb(251 251 251)',width:'100%' }} aria-describedby="username2-help" className={"form-input-css-tamby"} name='code_cli' value={infoFacture.nom_cli} readOnly />
+                                            <ChoixClient setverfChamp={setverfChamp} url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} typeclient={infoFacture.type} />
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                             <Fieldset legend="Facturation" className='montant ml-3 mr-3' style={{ backgroundColor: 'rgb(245 245 245)' }} >

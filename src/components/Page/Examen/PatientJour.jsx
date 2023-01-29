@@ -120,7 +120,7 @@ export default function ExamenJour(props) {
                 }} />
             </>
             :
-            data.verf_exam=='2' ? 
+            data.verf_exam=='2' && data.verf_fact=='0' ? 
               <Modifier url={props.url} data={data} setrefreshData={setrefreshData} />
             :
             null

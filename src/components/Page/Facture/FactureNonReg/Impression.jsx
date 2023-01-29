@@ -64,16 +64,11 @@ export default function Impression(props) {
             <Dialog header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-5 md:col-5 col-5 p-0" onHide={() => onHide('displayBasic2')}  >
                 <div className='recu-imprime' style={{ padding: '50px', border: '1px solid black' }} >
                     <div id="scan" style={{ color: 'rgb(38 38 38)' }} >
-                        <div className='crdt co-12' style={{ position: 'absolute', zIndex: '-1' }}>
-                            <h1>CRDT</h1>
-                            <h1>CRDT</h1>
-                            <h1>CRDT</h1>
-                            <h1>CRDT</h1>
-                            <h1>CRDT</h1>
-                            <h1>CRDT</h1>
-                        </div>
-                        <div className="flex justify-content-center formgrid grid w-100 " style={{ border: '2px solid white' }}>
-                            <div className="field  col-12 flex flex-column align-items-center m-0 mb-5 p-0">
+                        <div className="flex justify-content-center formgrid grid w-100 " style={{ border: '2px solid white',position:'relative' }}>
+                            <div className='crdt co-12 ' style={{ position: 'absolute',alignItems: 'center',paddingTop:'12%'}}>
+                                <h1 className='m-0' style={{ fontSize:'15em',color:'rgb(0 0 0 / 9%)' }}>CRDT</h1>
+                            </div>
+                            <div className="field  col-12 flex flex-column align-items-center m-0 mb-5 p-0" style={{ position:'relative', zIndex:'-2'}}>
 
                                 <div className="field col-12 m-0 p-0" style={{ border: '1px solid white', textAlign: 'center' }} >
                                     <h3 className='m-2' >{("Reçu  reglement , date : " + props.data.date_reglement).toUpperCase()}</h3>
@@ -127,11 +122,8 @@ export default function Impression(props) {
                                 <center className='mt-3 p-2'>
                                     <label style={{ fontSize: '1.3em' }}>Arrêté la présente récu à la somme de:</label> <br />
                                     <label style={{ fontSize: '1.3em', fontWeight: '700' }}>
-                                        /{manisyLettre(props.data.net)} /
-                                        {/* {NumberToLetter(parseFloat(props.data.net).toFixed(0))} Ar  */}
-
+                                        /{manisyLettre(props.data.net)} Ariary /
                                     </label><br />
-
                                 </center>
                                 <center className='mt-5'>
 

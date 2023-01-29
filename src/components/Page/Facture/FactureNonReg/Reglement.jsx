@@ -12,13 +12,10 @@ import axios from 'axios'
 import { InputText } from 'primereact/inputtext'
 import { RadioButton } from 'primereact/radiobutton'
 import Modifier from './Modifier';
-import { InputNumber } from 'primereact/inputnumber'
 import ChoixReglement from '../PatientNonFact/ChoixReglement';
 import moment from 'moment/moment';
-import ChangementTarif from '../PatientNonFact/ChoixReglement';
 import { BlockUI } from 'primereact/blockui';
 import { ProgressSpinner } from 'primereact/progressspinner';
-import ReactToPrint from 'react-to-print'
 import FormatF from '../FormatF';
 import Impression from './Impression';
 
@@ -31,7 +28,7 @@ export default function RFacture(props) {
     const [verffaireReglmnt, setverffaireReglmnt] = useState(false)
 
     const [verfbtnajoutreglmn, setverfbtnajoutreglmn] = useState(false)
-    
+
 
 
     function poucentage(val, pourc) {
@@ -253,8 +250,11 @@ export default function RFacture(props) {
     const onHide = (name) => {
         dialogFuncMap[`${name}`](false);
         onVide();
-        if (chRegle||verffaireReglmnt) {
+        if (verffaireReglmnt) {
             props.changecharge('1');
+        }
+        if (chRegle) {
+            props.setActiveIndex(2)
         }
     }
 
@@ -362,7 +362,7 @@ export default function RFacture(props) {
 
                 setTimeout(() => {
                     chargementData();
-                    
+
                     setverffaireReglmnt(true);
                     // //Raha ohatra vo sambany vo  nanao reglement
                     // if (props.data.nbrergl== 0) {
@@ -388,7 +388,7 @@ export default function RFacture(props) {
         return (
             <div className='flex flex-row justify-content-between align-items-center m-0 '>
                 <div className='my-0  py-2'>
-                 
+
                     {data.ajr == data.date_reglement ?
                         <>
                             <Impression url={props.url} data={data}
@@ -405,7 +405,6 @@ export default function RFacture(props) {
                         chargementData={chargementData}
                         patient_reste={infoFacture.reste_patient}
                         client_reste={infoFacture.reste_pec}
-                        
                     />
                 </div>
             </div>
@@ -548,8 +547,8 @@ export default function RFacture(props) {
                                                             <label htmlFor="">Patient</label>
                                                             <RadioButton checked={typePC.pat} name='a' className='ml-2'
                                                                 onChange={() => {
-                                                                    if (infoFacture.reste_patient=='0' || infoFacture.reste=='0') {
-                                                                        setverfbtnajoutreglmn(true);
+                                                                    if (infoFacture.reste_patient == '0' || infoFacture.reste == '0') {
+                                                                        // setverfbtnajoutreglmn(true);
                                                                         confirmDialog({
                                                                             message: bddialogReglement('Montant patient déjà réglé !'),
                                                                             header: '',
@@ -558,11 +557,13 @@ export default function RFacture(props) {
                                                                             acceptLabel: 'Ok',
                                                                             rejectLabel: '_',
                                                                         });
-                                                                    }else{
+                                                                        settypePC({...typePC, cli: false });
+
+                                                                    } else {
                                                                         setverfbtnajoutreglmn(false);
+                                                                        settypePC({ pat: true, cli: false });
+                                                                        setdataReglement({ ...dataReglement, type_reglmnt: 'P', montantreglement: '0' });
                                                                     }
-                                                                    settypePC({ pat: true, cli: false });
-                                                                    setdataReglement({ ...dataReglement, type_reglmnt: 'P', montantreglement: '0' });
                                                                 }}
                                                             />
                                                         </div>
@@ -570,21 +571,23 @@ export default function RFacture(props) {
                                                             <label htmlFor="">Client</label>
                                                             <RadioButton checked={typePC.cli} name='a' className='ml-2'
                                                                 onChange={() => {
-                                                                    if (infoFacture.reste_pec=='0' || infoFacture.reste=='0') {
-                                                                        setverfbtnajoutreglmn(true);
+                                                                    if (infoFacture.reste_pec == '0' || infoFacture.reste == '0') {
+                                                                        // setverfbtnajoutreglmn(true);
                                                                         confirmDialog({
-                                                                            message: bddialogReglement('Montant client réglés !'),
+                                                                            message: bddialogReglement('Montant Client déjà réglé !'),
                                                                             header: '',
                                                                             icon: 'pi pi-exclamation-circle',
                                                                             acceptClassName: 'p-button-info',
                                                                             acceptLabel: 'Ok',
                                                                             rejectLabel: '_',
                                                                         });
-                                                                    }else{
+                                                                        settypePC({...typePC, cli: false });
+                                                                    } else {
                                                                         setverfbtnajoutreglmn(false);
+                                                                        settypePC({ pat: false, cli: true });
+                                                                        setdataReglement({ ...dataReglement, type_reglmnt: 'C', montantreglement: '0' });
                                                                     }
-                                                                    settypePC({ pat: false, cli: true });
-                                                                    setdataReglement({ ...dataReglement, type_reglmnt: 'C', montantreglement: '0' });
+
                                                                 }}
                                                             />
                                                         </div>
@@ -612,9 +615,9 @@ export default function RFacture(props) {
                                             </div>
                                             <div className='flex mt-3 mr-4 justify-content-center '>
 
-                                                <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-success ' 
-                                                disabled={verfbtnajoutreglmn} 
-                                                tooltip="Ajouter reglement " tooltipOptions={{ position: 'top' }} style={{ cursor: 'pointer' }} label={charge ? '...' : 'Ajouter'}
+                                                <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-success '
+                                                    disabled={verfbtnajoutreglmn}
+                                                    tooltip="Ajouter reglement " tooltipOptions={{ position: 'top' }} style={{ cursor: 'pointer' }} label={charge ? '...' : 'Ajouter'}
                                                     onClick={() => {
                                                         onVerfeCh()
                                                     }} />

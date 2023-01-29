@@ -18,6 +18,7 @@ import Recherche from './FactureNonReg/Recherche';
 
 export default function FactureNonRegler(props) {
 
+
     function poucentage(val, pourc) {
         let res = (pourc * 100) / val;
         return (res).toFixed(2);
@@ -125,7 +126,7 @@ export default function FactureNonRegler(props) {
                 <div className='my-0  py-2'>
                     <FFactureVoir url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
 
-                    <Reglement url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
+                    <Reglement setActiveIndex={props.setActiveIndex} url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
                     <ModifReglement url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
                     <ImpressionFact url={props.url} data={data} changecharge={changecharge} setrefreshData={setrefreshData} />
                     {data.nbrergl == 0 ?
@@ -170,13 +171,6 @@ export default function FactureNonRegler(props) {
     }
 
 
-
-    const header = (
-
-        <div className='flex flex-row justify-content-center align-items-center m-0 '>
-            <h3 className='m-3'>Liste Patient Non Facturées (3 dernier jour)</h3>
-        </div>
-    )
     const headerReherche = (
         <div className='flex flex-row justify-content-between align-items-center m-0 '>
             <div className='my-0 flex  py-2'>
@@ -198,7 +192,7 @@ export default function FactureNonRegler(props) {
                 <Button icon={PrimeIcons.REFRESH} className='p-buttom-sm p-1 p-button-warning ' tooltip='actualiser' tooltipOptions={{ position: 'top' }} onClick={() => setrefreshData(1)} />
                 :
                 <>
-                    <h3 className='m-3'>Liste Patient Non Facturées (3 dernier jour)</h3>
+                    <h3 className='m-3'>Facture non régler (5 dernier jour)</h3>
                     <h3 className='m-3' style={{ visibility: 'hidden' }} >Examens éffectuées</h3>
                 </>
             }

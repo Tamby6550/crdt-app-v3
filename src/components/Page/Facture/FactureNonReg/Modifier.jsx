@@ -229,7 +229,7 @@ export default function Modifier(props) {
                                                 if (dataReglement.montantreglement > parseFloat(props.patient_reste)) {
                                                   
                                                     confirmDialog({
-                                                        message: bddialogReglement('Reste  montant du Patient : "' + format(props.patient_reste, 2, " ")+'" est inférieur "'+format(dataReglement.montantreglement, 2, " ")+'" , Vous ne pouvez pas faire le changement reglement.' ),
+                                                        message: bddialogReglement('Reste  montant du Patient : "' + format(props.patient_reste, 2, " ")+'" est inférieur "'+format(dataReglement.montantreglement, 2, " ")+'" , Vous ne pouvez pas faire ce changement reglement.' ),
                                                         header: '',
                                                         icon: 'pi pi-exclamation-circle',
                                                         acceptClassName: 'p-button-info',
@@ -262,7 +262,7 @@ export default function Modifier(props) {
                                                 if (dataReglement.montantreglement > parseFloat(props.client_reste)) {
                                                  
                                                     confirmDialog({
-                                                        message: bddialogReglement('Reste montant du Client : "' + format(props.client_reste, 2, " ") + ' Ar " est inférieur "'+format(dataReglement.montantreglement, 2, " ")+'" Ar montant règlement , Vous ne pouvez pas faire le changement de reglement' ),
+                                                        message: bddialogReglement('Reste montant du Client : "' + format(props.client_reste, 2, " ") + ' Ar " est inférieur "'+format(dataReglement.montantreglement, 2, " ")+'" Ar montant règlement , Vous ne pouvez pas faire ce changement de reglement' ),
                                                         header: '',
                                                         icon: 'pi pi-times',
                                                         acceptClassName: 'p-button-info',

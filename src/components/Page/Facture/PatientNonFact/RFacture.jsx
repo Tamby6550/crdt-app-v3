@@ -18,7 +18,7 @@ import { BlockUI } from 'primereact/blockui';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import ChoixClient from './ChoixClient'
 import ChoixPrescr from './ChoixPrescr';
-import ReactToPrint from 'react-to-print'
+import Reglement from './Reglement'
 
 export default function RFacture(props) {
 
@@ -256,13 +256,24 @@ export default function RFacture(props) {
 
 
     /* Modal */
+    const [displayBasic, setDisplayBasic] = useState(false);
     const [displayBasic2, setDisplayBasic2] = useState(false);
     const [position, setPosition] = useState('top');
     const dialogFuncMap = {
         'displayBasic2': setDisplayBasic2,
     }
+    const dialogFuncMap1 = {
+        'displayBasic': setDisplayBasic,
+    }
     const onClick = (name, position) => {
         dialogFuncMap[`${name}`](true);
+
+        if (position) {
+            setPosition(position);
+        }
+    }
+    const onClick1 = (name, position) => {
+        dialogFuncMap1[`${name}`](true);
 
         if (position) {
             setPosition(position);
@@ -277,11 +288,16 @@ export default function RFacture(props) {
         setverfChamp({ nom_presc: false, nom_cli: false })
 
     }
+    const onHide1 = (name) => {
+        dialogFuncMap1[`${name}`](false);
+        onHide('displayBasic2');
+        props.setActiveIndex(1);
+    }
 
     const renderFooter = (name) => {
         return (
             <div>
-                <Button label="Fermer" icon="pi pi-times" onClick={() => onHide(name)} className="p-button-text" />
+                <Button label="Fermer" icon="pi pi-times" onClick={() =>{ onHide(name);onHide1(name)}} className="p-button-text" />
             </div>
         );
     }
@@ -291,6 +307,22 @@ export default function RFacture(props) {
             <div>
                 <center>
                     <h4 className='mb-1'>Facture n° {infoFacture.num_facture} , Aujourd'hui : {infoFacture.date_facture}  </h4>
+                </center>
+                <hr />
+            </div>
+        );
+    }
+    /** Fin modal */
+
+    /* Modal */
+   
+
+    const renderH = (name) => {
+        let jr = moment(aujourd);
+        return (
+            <div>
+                <center>
+                    <h3 className='mb-1'>Facture n° {infoFacture.num_facture}, Saisie reglement</h3>
                 </center>
                 <hr />
             </div>
@@ -347,8 +379,9 @@ export default function RFacture(props) {
                 setchargeV({ chupdate: false });
                 setverfChamp({ nom_presc: false, nom_cli: false })
                 setTimeout(() => {
-                    onHide('displayBasic2');
-                    props.changecharge(1);
+                    // onHide('displayBasic2');
+                    // props.changecharge(1);
+                    onClick1('displayBasic')
                 }, 600)
                 console.log(res.data)
             })
@@ -375,6 +408,12 @@ export default function RFacture(props) {
             <Toast ref={toastTR} position="top-right" />
             <Button icon={PrimeIcons.PLUS} className='p-buttom-sm p-1 mr-2 p-button-info ' tooltip='Ajout facture' tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementData() }} />
 
+            {/* Saisie Reglement */}
+            <Dialog header={renderH('displayBasic')} maximizable visible={displayBasic} className="lg:col-10 col-10 md:col-11 sm:col-12 p-0" footer={renderFooter('displayBasic')} onHide={() => onHide1('displayBasic')}  >
+                <Reglement onHide1={onHide1} displayBasic={displayBasic} url={props.url} type_patient={infoFacture.type} numero={infoFacture.num_arriv} date_arr={infoFacture.date_arriv} num_fact={infoFacture.num_facture} changecharge={props.changecharge}  />
+            </Dialog>
+            {/* Saisie Reglement */}
+
             <Dialog header={renderHeader('displayBasic2')} maximizable visible={displayBasic2} className="lg:col-8 md:col-11 sm:col-12 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
                 <BlockUI blocked={blockedPanel} template={<ProgressSpinner />}>
                     <div className="ml-4 mr-4 style-modal-tamby" >
@@ -384,7 +423,6 @@ export default function RFacture(props) {
                                     <div className="card">
                                         <div className="p-fluid px-4 formgrid grid">
                                             <div className="field   lg:col-6 md:col-4 col:12 my-1 flex flex-column m-0 p-0">
-
                                                 <div className="p-fluid px-4 formgrid grid">
 
                                                     <div className='flex lg:flex-row md:flex-column justify-content-between flex-column col-12 p-0'>

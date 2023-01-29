@@ -46,7 +46,7 @@ export default function Recherche(props) {
     const renderHeader = (name) => {
         return (
             <div>
-                <h4 className='mb-1'>Recherche Facture </h4>
+                <h4 className='mb-1'>Recherche Facture non régler </h4>
                 <hr />
             </div>
         );
@@ -78,7 +78,7 @@ export default function Recherche(props) {
     return (
         <div>
 
-            <Button tooltip='Recherche' label='' icon={PrimeIcons.SEARCH} value="chercher" className=' p-button-secondary' onClick={() => onClick('displayBasic2')} />
+            <Button tooltip='Recherche'  icon={PrimeIcons.SEARCH} value="chercher" label='Recherche' className=' p-button-secondary' onClick={() => onClick('displayBasic2')} />
             <div className='grid'>
                 <Dialog header={renderHeader('displayBasic2')} className="lg:col-4 md:col-5 col-8 p-0" visible={displayBasic2} footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
                     <div className="p-1 style-modal-tamby" >
@@ -116,15 +116,15 @@ export default function Recherche(props) {
                                     <label htmlFor="username2" className="label-input-sm">Nom client </label>
                                     <InputText id="basic" value={infoRehFact.nom_client}  name='nom_client' className={"form-input-css-tamby"} onChange={(e) => { chDonneRech(e) }} />
                                 </div>
-                              
-
                             </div>
                         </form>
                         {verfChamp ? <center><small id="username2-help" className="p-error block justify-content-center" style={{ fontWeight: 'bold' }}>Veuillez entrer la critère pour la recherche - Code ou Nom </small></center> : null}
                         <div className='flex mt-3 mr-4 justify-content-end '>
                             <Button icon={PrimeIcons.SEARCH} className='p-button-sm p-button-secondary ' label={'Reherche'} onClick={() => {
                                 if (infoRehFact.num_facture == "" && infoRehFact.date_facture == "" && infoRehFact.nom_patient == "" && infoRehFact.nom_client == "" && infoRehFact.numero_arr == "" && infoRehFact.date_arr == "") {
+                                   alert('Entrez le(s) critère(s) de recherche ! ')
                                     return false;
+
                                 } else {
                                     RechercheloadData();
                                 }
