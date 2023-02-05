@@ -181,7 +181,7 @@ export default function ListeExamen(props) {
         <>
             <Toast ref={toastTR} position="top-right" />
 
-            <Button icon={PrimeIcons.SEARCH} className='p-buttom-sm p-1 mr-2 ' style={stylebtnRec} tooltip='Recherche Patient' onClick={() => { onClick('displayBasic2'); chargementData() }} />
+            <Button icon={PrimeIcons.SEARCH} className='p-buttom-sm p-1 mr-2 ' style={stylebtnRec} tooltip='Recherche Examen' onClick={() => { onClick('displayBasic2'); chargementData() }} />
 
             <Dialog header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-7 md:col-10 col-12 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
                 <div className="p-1  style-modal-tamby">

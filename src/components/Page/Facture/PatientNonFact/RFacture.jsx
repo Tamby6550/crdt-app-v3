@@ -281,7 +281,7 @@ export default function RFacture(props) {
     }
     const onHide = (name) => {
         dialogFuncMap[`${name}`](false);
-        props.setrefreshData(1);
+        // props.setrefreshData(1);
         onVide();
         settarifCh('');
         setchargeV({ chupdate: false });
@@ -337,14 +337,37 @@ export default function RFacture(props) {
         </div>
     )
 
+    const bodyConfirme = () => {
+        return (
+            <div className='flex flex-column justify-content-center align-items-center m-0 '>
+                <label >Prise en charge : <strong>{infoFacture.pec}%</strong>  <br /> Remise :  <strong>{infoFacture.remise}%</strong>  </label>
+            </div>
+        )
+    }
+
     const onVerfeCh = () => {
         if (infoFacture.type == 'L2') {
             if (infoFacture.code_presc == '') {
                 setverfChamp({ nom_presc: true, nom_cli: false })
                 alert('Verifer votre champ !')
             } else {
-                console.log('first')
-                onInsertFacture();
+                const accept = () => {
+                    onInsertFacture();
+                }
+                const reject = () => {
+                    return null;
+                }
+                confirmDialog({
+                    message: bodyConfirme,
+                    header: '',
+                    icon: 'pi pi-exclamation-circle',
+                    acceptClassName: 'p-button-success',
+                    acceptLabel: 'Ok , Valider',
+                    rejectLabel: 'Annuler',
+                    accept,
+                    reject
+                });
+               
             }
         } else {
             if (infoFacture.code_presc == '' && infoFacture.code_cli == '') {
@@ -363,7 +386,22 @@ export default function RFacture(props) {
 
             }
             if (infoFacture.code_cli != '' && infoFacture.code_presc != '') {
-                onInsertFacture();
+                const accept = () => {
+                    onInsertFacture();
+                }
+                const reject = () => {
+                    return null;
+                }
+                confirmDialog({
+                    message: bodyConfirme,
+                    header: '',
+                    icon: 'pi pi-exclamation-circle',
+                    acceptClassName: 'p-button-success',
+                    acceptLabel: 'Ok , Valider',
+                    rejectLabel: 'Annuler',
+                    accept,
+                    reject
+                });
             }
         }
     }
@@ -394,14 +432,7 @@ export default function RFacture(props) {
     }
 
 
-    const bodyConfirme = () => {
-        return (
-            <div className='flex flex-column justify-content-center align-items-center m-0 '>
-                <label >Prise en charge : <strong>{infoFacture.pec}%</strong>  <br /> Remise :  <strong>{infoFacture.remise}%</strong>  </label>
-            </div>
-        )
-    }
-
+   
 
     return (
         <>
@@ -550,22 +581,8 @@ export default function RFacture(props) {
                         <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-success ' tooltip="Valider l'examen" style={{ cursor: 'pointer' }} label={chargeV.chupdate ? 'Veuillez attendez...' : 'Valider'}
                             onClick={() => {
                                 // if ((infoFacture.pec == '0' || infoFacture.pec == '' || infoFacture.pec == null) && (infoFacture.remise == '0' || infoFacture.remise == '' || infoFacture.remise == null)) {
-                                const accept = () => {
                                     onVerfeCh()
-                                }
-                                const reject = () => {
-                                    return null;
-                                }
-                                confirmDialog({
-                                    message: bodyConfirme,
-                                    header: '',
-                                    icon: 'pi pi-exclamation-circle',
-                                    acceptClassName: 'p-button-success',
-                                    acceptLabel: 'Ok , Valider',
-                                    rejectLabel: 'Annuler',
-                                    accept,
-                                    reject
-                                });
+                              
                                 // } else {
                                 //     onVerfeCh();
                                 // }

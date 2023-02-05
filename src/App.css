@@ -1,5 +1,5 @@
 html,body {
-  font-size: 11.5px;
+  font-size: 11.1px;
   height: 100%;
 }
 .p-toast {
@@ -149,6 +149,10 @@ ul.p-submenu-list.p-panelmenu-root-submenu {
 
 .p-datatable-header {
   padding: 2px 8px !important;
+}
+.p-scrollpanel .p-scrollpanel-bar {
+  background: #c7c9cb;
+  border: 0 none;
 }
 
 .form-input-css-tamby {

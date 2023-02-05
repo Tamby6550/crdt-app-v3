@@ -79,7 +79,7 @@ export default function FactureNonRegler(props) {
         setlistFactureEff([{ nom: 'Chargement de données...' }])
         setTimeout(() => {
             loadData();
-        }, 1000)
+        }, 800)
     }, [refreshData]);
 
 

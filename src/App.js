@@ -1,6 +1,8 @@
 import logo from './images/crdt.jpg';
 import './App.css';
 import './table.css';
+import './test.css';
+
 import Header from './components/Header/Header';
 import { Button } from 'primereact/button'
 import { Card } from 'primereact/card';
@@ -18,7 +20,18 @@ import PatientJour from './components/Page/Examen/PatientJour';
 import ExamenJour from './components/Page/Examen/ExamenJour';
 import SaisieReglement from './components/Page/Reglement/SaisieReglement';
 import ModePaiment from './components/Page/Reglement/ModePaiment';
-
+import FactureJour from './components/Page/Rapport/FactureJ/FactureJour'
+import StatExamen from './components/Page/Rapport/Examen/StatExamen';
+import StatExamenDetaille from './components/Page/Rapport/Examen/StatExamenDetaille'
+import VirementJour from './components/Page/Rapport/VirementJ/VirementJour';
+import Recettejour from './components/Page/Rapport/RecetteJ/RecetteJour';
+import Formulaire from './components/Page/TEST/Formulaire';
+import StatCategorie from './components/Page/Rapport/Categorie/StatCategorie';
+import CumulCA from './components/Page/Rapport/CumulCA/CumulCA';
+import StatClient from './components/Page/Rapport/StatClient/StatClient';
+import StatPrescripteur from './components/Page/Rapport/StatPrescripteur/StatPrescripteur';
+import ReleveFacture from './components/Page/Rapport/ReleveFact/ReleveFacture';
+import JournalJour from './components/Page/Rapport/JournalJ/JournalJour'; 
 function App() {
   const url = "http://127.0.0.1:8000/api/";
   const { pathname } = useLocation();
@@ -36,6 +49,10 @@ function App() {
   ]
   const factures = [
     { label: "Facture" },
+    { label: bred }
+  ]
+  const rapport = [
+    { label: "Rapport" },
     { label: bred }
   ]
   const Home = { icon: 'pi pi-home' }
@@ -79,7 +96,12 @@ function App() {
                           <BreadCrumb model={referentielss} home={Home} className=" w-full" />
                           :
                           bred === "ajout" || bred === "details" || bred === "impression" || bred === "annulation" ?
-                            <BreadCrumb model={factures} home={Home} className=" w-full" />
+                          <BreadCrumb model={factures} home={Home} className=" w-full" />
+                          :
+                          bred === "facture_jour" || bred === "recette_jour" || bred === "virement_jour" || bred === "stat_examen"|| bred === "stat_client" 
+                          || bred === "stat_detail_examen" || bred === "stat_prescripteur" || bred === "stat_categorie" 
+                          || bred === "cumul_chiffre_affaire" || bred === "releve_facture" ||bred === "journal_jour" ?
+                            <BreadCrumb model={rapport} home={Home} className=" w-full" />
                             :
                             <BreadCrumb model={items} home={Home} className=" w-full" />
                       }
@@ -91,7 +113,6 @@ function App() {
                 </div>
                 <div className='col-12'>
                   <Routes>
-                    {/* <Route path='/facture' element={<Facture url={url} />} /> */}
                     <Route path='/prescripteur' element={<Prescripteur url={url} />} />
                     <Route path='/client' element={<Client url={url} />} />
                     <Route path='/examen' element={<Examen url={url} />} />
@@ -99,9 +120,20 @@ function App() {
                     <Route path='/saisie_reglement' element={<SaisieReglement url={url} />} />
                     <Route path='/mode_paiement' element={<ModePaiment url={url} />} />
                     <Route path='/facture' element={<Facture url={url} />} />
-                  
                     <Route path='/patient_jour' element={<PatientJour url={url} />} />
                     <Route path='/examen_jour' element={<ExamenJour url={url} />} />
+                    <Route path='/facture_jour' element={<FactureJour url={url} />} />
+                    <Route path='/stat_examen' element={<StatExamen url={url} />} />
+                    <Route path='/stat_detail_examen' element={<StatExamenDetaille url={url} />} />
+                    <Route path='/virement_jour' element={<VirementJour url={url} />} />
+                    <Route path='/recette_jour' element={<Recettejour url={url} />} />
+                    <Route path='/stat_categorie' element={<StatCategorie url={url} />} />
+                    <Route path='/cumul_chiffre_affaire' element={<CumulCA url={url} />} />
+                    <Route path='/stat_client' element={<StatClient url={url} />} />
+                    <Route path='/stat_prescripteur' element={<StatPrescripteur url={url} />} />
+                    <Route path='/releve_facture' element={<ReleveFacture url={url} />} />
+                    <Route path='/journal_jour' element={<JournalJour url={url} />} />
+                    <Route path='/test' element={<Formulaire url={url} />} />
                     <Route path='/' element={<Accueil url={url} />} />
                   </Routes>
                 </div>

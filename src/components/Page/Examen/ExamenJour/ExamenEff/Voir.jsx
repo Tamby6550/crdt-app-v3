@@ -193,7 +193,7 @@ export default function Voir(props) {
     return (
         <>
             <Toast ref={toastTR} position="top-right" />
-            <Button icon={PrimeIcons.SAVE} className='p-buttom-sm p-1 mr-2 p-button-success ' label='Validation examen' tooltip="valider l'examen" tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementData() }} />
+            <Button icon={PrimeIcons.SAVE} className='p-buttom-sm p-1 mr-2 p-button-success ' label='Valider' tooltip="valider l'examen" tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementData() }} />
 
             <Dialog header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-10 md:col-11 col-11 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
                 <div className="p-1  style-modal-tamby">

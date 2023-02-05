@@ -1,0 +1,97 @@
+body .rapportxxx {
+    background-color:#FFFFFF;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    line-height: 28px;
+    color: #000000;
+    
+        }
+
+.rapportxxx td .table{
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 12px;
+line-height: 24px;
+padding-right: 2px;
+color: #6b6868;
+}
+
+.rapportxxx .titlebar1 {
+font-family: Verdana, Arial, Helvetica, sans-serif;
+
+font-size: 11px;
+color:black;
+}
+
+
+.rapportxxx .bordure
+{
+       border: 1px solid  ;
+    border-color:rgb(31, 31, 31) ;
+}
+ 
+
+
+.rapportxxx .fond
+{
+background-color:#FAFAFA;
+vertical-align:top;
+background-repeat:inherit;
+}
+
+.rapportxxx .titlebar1 {
+font-family: Verdana, Arial, Helvetica, sans-serif;
+
+font-size: 11px;
+color:rgb(36, 36, 36);
+}
+
+
+.rapportxxx .table {
+border-width:1px; 
+border-style:solid; 
+border-color:rgb(34, 34, 34);
+border-collapse:collapse;
+padding: 1px;
+}
+.rapportxxx .td { 
+border-width:1px;
+border-style:solid; 
+border-color:rgb(36, 36, 36);
+}
+
+
+
+/* 
+facture jour detail */
+.rapportxxx .Style1 {
+	font-size: 10px;
+	font-weight: bold;
+}
+.rapportxxx .Style3 {font-size: 10px}
+.rapportxxx .saut
+   {
+   /* saut de page apres le bloc*/
+   page-break-after : always;
+  /* saut de page avant le bloc*/
+  /* page-break-before : always;*/
+   }
+.rapportxxx .Style4 {font-size: 9px}
+
+@media print {
+   
+    .rapportxxx .menu{
+        display:none;
+        }
+        
+        .rapportxxx .print{
+        display:none;
+        }
+
+}
+
+
+.rapportxxx .Style11 {
+	font-family: "Franklin Gothic Medium", "Franklin Gothic Medium Cond";
+	font-weight: bold;
+	font-size: 16px;
+}

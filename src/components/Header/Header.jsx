@@ -87,88 +87,143 @@ export default function Header() {
     },
     {
       label: 'Facture',
-      icon: PrimeIcons.USERS,
+      icon: PrimeIcons.CREDIT_CARD,
       className: pathname === "/facture" && classactive,
       command: () => {
         navigate("/facture");
       
       }
     },
-    // {
-    //   label: 'Facture',
-    //   icon: PrimeIcons.DOLLAR,
-    //   expanded:pathname === "/ajout" || pathname === "/details" || pathname === "/impression" || pathname === "/annulation" ? true : false,
-    //   items: [
-    //     {
-    //       label: 'Ajout',
-    //       icon: PrimeIcons.CREDIT_CARD,
-    //       className: pathname === "/ajout" && classactive,
-    //       command: () => {
-    //         navigate("/ajout");
-          
-    //       }
-    //     },
-    //     {
-    //       label: 'Détails',
-    //       icon: PrimeIcons.FILE,
-    //       className: pathname === "/details" && classactive,
-    //       command: () => {
-    //         navigate("/details");
-          
-    //       }
-    //     },
-    //     {
-    //       label: 'Impression',
-    //       icon: PrimeIcons.FILE,
-    //       className: pathname === "/impression" && classactive,
-    //       command: () => {
-    //         navigate("/impression");
-          
-    //       }
-    //     },
-    //     {
-    //       label: 'Annulation',
-    //       icon: PrimeIcons.FILE,
-    //       className: pathname === "/annulation" && classactive,
-    //       command: () => {
-    //         navigate("/annulation");
-          
-    //       }
-    //     },
-    //   ]
-    // },
     {
-      label: 'Reglements',
-      icon: PrimeIcons.MONEY_BILL,
-      expanded:pathname === "/mode_paiement" || pathname === "/saisie_reglement" ? true : false,
+      label: 'Reglement',
+      icon: PrimeIcons.USERS,
+      className: pathname === "/saisie_reglement" && classactive,
+      command: () => {
+        navigate("/saisie_reglement");
+      
+      }
+    },
+   
+    {
+      label: 'Rapport',
+      icon: PrimeIcons.TABLE,
+      expanded:pathname === "/facture_jour" || pathname === "/recette_jour" || pathname === "/virement_jour" 
+      || pathname === "/stat_examen" || pathname === "/stat_client" || pathname === "/stat_detail_examen" || pathname === "/stat_prescripteur" || 
+      pathname === "/stat_categorie" || pathname === "/cumul_chiffre_affaire" || pathname === "/releve_facture" || pathname === "/journal_jour" ? true : false,
       items: [
         {
-          label: 'Mode de paiement',
-          icon: PrimeIcons.CREDIT_CARD,
-          className: pathname === "/mode_paiement" && classactive,
+          label: 'Journal du jour',
+          icon: PrimeIcons.FILE,
+          className: pathname === "/journal_jour" && classactive,
           command: () => {
-            navigate("/mode_paiement");
+            navigate("/journal_jour");
           
           }
         },
         {
-          label: 'Saisie reglement',
+          label: 'Facture du jour',
           icon: PrimeIcons.FILE,
-          className: pathname === "/saisie_reglement" && classactive,
+          className: pathname === "/facture_jour" && classactive,
           command: () => {
-            navigate("/saisie_reglement");
+            navigate("/facture_jour");
           
           }
-        }
+        },
+        {
+          label: 'Recette du jour',
+          icon: PrimeIcons.FILE,
+          className: pathname === "/recette_jour" && classactive,
+          command: () => {
+            navigate("/recette_jour");
+          
+          }
+        },
+        {
+          label: 'Virement du jour',
+          icon: PrimeIcons.FILE,
+          className: pathname === "/virement_jour" && classactive,
+          command: () => {
+            navigate("/virement_jour");
+          
+          }
+        },
+        {
+          label: 'Stat Examen',
+          icon: PrimeIcons.FILE,
+          className: pathname === "/stat_examen" && classactive,
+          command: () => {
+            navigate("/stat_examen");
+          
+          }
+        },
+        {
+          label: 'Stat Client',
+          icon: PrimeIcons.FILE,
+          className: pathname === "/stat_client" && classactive,
+          command: () => {
+            navigate("/stat_client");
+          
+          }
+        },
+        {
+          label: 'Stat Détaillé Examen',
+          icon: PrimeIcons.FILE,
+          className: pathname === "/stat_detail_examen" && classactive,
+          command: () => {
+            navigate("/stat_detail_examen");
+          
+          }
+        },
+        {
+          label: 'Stat Prescripteur',
+          icon: PrimeIcons.FILE,
+          className: pathname === "/stat_prescripteur" && classactive,
+          command: () => {
+            navigate("/stat_prescripteur");
+          
+          }
+        },
+        {
+          label: 'Stat Catégorie',
+          icon: PrimeIcons.FILE,
+          className: pathname === "/stat_categorie" && classactive,
+          command: () => {
+            navigate("/stat_categorie");
+          
+          }
+        },
+        {
+          label: 'Cumul C.A',
+          icon: PrimeIcons.FILE,
+          className: pathname === "/cumul_chiffre_affaire" && classactive,
+          command: () => {
+            navigate("/cumul_chiffre_affaire");
+          
+          }
+        },
+        {
+          label: 'Rélévé Facture',
+          icon: PrimeIcons.FILE,
+          className: pathname === "/releve_facture" && classactive,
+          command: () => {
+            navigate("/releve_facture");
+          
+          }
+        },
       ]
-    },
-    {
-      label: 'Rapport',
-      icon: PrimeIcons.BRIEFCASE,
     },
     {
       label: 'Utilisateur',
       icon: PrimeIcons.COG,
+    },
+    {
+      label: 'Test',
+      icon: PrimeIcons.USERS,
+      className: pathname === "/test" && classactive,
+      command: () => {
+        navigate("/test");
+      
+      }
     }
   ];
 

@@ -12,7 +12,19 @@
         -webkit-print-color-adjust:exact;
     }
 }
+
 @page{
     size: auto;
     margin: 20mm;
 }
+
+
+.rapportxxx{
+    page:special;
+}
+
+
+    @page special{
+        margin: 10mm;
+        size:landscape
+    }
