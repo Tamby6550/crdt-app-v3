@@ -8,23 +8,36 @@ import { Toast } from 'primereact/toast';
 import { Dialog } from 'primereact/dialog';
 import { BlockUI } from 'primereact/blockui';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import CryptoJS from 'crypto-js';
 
 
 export default function ChoixReglement(props) {
 
+    const secret= "tamby6550";
+    const decrypt = () => {
+        const virus = localStorage.getItem("virus");
+        const decryptedData = CryptoJS.AES.decrypt(virus, secret);
+        const dataString = decryptedData.toString(CryptoJS.enc.Utf8);
+        const data = JSON.parse(dataString);
+        return { data };
+    }
 
     //Chargement de données
     const [charge, setCharge] = useState(false);
     const [listReglement, setlistReglement] = useState([{ reglement_id: '', libelle: '', description: '' }]);
-    const [user, setuser] = useState('crdt');
+    const [user, setuser] = useState('');
     const onVideInfo = () => {
-        setuser('crdt');
+        setuser(decrypt().data.login);
     }
- 
+
+    useEffect(() => {
+        setuser(decrypt().data.login)
+    }, [decrypt().data.login])
+
 
     const toastTR = useRef(null);
     /*Notification Toast */
-   
+
 
     //Get List client
     const loadData = async () => {
@@ -54,12 +67,12 @@ export default function ChoixReglement(props) {
 
                     <Button icon={PrimeIcons.CHECK_CIRCLE} className='p-buttom-sm p-1 p-button-primary ' tooltip='Choisir' tooltipOptions={{ position: 'top' }}
                         onClick={() => {
-                            if (props.reglement=='ok') {
+                            if (props.reglement == 'ok') {
                                 props.setdataReglement({ ...props.dataReglement, reglement_id: data.reglement_id, nomreglement: data.libelle })
-                            }else{
+                            } else {
                                 props.setinfoFacture({ ...props.infoFacture, reglement_id: data.reglement_id, nomreglement: data.libelle })
                             }
-                            
+
                             onHide('displayBasic2');
                         }} />
                 </div>
@@ -117,7 +130,7 @@ export default function ChoixReglement(props) {
             <Dialog header={renderHeader('displayBasic2')} className="lg:col-4 md:col-5 sm:col-10 col-11 p-0" visible={displayBasic2} footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
                 <div className="flex flex-column justify-content-center">
                     <BlockUI blocked={charge} template={<ProgressSpinner />}>
-                        <DataTable  header={header1} value={listReglement} scrollable scrollHeight="350px" responsiveLayout="scroll" className='bg-white' emptyMessage={'Aucun resultat trouvé'} style={{ fontSize: '1em' }}>
+                        <DataTable header={header1} value={listReglement} scrollable scrollHeight="350px" responsiveLayout="scroll" className='bg-white' emptyMessage={'Aucun resultat trouvé'} style={{ fontSize: '1em' }}>
                             <Column field='reglement_id' header="Id"></Column>
                             <Column field='libelle' header="Libellé"></Column>
                             <Column field='description' header="Description"></Column>

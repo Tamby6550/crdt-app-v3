@@ -3,7 +3,7 @@ import logoH from './images/Capture.PNG';
 import './App.css';
 import './table.css';
 import './test.css';
-import React,{useState,useEffect,useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Dialog } from 'primereact/dialog';
 
 import Header from './components/Header/Header';
@@ -48,15 +48,15 @@ function App() {
         logout();
     };
 
-   
 
-    const [chmdp, setchmdp] = useState({an_mdp:'',user:'',nv_mdp:''});
+
+    const [chmdp, setchmdp] = useState({ an_mdp: '', user: '', nv_mdp: '' });
     const [verfConfirm, setverfConfirm] = useState(false);
     const [chargementCH, setchargementCH] = useState(false);
     const [voirmdp, setvoirmdp] = useState(false);
 
     const onChargeDonneChMdp = (e) => {
-        setchmdp({ ...chmdp,user:decrypt().data.login, [e.target.name]: e.target.value })
+        setchmdp({ ...chmdp, user: decrypt().data.login, [e.target.name]: e.target.value })
     }
 
     const decrypt = () => {
@@ -65,7 +65,7 @@ function App() {
         const decryptedData = CryptoJS.AES.decrypt(virus, secret);
         const dataString = decryptedData.toString(CryptoJS.enc.Utf8);
         const data = JSON.parse(dataString);
-        
+
         return { data }
     }
     const url = "http://127.0.0.1:8000/api/";
@@ -92,46 +92,46 @@ function App() {
     ]
     const Home = { icon: 'pi pi-home' }
 
-     /* Modal */
-     const [displayBasic2, setDisplayBasic2] = useState(false);
-     const [position, setPosition] = useState('center');
-     const dialogFuncMap = {
-         'displayBasic2': setDisplayBasic2,
-     }
-     const onClick = (name, position) => {
-         dialogFuncMap[`${name}`](true);
- 
-         if (position) {
-             setPosition(position);
-         }
-     }
-     const onHide = (name) => {
-         dialogFuncMap[`${name}`](false);
-     }
- 
-     const renderFooter = (name) => {
-         return (
-             <div>
-                 <Button label="Fermer" icon="pi pi-times" onClick={() => onHide(name)} className="p-button-text" />
-             </div>
-         );
-     }
-     const renderHeader = (name) => {
-         return (
-             <div>
-                 <h4 className='mb-1'>Modification mot de passe</h4>
-                 <hr />
-             </div>
-         );
-     }
-     /** Fin modal */
-     const toastTR = useRef(null);
-     /*Notification Toast */
-     const notificationAction = (etat, titre, message) => {
-       toastTR.current.show({ severity: etat, summary: titre, detail: message, life: 3000 });
-     }
+    /* Modal */
+    const [displayBasic2, setDisplayBasic2] = useState(false);
+    const [position, setPosition] = useState('center');
+    const dialogFuncMap = {
+        'displayBasic2': setDisplayBasic2,
+    }
+    const onClick = (name, position) => {
+        dialogFuncMap[`${name}`](true);
 
-     const changeMdp = async () => {
+        if (position) {
+            setPosition(position);
+        }
+    }
+    const onHide = (name) => {
+        dialogFuncMap[`${name}`](false);
+    }
+
+    const renderFooter = (name) => {
+        return (
+            <div>
+                <Button label="Fermer" icon="pi pi-times" onClick={() => onHide(name)} className="p-button-text" />
+            </div>
+        );
+    }
+    const renderHeader = (name) => {
+        return (
+            <div>
+                <h4 className='mb-1'>Modification mot de passe</h4>
+                <hr />
+            </div>
+        );
+    }
+    /** Fin modal */
+    const toastTR = useRef(null);
+    /*Notification Toast */
+    const notificationAction = (etat, titre, message) => {
+        toastTR.current.show({ severity: etat, summary: titre, detail: message, life: 3000 });
+    }
+
+    const changeMdp = async () => {
         // setchargementCH(true)
         // try {
         //     await axios.post(url + 'changeMdp', chmdp,
@@ -163,7 +163,7 @@ function App() {
     };
     return (
         <div className="App p-0" >
-             {/* <Dialog header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-3 md:col-5 col-8 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
+            {/* <Dialog header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-3 md:col-5 col-8 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
                 <div className="p-1  style-modal-tamby">
                     <div className="col-12 field my-1 flex flex-column">
                         <Components.Label >Ancien mot de passe </Components.Label>
@@ -219,7 +219,7 @@ function App() {
                                 <>
                                     <h4 className='m-0'> <u>Nom :</u>  {decrypt().data.nom} </h4>
                                     <h4 className='m-0'> <u>Type  :</u>  {decrypt().data.login} </h4>
-                                
+
                                 </>
                                 :
                                 null}
@@ -253,11 +253,11 @@ function App() {
                                                                 <BreadCrumb model={items} home={Home} className=" w-full" />
                                                 }
                                             </div>
-                                            <div className='lg:col-4 sm:col-4 col-4 pt-0 flex justify-content-end ' style={{alignItems: 'baseline'}}  >
-                                            <Button   label='Changer le mot de passe' tooltipOptions={{position:'top'}} style={{fontWeight:'600',fontSize:'1em'}}  className=' p-button-text ' onClick={() => { onClick('displayBasic2');  }}  >
-                                           
-                                           </Button>
-                                                <Button tooltip='Déconnecter' label='Déconnecter' tooltipOptions={{ position: 'top' }} style={{ fontWeight: '600', fontSize: '1.1em' }} icon='pi pi-power-off' className='p-button-danger p-button-text mt-2 ' onClick={logout} >
+                                            <div className='lg:col-4 sm:col-4 col-4 pt-0 flex justify-content-end ' style={{ alignContent: 'center' }}  >
+                                                <Button label='Changer le mot de passe' tooltipOptions={{ position: 'top' }} style={{ fontWeight: '600', fontSize: '1em' }} className=' p-button-text ' onClick={() => { onClick('displayBasic2'); }}  >
+
+                                                </Button>
+                                                <Button tooltip='Déconnecter' label='Déconnecter' tooltipOptions={{ position: 'top' }} style={{ fontWeight: '600', fontSize: '1.1em' }} icon='pi pi-power-off' className='p-button-primary p-button-text mt-2 ' onClick={logout} >
 
                                                 </Button>
                                             </div>
@@ -270,7 +270,7 @@ function App() {
                             </div>
                         </div>
                         <footer className='col-12 tete-logo flex justify-content-center h-2em'>
-                            <small style={{color:'gray'}} >Copyright © 2023, Centre de RadioDiagnostic et de Thérapie design by tambyarimisaemit@gmail.com</small>
+                            <small style={{ color: 'gray' }} >Copyright © 2023, Centre de RadioDiagnostic et de Thérapie design by tambyarimisaemit@gmail.com</small>
                         </footer>
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 html,body {
   font-size: 11.1px;
   height: 100%;
+
 }
 .p-toast {
 
@@ -284,4 +285,9 @@ button.p-butttamby-retourner:hover{
   padding: 0.8375rem 0.975rem;
   background-color: rgb(195 153 46 / 85%);
   border: 1px solid rgb(211 152 47 / 63%);
+}
+
+img.max-h-4rem.flex.m-2.headerimg {
+  width: 100%;
+  height: 100%;
 }

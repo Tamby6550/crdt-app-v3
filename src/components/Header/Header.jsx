@@ -18,9 +18,9 @@ export default function Header() {
     {
       label: 'Accueil',
       icon: PrimeIcons.HOME,
-      className: pathname === "/" && classactive,
+      className: pathname === "/acceuil" && classactive,
       command: () => {
-        navigate("/");
+        navigate("/acceuil");
       
       }
     },
