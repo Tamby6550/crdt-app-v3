@@ -155,20 +155,20 @@ export default function Patient(props) {
     return (
         <>
             <Toast ref={toastTR} position="top-right" />
-            <Dialog header={"Date D'arrivée : "+numJournal.datej} visible={displayBasic} className="lg:col-3 md:col-5 col-8 p-0"  onHide={() => onHide('displayBasic')} >
-              <center><h3 className='m-3'>Numéro de journal d'arrivée :  <u style={{ color: 'rgb(34, 197, 94)', fontWeight: 'bold', fontSize: '1.8rem' }}> {numJournal.num}</u>   </h3></center>  
+            <Dialog header={"Date d'arriver : "+numJournal.datej} visible={displayBasic} className="lg:col-3 md:col-5 col-8 p-0"  onHide={() => onHide('displayBasic')} >
+              <center><h3 className='m-3'>Numéro de journal d'arriver :  <u style={{ color: 'rgb(34, 197, 94)', fontWeight: 'bold', fontSize: '1.8rem' }}> {numJournal.num}</u>   </h3></center>  
             </Dialog>
             <div className="flex flex-column justify-content-center">
                 <DataTable header={header} value={listPatient} loading={charge} responsiveLayout="scroll" scrollable scrollHeight="500px" rows={10} rowsPerPageOptions={[10, 20, 50]} paginator className='bg-white' emptyMessage={'Aucun resultat trouvé'}>
                     <Column field='id_patient' header="Id"></Column>
                     <Column field={'nom'} header="Nom"></Column>
-                    <Column field={'prenom'} header="Prenom"></Column>
+                    <Column field={'prenom'} header="Prénom"></Column>
                     <Column field='type' header="Tarif"></Column>
                     <Column field='sexe' header="Sexe"></Column>
                     <Column field='datenaiss' header="Date de naissance"></Column>
-                    <Column field='telephone' header="Tel" ></Column>
+                    <Column field='telephone' header="Tél" ></Column>
                     <Column field='adresse' header="Adresse" ></Column>
-                    <Column header="Action" body={bodyBoutton} align={'left'}></Column>
+                    <Column header="" body={bodyBoutton} align={'left'}></Column>
                 </DataTable>
             </div>
         </>

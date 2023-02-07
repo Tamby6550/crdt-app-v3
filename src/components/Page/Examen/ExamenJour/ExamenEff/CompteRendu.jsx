@@ -8,11 +8,9 @@ import axios from 'axios'
 import BundledEditor from './service/EditorTiny/BundledEditor';
 import ReactToPrint from 'react-to-print'
 import QRCode from 'react-qr-code'
-
+import CRmodel from '../../../ModelCR/CRmodel';
 
 export default function CompteRendu(props) {
-
-
     const [info, setinfo] = useState({ num_arriv: '', date_arriv: '', cr_name: '', lib_examen: '' })
     const [chargePost, setchargePost] = useState({ chajoute: false });
     const [printDesact, setprintDesact] = useState(true);
@@ -182,11 +180,15 @@ export default function CompteRendu(props) {
 
     const renderHeader = (name) => {
         //Ovaina ho numero ny date
-
-
         return (
             <div>
-                <h4 className='mb-1'>Compte Rendu  : <i style={{ fontWeight: '800', color: 'black' }} >Date d'arrivée : {props.date_arriv} , numéro : {props.num_arriv} , Combinaison : {numQr} </i> </h4>
+                <h4 className='mb-1'>
+                    Compte Rendu  :
+                    <i style={{ fontWeight: '800', color: 'black' }} >
+                        Date d'arrivée : {props.date_arriv}
+                        {/* , numéro : {props.num_arriv} , Combinaison : {numQr}  */}
+                    </i>
+                </h4>
                 <hr />
             </div>
         );
@@ -218,19 +220,9 @@ export default function CompteRendu(props) {
                 <Toast ref={toastTR} position="top-right" />
                 {/* <SaisieReglement/> */}
                 <div className="p-1  style-modal-tamby">
-                <div className='col-12 pt-0' style={{ borderBottom: '1px solid #efefef' }} >
-                        <input type="file" onChange={(e)=>{
-                            const file = e.target.files[0];
-                            const reader = new FileReader();
-                            reader.addEventListener("load", function() {
-                              const htmlContent = reader.result;
-                              sethtmlm(reader.result)
-                              setrecHtml(reader.result)
-                            //   console.log(htmlContent);
-                            });
-                            reader.readAsText(file);
-                        }} />
-                </div>
+                    <div className='col-12 pt-0' style={{ borderBottom: '1px solid #efefef' }} >
+                        <CRmodel sethtmlm={sethtmlm} setrecHtml={setrecHtml} recHtml={recHtml} />
+                    </div>
                     <div className='mb-3'>
                         <BundledEditor
                             onInit={(evt, editor) => editorRef.current = editor}

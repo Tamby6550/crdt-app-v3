@@ -6,8 +6,9 @@ import 'primeflex/primeflex.css';
 import axios from 'axios';
 import useAuth from './useAuth';
 import CryptoJS from 'crypto-js';
+import logo from '../../images/crdt.png';
 
-// import * as Components from './Components';
+import * as Components from './Components';
 import { Toast } from 'primereact/toast';
 
 
@@ -70,66 +71,17 @@ export default function Signin(props) {
     return (
         <div className='flex flex-row justify-content-center  align-items-center m-0 w-full '>
             <Toast ref={toastTR} position="top-center" />
-            <input type="text" placeholder='nom utilisateur' name='login' onChange={(e) => { onChargeDonne(e) }} />
-            <input type="password" placeholder='mot de passe' name='password' onChange={(e) => { onChargeDonne(e) }} />
-            <input type="button" value="Connexion"  onClick={() => { onverfCh() }} />
-            {/* <Components.Container class='.login-page' >
-                <Components.SignUpContainer signinIn={signIn}>
-                    <Components.Form>
-                        <Components.Title>Création du compte</Components.Title>
-                        <Components.Input type='text' className={verfChampIns.rm_nom ? "fform-invalid" : ''} placeholder='Nom utilisateur' style={{ marginBottom: '20px' }} name='rm_nom' onChange={(e) => { onChargeDonneInscription(e) }} />
-                        {verfChampIns.rm_nom ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
-                        <Components.Input type='password' placeholder='Password' className={verfChampIns.motpasse ? "fform-invalid" : ''} name='rm_mdp' onChange={(e) => { onChargeDonneInscription(e) }} />
-                        {verfChampIns.motpasse ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
-
-                        <Components.Label >Grade </Components.Label>
-                        <Components.Select name='grad_id' onChange={(e) => { onChargeDonneInscription(e) }} className={verfChampIns.grad_id ? "fform-invalid" : ''} >
-                            <Components.Option value={''}  >{charge ? 'Chargement...' : ''}</Components.Option>
-                            {grade.map((gr, index) => (
-                                <Components.Option value={gr.grad_id} key={index} >{gr.grad_nom}</Components.Option>
-                            ))}
-                        </Components.Select>
-                        {verfChampIns.grad_id ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
-                        <Components.Label >Mention</Components.Label>
-                        <Components.Select name='mention_nom' onChange={(e) => { onChargeDonneInscription(e) }} className={verfChampIns.mention ? "fform-invalid" : ''}  >
-                            <Components.Option value={''}  >{charge ? 'Chargement...' : ''}</Components.Option>
-                            {mention.map((mt, index) => (
-                                <Components.Option value={mt.mention_nom} key={index} >{mt.mention_nom}</Components.Option>
-                            ))}
-                        </Components.Select>
-                        {verfChampIns.mention ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
-                        <Components.Button onClick={() => { onverfChInscription() }}>{chargement ? '...' : 'Inscrire'}</Components.Button>
-                    </Components.Form>
-                </Components.SignUpContainer>
+            <Components.Container class='.login-page' >
+                
 
                 <Components.SignInContainer signinIn={signIn}>
                     <Components.Form>
                         <Components.Title>Login</Components.Title>
 
-                        <Components.Label >Mention</Components.Label>
-                        <Components.Select name='mention' onChange={(e) => { onChargeDonne(e) }} className={verfChamp.mention ? "fform-invalid" : ''}  >
-                            <Components.Option value={''}  >{charge ? 'Chargement...' : ''}</Components.Option>
-                            {mention.map((mt, index) => (
-                                <Components.Option value={mt.mention_nom} key={index} >{mt.mention_nom}</Components.Option>
-                            ))}
-                        </Components.Select>
-                        {verfChamp.mention ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
-
-                        {verfadmin ? null :
-                            <>
-                                <Components.Label >Grade </Components.Label>
-                                <Components.Select name='grad_id' onChange={(e) => { onChargeDonne(e) }} className={verfChamp.grad_id ? "fform-invalid" : ''} >
-                                    <Components.Option value={''}  >{charge ? 'Chargement...' : ''}</Components.Option>
-                                    {grade.map((gr, index) => (
-                                        <Components.Option value={gr.grad_id} key={index} >{gr.grad_nom}</Components.Option>
-                                    ))}
-                                </Components.Select>
-                                {verfChamp.grad_id ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
-                            </>
-                        }
+                        <Components.Label >Nom utilisateur </Components.Label>
+                        <Components.Input type='text' placeholder='Login' name='login' onChange={(e) => { onChargeDonne(e) }} />
                         <Components.Label >Mot de passe </Components.Label>
-                        <Components.Input type='password' placeholder='Password' className={verfChamp.motpasse ? "fform-invalid" : ''} name='motpasse' onChange={(e) => { onChargeDonne(e) }} />
-                        {verfChamp.motpasse ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
+                        <Components.Input type='password' placeholder='Password'  name='password' onChange={(e) => { onChargeDonne(e) }} />
                         <Components.Button onClick={() => { onverfCh() }} className='chargement-login mt-5' > {chargement ? '...' : 'Connecter'} </Components.Button>
                     </Components.Form>
                 </Components.SignInContainer>
@@ -147,9 +99,9 @@ export default function Signin(props) {
                         </Components.LeftOverlayPanel>
 
                         <Components.RightOverlayPanel signinIn={signIn}>
-                            <Components.Title style={{ color: '#546372', fontSize: '1.6em' }} >Application pour le suivi pédagogique</Components.Title>
+                            <Components.Title style={{ color: '#546372', fontSize: '1.6em' }} >Centre de RadioDiagnostic et de Thérapie</Components.Title>
                             <Components.Paragraph>
-                                <img src={emit} alt="" width={"148px"} />
+                                <img src={logo} alt="" width={"148px"} />
                             </Components.Paragraph>
                             <Components.GhostButton style={{ display: 'none' }} onClick={() => toggle(false)}>
                                 S'inscrire
@@ -159,7 +111,7 @@ export default function Signin(props) {
                     </Components.Overlay>
                 </Components.OverlayContainer>
 
-            </Components.Container> */}
+            </Components.Container>
         </div>
     );
 }

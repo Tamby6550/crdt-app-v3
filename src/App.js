@@ -1,11 +1,11 @@
-import logo from './images/crdt.jpg';
+import logo from './images/crdt.png';
 import logoH from './images/Capture.PNG';
 import './App.css';
 import './table.css';
 import './test.css';
 import React,{useState,useEffect,useRef} from 'react';
 import { Dialog } from 'primereact/dialog';
-
+import { PrimeIcons } from 'primereact/api';
 import Header from './components/Header/Header';
 import { Button } from 'primereact/button'
 import { Card } from 'primereact/card';
@@ -13,11 +13,11 @@ import { Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import Patient from './components/Page/Patient'
 import { BreadCrumb } from 'primereact/breadcrumb'
 import Facture from './components/Page/Facture';
-
+import * as Components  from './components/Login/Components'
 import Client from './components/Page/Client';
 import Accueil from './components/Page/Accueil';
 import Prescripteur from './components/Page/Prescripteur';
-
+import axios from 'axios';
 import Examen from './components/Page/Examen';
 import PatientJour from './components/Page/Examen/PatientJour';
 import ExamenJour from './components/Page/Examen/ExamenJour';
@@ -39,6 +39,8 @@ import Signin from './components/Login/Signin'
 import useAuth from './components/Login/useAuth';
 import CryptoJS from 'crypto-js';
 import LogoutTimer from './components/Login/LogoutTimer';
+import { Toast } from 'primereact/toast';
+
 function App() {
 
 
@@ -132,38 +134,33 @@ function App() {
      }
 
      const changeMdp = async () => {
-        // setchargementCH(true)
-        // try {
-        //     await axios.post(url + 'changeMdp', chmdp,
-        //         {
-        //             headers: {
-        //                 "Content-Type": "application/json; charset=utf-8",
-        //                 "X-API-KEY": "tamby"
-        //             },
-        //         }
-        //     ).then(res => {
-        //         notificationAction(res.data.etat, res.data.situation, res.data.message);      
-        //         setchargementCH(false);
-        //         if (res.data.etat=='success') {
-        //             onHide('displayBasic2');
-        //             let i=0;
-        //             setTimeout(() => {
-        //                alert('Vous allez rediriger vers la page login pour la modification de mot de passe')
-        //                 logout();
-        //             }, 1000);
-        //         }
-        //     })
-        //     .catch(err => {
-        //             setchargementCH(false)
-        //             console.log(err);
-        //         });
-        // } catch (err) {
-        //     console.error(err);
-        // }
+        setchargementCH(true)
+        try {
+            await axios.post(url + 'changemdp', chmdp).then(res => {
+                console.log(res.data)
+                notificationAction(res.data.etat, res.data.situation, res.data.message);      
+                setchargementCH(false);
+                if (res.data.etat=='success') {
+                    onHide('displayBasic2');
+                    setTimeout(() => {
+                       alert('Vous allez rediriger vers la page login pour la modification de mot de passe')
+                        logout();
+                    }, 1000);
+                }
+            })
+            .catch(err => {
+                    setchargementCH(false)
+                    console.log(err);
+                });
+        } catch (err) {
+            console.error(err);
+        }
     };
     return (
         <div className="App p-0" >
-             {/* <Dialog header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-3 md:col-5 col-8 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
+                        <Toast ref={toastTR} position="top-center" />
+
+             <Dialog header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-3 md:col-5 col-8 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
                 <div className="p-1  style-modal-tamby">
                     <div className="col-12 field my-1 flex flex-column">
                         <Components.Label >Ancien mot de passe </Components.Label>
@@ -173,16 +170,15 @@ function App() {
                             <Components.Input type='password' placeholder='Nouveau mot de passe'  name='nv_mdp' onChange={onChargeDonneChMdp} />
                             <div className='m-0 p-0 flex ' style={{alignItems:'center'}} >
                             <Components.Input type={voirmdp? 'text' :'password'}  placeholder='Confirmer le mot de passe'  name='cof_mdp' onChange={onChargeDonneChMdp}  />
-                            <Button icon={!voirmdp? PrimeIcons.EYE:PrimeIcons.EYE_SLASH} style={{height:'100%'}} onClick={()=>{setvoirmdp(!voirmdp)}} ></Button>
+                            <Button icon={!voirmdp? PrimeIcons.EYE:PrimeIcons.EYE_SLASH} style={{height:'100%'}} className='p-button-secondary' onClick={()=>{setvoirmdp(!voirmdp)}} ></Button>
                             </div>
                           <center>
-                             {verfConfirm ? <small id="username2-help" className="p-error block">Votre mot de passe n'est pas identique !</small> : null}
+                             {verfConfirm ? <label id="username2-help" className="p-error block">Votre mot de passe n'est pas identique !</label> : null}
                             </center> 
-
                         </div>
                     </div>
                     <center>
-                    <Button   label={chargementCH? '...' :'Sauvegarder la modification'} tooltipOptions={{position:'top'}} style={{fontWeight:'600',fontSize:'1em'}}  className=' p-button-secondary ' 
+                    <Button   label={chargementCH? '...' :'Sauvegarder la modification'} tooltipOptions={{position:'top'}} style={{fontWeight:'600',fontSize:'1em'}}  className=' p-button-primary ' 
                         onClick={() => {
                             if (chmdp.an_mdp=='' || chmdp.nv_mdp==''|| chmdp.cof_mdp=='') {
                                 alert('Verifer votre champ !')
@@ -198,7 +194,7 @@ function App() {
                     /> 
                     </center>
                 </div>
-            </Dialog> */}
+            </Dialog>
             {isAuthenticated ?
                 <LogoutTimer logoutTime={600} onLogout={handleLogout} />
                 :
@@ -206,20 +202,19 @@ function App() {
             }
             <Routes>
                 <Route element={<div className='grid p-0 mb-3' style={{ minWidth: "500px" }}>
-                    <div className='grid col-12 tete-logo flex justify-content-between h-2em' style={{ alignItems: 'center' }} >
+                    <div className='grid col-12 tete-logo flex justify-content-between h-3em ' style={{ alignItems: 'center',background:'linear-gradient(to right, rgb(241 232 206), rgb(255 254 251))',height: '100px' }} >
                         <div className='col-2 m-0'  >
-                            <img src={logo} className=" max-h-4rem flex m-2 headerimg" />
+                            <img src={logo} style={{width:'250px',height:'90px'}} />
 
                         </div>
-                        <div className='col-9 p-0'   >
-                            <img src={logoH} className=" max-h-4rem flex m-2 headerimg" />
+                        <div className='col-9 p-0' >
+                            {/* <img src={logoH} className=" max-h-4rem flex m-2 headerimg" /> */}
                         </div>
-                        <div className='col-1 flex flex-column justify-content-center pl-4'   >
+                        <div className='col-1 flex flex-column justify-content-center pl-4' style={{color:'#4c4c4c'}} >
                             {isAuthenticated ?
                                 <>
-                                    <h4 className='m-0'> <u>Nom :</u>  {decrypt().data.nom} </h4>
-                                    <h4 className='m-0'> <u>Type  :</u>  {decrypt().data.login} </h4>
-                                
+                                    <h4 className='m-2'> <>Nom :</>  {decrypt().data.nom} </h4>
+                                    <h4 className='m-2'> <>Rôle  :</>  {decrypt().data.login} </h4>
                                 </>
                                 :
                                 null}

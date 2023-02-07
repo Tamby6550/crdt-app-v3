@@ -290,7 +290,7 @@ export default function RFacture(props) {
             <div>
                 <label className='m-2'>Reglement fait par : <strong className='m-1'>{dataReglement.type_reglmnt == 'P' ? 'Patient' : 'Client'}</strong> </label> <hr />
                 <label className='m-2'>Type règlement : <strong className='m-1'>{dataReglement.nomreglement}</strong> </label> <hr />
-                <label className='m-2'>Montant : <strong className='m-1'>{format(dataReglement.montantreglement, 0, " ")} Ar </strong> </label><hr />
+                <label className='m-2'>Montant : <strong className='m-1'>{dataReglement.montantreglement} Ar </strong> </label><hr />
                 <label className='m-2'>RIB : <strong className='m-1'>{dataReglement.rib == '' ? '-' : dataReglement.rib}</strong> </label>
             </div>
         );

@@ -65,7 +65,7 @@ export default function Registre(props) {
     const renderHeader = (name) => {
         return (
             <div>
-                <h3 className='mb-1'> {props.tambyR == 'nouveau' ? 'N° journal d\'arrivée' : "Modif n°  d'arrivée d'un patient"} </h3>
+                <h3 className='mb-1'> {props.tambyR == 'nouveau' ? 'N° journal d\'arrivé' : "Modif n°  d'arrivée d'un patient"} </h3>
                 <hr />
             </div>
         );
@@ -106,7 +106,7 @@ export default function Registre(props) {
     }
     return (
         <>
-            <Button icon={PrimeIcons.PLUS} className={'p-buttom-sm mr-2 p-1'} style={stylebtnRec} tooltip={'Journal d\'entré'} tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); loadData() }} />
+            <Button icon={PrimeIcons.PLUS} className={'p-buttom-sm mr-2 p-1'} style={stylebtnRec} tooltip={'Journal d\'entrer'} tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); loadData() }} />
             <Dialog header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-3 md:col-5 col-8 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
                 <div className="p-1 style-modal-tamby" >
                     <div className='pb-3 ml-5'>
@@ -119,7 +119,7 @@ export default function Registre(props) {
                         <h3><u>Téléphone</u>  :  <label >{props.telephone}</label> </h3>
                     </div>
                     <center>
-                        <Button icon={PrimeIcons.PLUS} className='p-button-sm p-button-info p-2 ' style={stylebtnT} label={charge.chajoute ? 'Veuillez attendez... ' : 'Ajout dans le journal'} onClick={() => {
+                        <Button icon={PrimeIcons.PLUS} className='p-button-sm p-button-info p-2 ' style={stylebtnT} label={charge.chajoute ? 'Veuillez attendez... ' : 'Ajouter dans le journal'} onClick={() => {
                             if (charge.chajoute) {
                                 return null
                             } else {

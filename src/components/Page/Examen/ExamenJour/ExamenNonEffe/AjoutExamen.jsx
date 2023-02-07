@@ -190,7 +190,7 @@ export default function AjoutExamen(props) {
                     </div>
                     {verfChamp ? <center><label id="username2-help" className="p-error block justify-content-center" style={{ fontWeight: 'bold' }}>Examen manquante !  </label></center> : null}
                     <div className='flex mt-3 mr-4 justify-content-center '>
-                        <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-info ' label={charge.chajoute ? 'Enregistrement en cours...' : 'Enregistrer'}
+                        <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-primary ' label={charge.chajoute ? 'Enregistrement en cours...' : 'Enregistrer'}
                             onClick={() => {
                                 let verf = 0;
                                 for (let i = 0; i < infoExamen.length; i++) {

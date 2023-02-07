@@ -175,12 +175,12 @@ export default function Modification(props) {
 
                             <div className='grid px-4'>
                                 <div className="lg:col-6 col-12 field my-0 flex flex-column">
-                                    <label htmlFor="username2" className="label-input-sm">Nom*</label>
+                                    <label htmlFor="username2" className="label-input-sm">Nom</label>
                                     <InputText id="username2" value={infoPatient.nom} aria-describedby="username2-help" className={verfChamp.nom ? "form-input-css-tamby p-invalid" : "form-input-css-tamby"} name='nom' onChange={onInfoPatient} />
                                     {verfChamp.nom ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
                                 </div>
                                 <div className="lg:col-6 col-12 field my-0 flex flex-column">
-                                    <label htmlFor="username2" className="label-input-sm">Prenom(s)</label>
+                                    <label htmlFor="username2" className="label-input-sm">Prénom(s)</label>
                                     <InputText id="username2" value={infoPatient.prenom} aria-describedby="username2-help" className="form-input-css-tamby" name='prenom' onChange={onInfoPatient} />
                                 </div>
                                 <div className="lg:col-6 col-12 field my-0 flex flex-column">
@@ -201,7 +201,7 @@ export default function Modification(props) {
                                     {verfChamp.date_naiss ? <small id="username2-help" className="p-error block">Champ vide !</small> :<small>format: jj/mm/aaaa</small>}
                                 </div>
                                 <div className="lg:col-6 col-12 field my-0  flex flex-column ">
-                                    <label htmlFor="username2" className="label-input-sm">Telephone</label>
+                                    <label htmlFor="username2" className="label-input-sm">Téléphone</label>
                                     <InputMask mask='099 99 999 99' name='telephone' value={infoPatient.telephone} onChange={onInfoPatient} className={verfChamp.telephone ? "form-input-css-tamby p-invalid" : "form-input-css-tamby"} />
                                     {verfChamp.telephone ? <small id="username2-help" className="p-error block">Champ vide !</small> : null}
                                 </div>
