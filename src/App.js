@@ -9,7 +9,7 @@ import { PrimeIcons } from 'primereact/api';
 import Header from './components/Header/Header';
 import { Button } from 'primereact/button'
 import { Card } from 'primereact/card';
-import { Outlet, Route, Routes, useLocation } from 'react-router-dom';
+import { Outlet, Route, Routes, useLocation,useNavigate } from 'react-router-dom';
 import Patient from './components/Page/Patient'
 import { BreadCrumb } from 'primereact/breadcrumb'
 import Facture from './components/Page/Facture';
@@ -40,7 +40,7 @@ import useAuth from './components/Login/useAuth';
 import CryptoJS from 'crypto-js';
 import LogoutTimer from './components/Login/LogoutTimer';
 import { Toast } from 'primereact/toast';
-
+import ExamenJours from './components/Page/Rapport/ExamenJour/ExamenJour';
 function App() {
 
 
@@ -70,7 +70,20 @@ function App() {
         
         return { data }
     }
-    const url = "http://127.0.0.1:8000/api/";
+    const navigate = useNavigate()
+
+    const [url, seturl] = useState('http://127.0.0.1:3353/api/')
+    const urlip=()=>{
+        let ip = window.location.hostname;
+        let urls ='http://'+ip+':3353/api/'
+        seturl(urls);
+    }
+
+    useEffect(() => {
+        urlip()
+    }, [navigate])
+    
+
     const { pathname } = useLocation();
     const bred = pathname.slice(1);
     const items = [
@@ -242,7 +255,7 @@ function App() {
                                                             :
                                                             bred === "facture_jour" || bred === "recette_jour" || bred === "virement_jour" || bred === "stat_examen" || bred === "stat_client"
                                                                 || bred === "stat_detail_examen" || bred === "stat_prescripteur" || bred === "stat_categorie"
-                                                                || bred === "cumul_chiffre_affaire" || bred === "releve_facture" || bred === "journal_jour" ?
+                                                                || bred === "cumul_chiffre_affaire" || bred === "releve_facture"  ||bred === "examen_jour" || bred === "journal_jour" ?
                                                                 <BreadCrumb model={rapport} home={Home} className=" w-full" />
                                                                 :
                                                                 <BreadCrumb model={items} home={Home} className=" w-full" />
@@ -290,6 +303,7 @@ function App() {
                     <Route path='/stat_prescripteur' element={<StatPrescripteur url={url} />} />
                     <Route path='/releve_facture' element={<ReleveFacture url={url} />} />
                     <Route path='/journal_jour' element={<JournalJour url={url} />} />
+                    <Route path='/rapport_examen_jour' element={<ExamenJours url={url} />} />
                     <Route path='/test' element={<Formulaire url={url} />} />
                     <Route path='/acceuil' element={<Accueil url={url} />} />
                 </Route>

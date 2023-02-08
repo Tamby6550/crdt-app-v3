@@ -73,7 +73,7 @@ export default function CompteRendu(props) {
 
         let numDate = (props.date_arriv).replace(/\//g, "") + '' + (props.num_arriv) + lib_examenconv;
         try {
-            await axios.post(`http://localhost:5000/api/hello/${numDate}`, {
+            await axios.post(`http://${window.location.hostname}:3354/api/hello/${numDate}`, {
                 headers: {
                     'Content-Type': 'text/html'
                 },
@@ -108,7 +108,7 @@ export default function CompteRendu(props) {
 
         let numDate = (props.date_arriv).replace(/\//g, "") + '' + (props.num_arriv) + lib_examenconv;
         try {
-            await axios.get(`http://localhost:5000/api/hello/${numDate}`, {
+            await axios.get(`http://${window.location.hostname}:3354/api/hello/${numDate}`, {
                 headers: {
                     'Content-Type': 'text/html'
                 }
@@ -182,12 +182,16 @@ export default function CompteRendu(props) {
         //Ovaina ho numero ny date
         return (
             <div>
-                <h4 className='mb-1'>
-                    Compte Rendu  :
-                    <i style={{ fontWeight: '800', color: 'black' }} >
-                        Date d'arrivée : {props.date_arriv}
-                        {/* , numéro : {props.num_arriv} , Combinaison : {numQr}  */}
-                    </i>
+                <h4 className='m-1'>
+                    Compte Rendu 
+                    <center className='m-0 p-0'>
+
+                        <label style={{ fontWeight: '800' }} >
+
+                            Date arrivé : {props.date_arriv}
+                            {/* , numéro : {props.num_arriv} , Combinaison : {numQr}  */}
+                        </label>
+                    </center>
                 </h4>
                 <hr />
             </div>
@@ -220,8 +224,14 @@ export default function CompteRendu(props) {
                 <Toast ref={toastTR} position="top-right" />
                 {/* <SaisieReglement/> */}
                 <div className="p-1  style-modal-tamby">
-                    <div className='col-12 pt-0' style={{ borderBottom: '1px solid #efefef' }} >
-                        <CRmodel sethtmlm={sethtmlm} setrecHtml={setrecHtml} recHtml={recHtml} />
+                    <div className='col-12 pt-0 flex flex-row justify-conten-between' style={{ borderBottom: '1px solid #efefef' }} >
+                        <div className='col-4'>
+                            <CRmodel sethtmlm={sethtmlm} setrecHtml={setrecHtml} recHtml={recHtml} />
+                        </div>
+                        <div className='col-8'>
+                            <h2 className='m-1'>Nom : <span style={{ fontWeight: 'bold', color: '#2c2b2b' }} >{props.nom}</span></h2>
+                            <h2 className='m-1'>Examen : <span style={{ fontWeight: 'bold', color: '#2c2b2b' }} > {props.lib_examen}</span></h2>
+                        </div>
                     </div>
                     <div className='mb-3'>
                         <BundledEditor

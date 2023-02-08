@@ -146,7 +146,7 @@ export default function Voir(props) {
                             });
                         }} />
 
-                    <CompteRendu url={props.url} test={"<div>"+data.lib_examen+"</div >"} data={data} date_arriv={props.data.date_arr} num_arriv={props.data.numero} chargementData={chargementData} lib_examen={data.lib_examen} />
+                    <CompteRendu nom={props.data.nom} url={props.url} test={"<div>"+data.lib_examen+"</div >"} data={data} date_arriv={props.data.date_arr} num_arriv={props.data.numero} chargementData={chargementData} lib_examen={data.lib_examen} />
                 </div>
             </div>
         )

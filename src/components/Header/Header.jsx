@@ -109,7 +109,7 @@ export default function Header() {
       icon: PrimeIcons.TABLE,
       expanded:pathname === "/facture_jour" || pathname === "/recette_jour" || pathname === "/virement_jour" 
       || pathname === "/stat_examen" || pathname === "/stat_client" || pathname === "/stat_detail_examen" || pathname === "/stat_prescripteur" || 
-      pathname === "/stat_categorie" || pathname === "/cumul_chiffre_affaire" || pathname === "/releve_facture" || pathname === "/journal_jour" ? true : false,
+      pathname === "/stat_categorie" || pathname === "/cumul_chiffre_affaire" || pathname === "/releve_facture" || pathname === "/rapport_examen_jour" || pathname === "/journal_jour" ? true : false,
       items: [
         {
           label: 'Journal du jour',
@@ -117,6 +117,15 @@ export default function Header() {
           className: pathname === "/journal_jour" && classactive,
           command: () => {
             navigate("/journal_jour");
+          
+          }
+        },
+        {
+          label: 'Examen du jour',
+          icon: PrimeIcons.FILE,
+          className: pathname === "/rapport_examen_jour" && classactive,
+          command: () => {
+            navigate("/rapport_examen_jour");
           
           }
         },

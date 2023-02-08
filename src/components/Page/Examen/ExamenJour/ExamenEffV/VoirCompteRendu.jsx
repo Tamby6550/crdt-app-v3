@@ -71,7 +71,7 @@ export default function VoirCompteRendu(props) {
 
         let numDate = (props.date_arriv).replace(/\//g, "") + '' + (props.num_arriv) + lib_examenconv;
         try {
-            await axios.post(`http://localhost:5000/api/hello/${numDate}`, {
+            await axios.post(`http://${window.location.hostname}:3354/api/hello/${numDate}`, {
                 headers: {
                     'Content-Type': 'text/html'
                 },
@@ -105,7 +105,7 @@ export default function VoirCompteRendu(props) {
 
         let numDate = (props.date_arriv).replace(/\//g, "") + '' + (props.num_arriv) + lib_examenconv;
         try {
-            await axios.get(`http://localhost:5000/api/hello/${numDate}`, {
+            await axios.get(`http://${window.location.hostname}:3354/api/hello/${numDate}`, {
                 headers: {
                     'Content-Type': 'text/html'
                 }
@@ -211,7 +211,7 @@ export default function VoirCompteRendu(props) {
     return (
         <>
 
-            <Button icon={PrimeIcons.BOOK} className='p-buttom-sm p-1 ml-4 p-button-info ' tooltip='Voir le compte rendu' tooltipOptions={{ position: 'top' }}
+            <Button icon={PrimeIcons.PENCIL} className='p-buttom-sm p-1 ml-4 p-button-info ' tooltip='Modifier le compte rendu' tooltipOptions={{ position: 'top' }}
                 onClick={() => { onClick('displayBasic2'); chargeProps(); getData(); }} />
 
             <Dialog maximizable header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-8 md:col-9 col-10 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>

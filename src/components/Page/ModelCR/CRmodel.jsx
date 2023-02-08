@@ -12,7 +12,7 @@ export default function CRmodel(props) {
 
     const getData = async () => {
         try {
-            await axios.get(`http://localhost:5000/files`, {
+            await axios.get(`http://${window.location.hostname}:3354/files`, {
                 headers: {
                     'Content-Type': 'text/html'
                 }
@@ -57,7 +57,7 @@ export default function CRmodel(props) {
     return (
         <div>
             <div className='grid h-full'>
-                <div className='col-12 pt-0' style={{ borderBottom: '1px solid #efefef', width: '30%' }} >
+                <div className='col-12 pt-0' style={{  width: '80%' }} >
                     <Components.Label >Model CR </Components.Label>
                     <Components.Select name='grad_id' onChange={(e) => { getHtmlContent(e) }}  >
                         <Components.Option value={''}  ></Components.Option>

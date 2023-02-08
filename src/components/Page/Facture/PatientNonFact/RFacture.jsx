@@ -348,7 +348,8 @@ export default function RFacture(props) {
     const onVerfeCh = () => {
         if (infoFacture.type == 'L2') {
             if (infoFacture.code_presc == '') {
-                setverfChamp({ nom_presc: true, nom_cli: false })
+                setverfChamp({ nom_presc: true, nom_cli: false });
+                
                 alert('Verifer votre champ !')
             } else {
                 const accept = () => {

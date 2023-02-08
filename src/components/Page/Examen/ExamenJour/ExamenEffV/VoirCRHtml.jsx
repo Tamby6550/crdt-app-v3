@@ -60,7 +60,7 @@ export default function VoirCRHtml(props) {
 
         let numDate = (props.date_arriv).replace(/\//g, "") + '' + (props.num_arriv) + lib_examenconv;
         try {
-            await axios.get(`http://localhost:5000/api/hello/${numDate}`, {
+            await axios.get(`http://${window.location.hostname}:3354/api/hello/${numDate}`, {
                 headers: {
                     'Content-Type': 'text/html'
                 }
@@ -149,7 +149,7 @@ export default function VoirCRHtml(props) {
     return (
         <>
 
-            <Button icon={PrimeIcons.BOOKMARK} className='p-buttom-sm p-1 ml-4 p-button-info ' tooltip='Voir le compte rendu' tooltipOptions={{ position: 'top' }}
+            <Button icon={PrimeIcons.BOOK} className='p-buttom-sm p-1 ml-4 p-button-info ' tooltip='Voir le compte rendu' tooltipOptions={{ position: 'top' }}
                 onClick={() => { onClick('displayBasic2'); chargeProps(); getData(); }} />
 
             <Dialog maximizable header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-8 md:col-9 col-10 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>

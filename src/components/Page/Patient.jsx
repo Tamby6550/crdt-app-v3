@@ -11,13 +11,16 @@ import { Dialog } from 'primereact/dialog';
 import Registre from './Patient_c/Registre'
 import axios from 'axios';
 import { Toast } from 'primereact/toast';
+import { ProgressBar } from 'primereact/progressbar';
 
 
 export default function Patient(props) {
 
-    const [numJournal, setnumJournal] = useState({num:0,datej:''})
+    const [numJournal, setnumJournal] = useState({ num: 0, datej: '' })
 
     //Chargement de données
+    const [timer, setTimer] = useState(100);
+
     const [charge, setCharge] = useState(false);
     const [refreshData, setrefreshData] = useState(0);
     const [listPatient, setlistPatient] = useState([{ id_patient: '', nom: '', prenom: '', type: '', sexe: '', date_naiss: '', telephone: '', adresse: '' }]);
@@ -57,7 +60,7 @@ export default function Patient(props) {
                     setlistPatient(result.data.listePatient);
                     settotalenrg(result.data.nbenreg)
                     setCharge(false);
-                    
+
                 }
             );
     }
@@ -128,6 +131,9 @@ export default function Patient(props) {
         )
     }
 
+
+
+
     /*Modal  */
     const [displayBasic, setDisplayBasic] = useState(false);
     const [position, setPosition] = useState('center');
@@ -142,21 +148,35 @@ export default function Patient(props) {
         if (position) {
             setPosition(position);
         }
+
+
         setTimeout(() => {
-            onHide(name)
+            onHide(name);
+            setTimer(100)
         }, 8000)
+
     }
 
     const onHide = (name) => {
         dialogFuncMap[`${name}`](false);
     }
 
-   
+    useEffect(() => {
+        if (displayBasic) {
+            const intervalId = setInterval(() => {
+                setTimer(prevValue => prevValue - (100 / 7));
+            }, 1000);
+
+            return () => {clearInterval(intervalId);}
+        }
+    }, [timer, displayBasic]);
+
     return (
         <>
             <Toast ref={toastTR} position="top-right" />
-            <Dialog header={"Date d'arriver : "+numJournal.datej} visible={displayBasic} className="lg:col-3 md:col-5 col-8 p-0"  onHide={() => onHide('displayBasic')} >
-              <center><h3 className='m-3'>Numéro de journal d'arriver :  <u style={{ color: 'rgb(34, 197, 94)', fontWeight: 'bold', fontSize: '1.8rem' }}> {numJournal.num}</u>   </h3></center>  
+            <Dialog header={"Date d'arriver : " + numJournal.datej} visible={displayBasic} className="lg:col-3 md:col-5 col-8 p-0" onHide={() => onHide('displayBasic')} >
+                <center><h3 className='m-3'>Numéro de journal d'arriver :  <u style={{ color: 'rgb(34, 197, 94)', fontWeight: 'bold', fontSize: '1.8rem' }}> {numJournal.num}</u>   </h3></center>
+                <ProgressBar value={timer}  showValue={false} style={{ height: "3px"}}></ProgressBar>
             </Dialog>
             <div className="flex flex-column justify-content-center">
                 <DataTable header={header} value={listPatient} loading={charge} responsiveLayout="scroll" scrollable scrollHeight="500px" rows={10} rowsPerPageOptions={[10, 20, 50]} paginator className='bg-white' emptyMessage={'Aucun resultat trouvé'}>
