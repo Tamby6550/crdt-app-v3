@@ -309,3 +309,7 @@ div#doccrhtml {
   color: #876ae1;
   border-color: transparent;
 }
+
+.p-dialog-mask.p-dialog-center.p-component-overlay.p-component-overlay-enter.p-dialog-visible.p-dialog-draggable.p-dialog-resizable {
+  z-index: 1101 !important;
+}

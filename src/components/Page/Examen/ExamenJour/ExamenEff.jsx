@@ -77,7 +77,7 @@ export default function ExamenEff(props) {
         return (
             <div className='flex flex-row justify-content-between align-items-center m-0 '>
                 <div className='my-0  py-2'>
-                    <Voir url={props.url} data={data} changecharge={changecharge} />
+                    <Voir  setActiveIndex={props.setActiveIndex} url={props.url} data={data} changecharge={changecharge} />
                 </div>
             </div>
         )
@@ -127,7 +127,15 @@ export default function ExamenEff(props) {
                     {data.date_arrive == data.jourj ?
                         null
                         :
-                        <Tag className="mr-2 " severity={"warning"} icon={PrimeIcons.CLOCK} ></Tag>
+                        <Button tooltip='En retard' style={{
+                            margin: '0px',
+                            padding: '0px',
+                            width: '22%',
+                            backgroundColor: 'yellow',
+                            border: '0px solid yellow'
+                        }} tooltipOptions={{position:'top'}} >
+                            <Tag className="mr-2 " severity={"warning"} icon={PrimeIcons.CLOCK} ></Tag>
+                        </Button>
                     }
                 </div>
             </div>
@@ -143,6 +151,7 @@ export default function ExamenEff(props) {
 
                 <DataTable header={header1} filters={filters1} globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listExamenNonEff} loading={charge} scrollable scrollHeight="550px" responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun examen "} >
 
+                    <Column field='date_examen' header={'Date Examen'} style={{ fontWeight: '600' }}></Column>
                     <Column field='numero' header={'Numéro d\'Arrivée'} style={{ fontWeight: '600' }}></Column>
                     <Column field={'date_arr'} header={'Date d\'Arrivée'} body={bodyBouttonh} style={{ fontWeight: '600' }}></Column>
                     <Column field={'id_patient'} header="ID" style={{ fontWeight: '600' }}></Column>
@@ -151,8 +160,6 @@ export default function ExamenEff(props) {
                     <Column field='type_pat' header="Tarif"></Column>
                     <Column header="Action" body={bodyBoutton} align={'left'}></Column>
                 </DataTable>
-
-
             </div>
         </>
     )

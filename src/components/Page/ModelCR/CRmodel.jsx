@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import axios, { all } from 'axios';
+import axios from 'axios';
 import * as Components from '../../../components/Login/Components';
 
 export default function CRmodel(props) {
@@ -56,23 +56,16 @@ export default function CRmodel(props) {
     }
     return (
         <div>
-            <div className='grid h-full'>
-                <div className='col-12 pt-0' style={{  width: '80%' }} >
-                    <Components.Label >Model CR </Components.Label>
-                    <Components.Select name='grad_id' onChange={(e) => { getHtmlContent(e) }}  >
+            <div className='grid h-full '>
+                <div className='col-12 pt-0 ' style={{  width: '80%',height:'55px' }} >
+                    <Components.Label >Choisir le model CR </Components.Label>
+                    <Components.Select name='grad_id' onChange={(e) => { getHtmlContent(e) }} style={{height:'42px'}}  >
                         <Components.Option value={''}  ></Components.Option>
                         {allhtml.map((element, index) => (
                             <Components.Option value={element.link} key={index} >{element.name}</Components.Option>
                         ))}
                     </Components.Select>
-                    {/* <select name="" id="" onChange={getHtmlContent}>
-                        <option value=""></option>
-                        {allhtml.map((element, index) => (
-                            <option key={index} value={element.link}>
-                                {element.name}
-                            </option>
-                        ))}
-                    </select> */}
+                  
                 </div>
                 <div className='col-12 pt-0' id='html' >
                 </div>

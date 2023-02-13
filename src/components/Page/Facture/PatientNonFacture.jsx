@@ -51,6 +51,8 @@ export default function PatientNonFacture(props) {
                     setrefreshData(0);
                     setCharge(false);
                     setlistExamenNonEff(result.data);
+                    initFilters1();
+
                 }
             );
     }
@@ -74,6 +76,7 @@ export default function PatientNonFacture(props) {
         )
     }
 
+    
   
 
     const header = (
@@ -82,6 +85,44 @@ export default function PatientNonFacture(props) {
         </div>
     )
 
+    // const header1 = header();
+
+    //Global filters
+
+    const [filters1, setFilters1] = useState(null);
+    const [globalFilterValue1, setGlobalFilterValue1] = useState('');
+    const onGlobalFilterChange1 = (e) => {
+        const value = e.target.value;
+        let _filters1 = { ...filters1 };
+        _filters1['global'].value = value;
+
+        setFilters1(_filters1);
+        setGlobalFilterValue1(value);
+    }
+    const initFilters1 = () => {
+        setFilters1({
+            'global': { value: null, matchMode: FilterMatchMode.CONTAINS }
+        });
+        setGlobalFilterValue1('');
+    }
+    const clearFilter1 = () => {
+        initFilters1();
+    }
+    const renderHeader1 = () => {
+        return (
+            <div className="flex justify-content-between">
+                <h3 className='m-3'>Liste Patient Non Facturées</h3>
+                <div className='flex'>
+                    <Button type="button" icon="pi pi-filter-slash" label="Vider" className="p-button-outlined" onClick={clearFilter1} />
+                    <span className="p-input-icon-left global-tamby ml-2"   >
+                        <i className="pi pi-search" />
+                        <InputText value={globalFilterValue1} onChange={onGlobalFilterChange1} placeholder="Recherche global..." />
+                    </span>
+                </div>
+            </div>
+        )
+    }
+    const header1 = renderHeader1();
     const bodyBouttonh = (data) => {
         return (
             <div className='flex flex-row justify-content-between align-items-center m-0 '>
@@ -90,14 +131,20 @@ export default function PatientNonFacture(props) {
                     {data.date_arrive == data.jourj ?
                         null
                         :
-                        <Tag too className="mr-2 " severity={"warning"}  icon={PrimeIcons.CLOCK}  ></Tag>
+                        <Button tooltip='En retard' style={{
+                            margin: '0px',
+                            padding: '0px',
+                            width: '22%',
+                            backgroundColor: 'yellow',
+                            border: '0px solid yellow'
+                        }} tooltipOptions={{position:'top'}} >
+                            <Tag className="mr-2 " severity={"warning"} icon={PrimeIcons.CLOCK} ></Tag>
+                        </Button>
                     }
                 </div>
             </div>
         )
     }
-    // const header1 = header();
-
     //Global filters
     return (
         <>
@@ -106,7 +153,7 @@ export default function PatientNonFacture(props) {
 
             <div className="flex flex-column justify-content-center" >
 
-                <DataTable header={header}   globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listExamenNonEff} loading={charge} scrollable scrollHeight="550px" responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun examen à éffectuées"} >
+                <DataTable header={header1} filters={filters1}  globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listExamenNonEff} loading={charge} scrollable scrollHeight="550px" responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun examen à éffectuées"} >
 
                     <Column field='numero' header={'Numéro d\'Arrivée'} style={{ fontWeight: '600' }}></Column>
                     <Column field={'date_arr'} header={'Date d\'Arrivée'}  body={bodyBouttonh} style={{ fontWeight: '600' }}></Column>

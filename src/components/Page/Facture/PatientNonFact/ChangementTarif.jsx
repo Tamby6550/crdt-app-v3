@@ -99,6 +99,15 @@ export default function ChangementTarif(props) {
                 console.log(erro);
             })
     }
+
+    const confirmeTarif = () => {
+        return (
+            <div style={{fontSize:'1.2em'}}>
+                <label className='m-2'> <strong className='m-1'>Voulez vous modifier le tarif ?</strong> </label> 
+                
+            </div>
+        );
+    }
     return (
         <>
             <Button icon={PrimeIcons.PENCIL} className='p-buttom-sm p-1  p-button-warning ' tooltip='Modifier le Tarif' tooltipOptions={{ position: 'top' }}
@@ -111,14 +120,15 @@ export default function ChangementTarif(props) {
                         return null;
                     }
                     confirmDialog({
-                        message: 'Voulez vous modifier le tarif ',
+                        message: confirmeTarif,
                         header: '',
                         icon: 'pi pi-exclamation-circle',
                         acceptClassName: 'p-button-info',
                         acceptLabel: 'Ok , Changer',
                         rejectLabel: 'Fermer',
                         accept,
-                        reject
+                        reject,
+                    
                     });
 
                 }} />

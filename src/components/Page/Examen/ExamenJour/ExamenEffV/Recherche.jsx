@@ -10,10 +10,10 @@ import axios from 'axios';
 export default function Recherche(props) {
 
 
-    const [infoRegisre, setinfoRegisre] = useState({ numero_arr: '', date_arr: '', date_naiss: '', nom: '' });
+    const [infoRecherche, setinfoRecherche] = useState({ date_examen:'',numero_arr: '', date_arr: '', date_naiss: '', nom: '' });
     const [verfChamp, setverfChamp] = useState(false);
     const onVide = () => {
-        setinfoRegisre({numero_arr: '', date_arr: '',date_naiss:'',nom: '' })
+        setinfoRecherche({date_examen:'', numero_arr: '', date_arr: '',date_naiss:'',nom: '' })
     }
 
     /* Modal */
@@ -55,18 +55,18 @@ export default function Recherche(props) {
 
 
     const chDonneRech = async (e) => {
-        setinfoRegisre({ ...infoRegisre, [e.target.name]: e.target.value })
+        setinfoRecherche({ ...infoRecherche, [e.target.name]: e.target.value })
     }
 
 
     //Recherche Patient
     const RechercheloadData = async () => {
         props.setCharge(true)
-        axios.post(props.url + 'getRehercheExamenEffValide', infoRegisre)
+        axios.post(props.url + 'getRehercheExamenEffValide', infoRecherche)
             .then(
                 (result) => {
                     // props.setrefreshData(0);
-                    props.setinfoReherche(infoRegisre)
+                    props.setinfoReherche(infoRecherche)
                     props.setlistExamenNonEff(result.data)
                     props.setCharge(false);
                     onHide('displayBasic2');
@@ -83,25 +83,29 @@ export default function Recherche(props) {
                     <div className="p-1 style-modal-tamby" >
                         <form className='flex flex-column justify-content-center'>
                             <div className='grid px-4'>
+                                {/* <div className="col-4 field my-1 flex flex-column">
+                                    <label htmlFor="username2" className="label-input-sm">Date d'examen</label>
+                                    <InputMask id="basic" value={infoRecherche.date_examen} mask='99/99/9999' name='date_examen' className={"form-input-css-tamby"} onChange={(e) => { chDonneRech(e) }} />
+                                </div> */}
                                 <div className="col-6 field my-1 flex flex-column">
                                     <label htmlFor="username2" className="label-input-sm">Numero d'arrivé</label>
-                                    {/* <InputText id="username2" value={infoRegisre.numero_arr} aria-describedby="username2-help" name='numero_arr' className={"form-input-css-tamby"} onChange={(e) => { chDonneRech(e) }} /> */}
-                                    <InputMask id="basic" value={infoRegisre.numero_arr} mask='999' name='numero_arr' className={"form-input-css-tamby"} onChange={(e) => { chDonneRech(e) }} />
+                                    {/* <InputText id="username2" value={infoRecherche.numero_arr} aria-describedby="username2-help" name='numero_arr' className={"form-input-css-tamby"} onChange={(e) => { chDonneRech(e) }} /> */}
+                                    <InputMask id="basic" value={infoRecherche.numero_arr} mask='999' name='numero_arr' className={"form-input-css-tamby"} onChange={(e) => { chDonneRech(e) }} />
                                 </div>
                                 <div className="col-6 field my-1 flex flex-column">
                                     <label htmlFor="username2" className="label-input-sm">Date d'arrivé</label>
-                                    <InputMask id="basic" value={infoRegisre.date_arr} mask='99/99/9999' name='date_arr' className={"form-input-css-tamby"} onChange={(e) => { chDonneRech(e) }} />
+                                    <InputMask id="basic" value={infoRecherche.date_arr} mask='99/99/9999' name='date_arr' className={"form-input-css-tamby"} onChange={(e) => { chDonneRech(e) }} />
                                 </div>
                             </div>
 
                             <div className='grid px-4'>
                                 <div className="col-8 field my-1 flex flex-column">
                                     <label htmlFor="username2" className="label-input-sm">Nom du Patient</label>
-                                    <InputText id="username2" value={infoRegisre.nom} aria-describedby="username2-help" name='nom' className={"form-input-css-tamby"} onChange={(e) => { chDonneRech(e) }} />
+                                    <InputText id="username2" value={infoRecherche.nom} aria-describedby="username2-help" name='nom' className={"form-input-css-tamby"} onChange={(e) => { chDonneRech(e) }} />
                                 </div>
                                 <div className="col-4 field my-1 flex flex-column">
                                     <label htmlFor="username2" className="label-input-sm">Date de naissance </label>
-                                    <InputMask id="basic" value={infoRegisre.date_naiss} mask='99/99/9999' name='date_naiss' className={"form-input-css-tamby"} onChange={(e) => { chDonneRech(e) }} />
+                                    <InputMask id="basic" value={infoRecherche.date_naiss} mask='99/99/9999' name='date_naiss' className={"form-input-css-tamby"} onChange={(e) => { chDonneRech(e) }} />
                                 </div>
 
                             </div>
@@ -109,7 +113,7 @@ export default function Recherche(props) {
                         {verfChamp ? <center><small id="username2-help" className="p-error block justify-content-center" style={{ fontWeight: 'bold' }}>Veuillez entrer la critère pour la recherche - Code ou Nom </small></center> : null}
                         <div className='flex mt-3 mr-4 justify-content-end '>
                             <Button icon={PrimeIcons.SEARCH} className='p-button-sm p-button-secondary ' label={'Reherche'} onClick={() => {
-                                if (infoRegisre.date_arr == "" && infoRegisre.nom == "" && infoRegisre.date_naiss == "" && infoRegisre.numero_arr == "") {
+                                if (infoRecherche.date_arr == "" && infoRecherche.date_examen == "" &&  infoRecherche.nom == "" && infoRecherche.date_naiss == "" && infoRecherche.numero_arr == "") {
 return false;
                                 }else{
                                     RechercheloadData();

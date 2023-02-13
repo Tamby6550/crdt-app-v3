@@ -31,13 +31,17 @@ export default function CompteRendu(props) {
     const [content, setContent] = useState(null)
 
     const log = () => {
-        if (editorRef.current) {
-            let strin = JSON.stringify({ data: editorRef.current.getContent() });
-            let pars = JSON.parse(strin);
-            var myElement = document.getElementById("print");
-            myElement.innerHTML = editorRef.current.getContent();
-            console.log(editorRef.current.getContent())
-            envoyeData(pars.data)
+        if (editorRef.current.getContent()=="") {
+            alert('Compte Rendu vide !')
+        }else{
+            if (editorRef.current) {
+                let strin = JSON.stringify({ data: editorRef.current.getContent() });
+                let pars = JSON.parse(strin);
+                var myElement = document.getElementById("print");
+                myElement.innerHTML = editorRef.current.getContent();
+                console.log(editorRef.current.getContent())
+                envoyeData(pars.data)
+            }
         }
     };
     /*Word */
@@ -220,7 +224,7 @@ export default function CompteRendu(props) {
             <Button icon={PrimeIcons.BOOK} className='p-buttom-sm p-1 ml-4 p-button-info ' tooltip='Ajout compte rendu' tooltipOptions={{ position: 'top' }}
                 onClick={() => { onClick('displayBasic2'); chargeProps(); }} />
 
-            <Dialog maximizable header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-8 md:col-9 col-10 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
+            <Dialog maximizable header={renderHeader('displayBasic2')} style={{zIndex: '1101 !important'}} visible={displayBasic2} className="lg:col-8 md:col-9 col-10 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
                 <Toast ref={toastTR} position="top-right" />
                 {/* <SaisieReglement/> */}
                 <div className="p-1  style-modal-tamby">
@@ -229,14 +233,14 @@ export default function CompteRendu(props) {
                             <CRmodel sethtmlm={sethtmlm} setrecHtml={setrecHtml} recHtml={recHtml} />
                         </div>
                         <div className='col-8'>
-                            <h2 className='m-1'>Nom : <span style={{ fontWeight: 'bold', color: '#2c2b2b' }} >{props.nom}</span></h2>
-                            <h2 className='m-1'>Examen : <span style={{ fontWeight: 'bold', color: '#2c2b2b' }} > {props.lib_examen}</span></h2>
+                            <p className='m-1'style={{ fontWeight: 'bold', color: '#2c2b2b',fontSize:'1.2em' }} >Nom : <span  ><strong>{props.nom}</strong></span></p>
+                            <p className='m-1'style={{ fontWeight: 'bold', color: '#2c2b2b',fontSize:'1.2em' }} >Examen : <span  ><strong>{props.lib_examen}</strong></span></p>
                         </div>
                     </div>
-                    <div className='mb-3'>
+                    <div className='mb-3' >
                         <BundledEditor
                             onInit={(evt, editor) => editorRef.current = editor}
-                            initialValue={recHtml != null ? recHtml : htmlm}
+                            initialValue={recHtml != null ? recHtml :  htmlm}
                             init={{
                                 height: 500,
                                 menubar: false,
@@ -244,12 +248,11 @@ export default function CompteRendu(props) {
                                     'advlist', 'anchor', 'autolink', 'help', 'image', 'link', 'lists',
                                     'searchreplace', 'table', 'wordcount', 'pagebreak',
                                 ],
-                                toolbar: 'undo redo | blocks | ' +
+                                toolbar: 'police| undo redo | blocks | ' +
                                     'bold italic forecolor | alignleft aligncenter ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol' +
-                                    'removeformat | help',
+                                    'removeformat',
                                 language: 'fr_FR',
-
-                                content_style: 'body { font-family:Helvetica,Arial,sans-serif;min-height:21cm;padding:3px 25px;margin:0 15%;clip-path:inset(-15px -15px 0px -15px); box-shadow:0 0 3px 0px rgba(0, 0, 0, 0.219); font-size:12px } '
+                                content_style: 'body {  font-family:Helvetica,Arial,sans-serif;min-height:21cm;padding:3px 25px;margin:0 2%;clip-path:inset(-15px -15px 0px -15px); box-shadow:0 0 3px 0px rgba(0, 0, 0, 0.219); font-size:14px } '
                             }}
                         />
                     </div>
@@ -263,9 +266,10 @@ export default function CompteRendu(props) {
                 <div id="scan" ref={(el) => (reportTemplateRef = el)}>
                     <div id="print" className='cr_ins' style={{ fontSize: '1.4em' }}></div>
                     <div className='flex justify-content-end w-100' >
-                        <div style={{ width: "45px", height: "45px" }}>
+                       
+                        <div style={{ width: "45px", height: "45px",position:'absolute',bottom:'50px',margin:'0px',padding:'0px',right:'0px' }} >
                             <QRCode
-                                size={256}
+                                size={100}
                                 style={{ height: "auto", maxWidth: "100%", width: "100%" }}
                                 value={numQr}
                                 viewBox={`0 0 256 256`}

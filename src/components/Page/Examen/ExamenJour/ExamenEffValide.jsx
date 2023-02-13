@@ -11,6 +11,7 @@ import axios from 'axios';
 import { Toast } from 'primereact/toast';
 import { Tag } from 'primereact/tag';
 import VoirCR from './ExamenEffV/VoirCR';
+import VoirCRModif from './ExamenEffV/VoirCRModif'
 import Recherche from './ExamenEffV/Recherche';
 
 export default function ExamenEffValide(props) {
@@ -20,7 +21,7 @@ export default function ExamenEffValide(props) {
     const [chRetour, setchRetour] = useState(false)
     const [refreshData, setrefreshData] = useState(0);
     const [listExamenNonEff, setlistExamenNonEff] = useState([{ numero: '', date_arr: '', id_patient: '', type_pat: '', verf_exam: '', nom: '', date_naiss: '', telephone: '' }]);
-    const [infoReherche, setinfoReherche] = useState({ numero_arr: '', date_arr: '', date_naiss: '', nom: '' })
+    const [infoReherche, setinfoReherche] = useState({ date_examen:'',numero_arr: '', date_arr: '', date_naiss: '', nom: '' })
 
     const [recHtml, setrecHtml] = useState(null)
 
@@ -48,7 +49,7 @@ export default function ExamenEffValide(props) {
         setrefreshData(value)
     }
     const onVide = () => {
-        setinfoReherche({ numero_arr: '', date_arr: '', date_naiss: '', nom: '' })
+        setinfoReherche({ date_examen:'',numero_arr: '', date_arr: '', date_naiss: '', nom: '' })
     }
 
     //Get List patient
@@ -87,7 +88,10 @@ export default function ExamenEffValide(props) {
             <div className='flex flex-row justify-content-between align-items-center m-0 '>
                 <div className='my-0  py-2'>
                     <VoirCR url={props.url} data={data} changecharge={changecharge} />
-                    {data.verf_fact == '1'|| data.verf_fact == '2' ?
+
+                    <VoirCRModif url={props.url} data={data} changecharge={changecharge} />
+
+                    {data.verf_fact == '1' || data.verf_fact == '2' ?
                         null
                         :
                         <Button icon={PrimeIcons.REPLAY} className='p-buttom-sm p-1 ' style={stylebtnRetourner} tooltip='Retourner' tooltipOptions={{ position: 'top' }}
@@ -136,16 +140,17 @@ export default function ExamenEffValide(props) {
         <div className='flex flex-row justify-content-between align-items-center m-0 '>
             <div className='my-0 flex  py-2'>
                 <Recherche icon={PrimeIcons.SEARCH} setCharge={setCharge} setlistExamenNonEff={setlistExamenNonEff} changecharge={changecharge} url={props.url} infoReherche={infoReherche} setinfoReherche={setinfoReherche} />
-                {infoReherche.date_arr == "" && infoReherche.nom == "" && infoReherche.date_naiss == "" && infoReherche.numero_arr == "" ? null :
+                {infoReherche.date_examen=='' && infoReherche.date_arr == "" && infoReherche.nom == "" && infoReherche.date_naiss == "" && infoReherche.numero_arr == "" ? null :
                     <label className='ml-5 mt-2'>
                         Resultat de recherche ,
-                        Date d'arrivée : <i style={{ fontWeight: '700' }}>"{(infoReherche.date_arr).toUpperCase()}"</i>  ,
-                        Numéro d'arrivée : <i style={{ fontWeight: '700' }}>"{(infoReherche.numero_arr).toUpperCase()}"</i>,
+                        {/* Date d'examen : <i style={{ fontWeight: '700' }}>"{(infoReherche.date_examen)}"</i>  , */}
+                        Date d'arrivée : <i style={{ fontWeight: '700' }}>"{(infoReherche.date_arr)}"</i>  ,
+                        Numéro d'arrivée : <i style={{ fontWeight: '700' }}>"{(infoReherche.numero_arr)}"</i>,
                         Nom : <i style={{ fontWeight: '700' }}>"{(infoReherche.nom).toUpperCase()}"</i>,
-                        Date naiss : <i style={{ fontWeight: '700' }}>"{(infoReherche.date_naiss).toUpperCase()}"</i>,
+                        Date naiss : <i style={{ fontWeight: '700' }}>"{(infoReherche.date_naiss)}"</i>,
                     </label>}
             </div>
-            {infoReherche.date_arr != "" || infoReherche.nom != "" || infoReherche.date_naiss != "" || infoReherche.numero_arr != "" ? <Button icon={PrimeIcons.REFRESH} className='p-buttom-sm p-1 p-button-warning ' tooltip='actualiser' tooltipOptions={{ position: 'top' }} onClick={() => setrefreshData(1)} />
+            {infoReherche.date_examen !=="" || infoReherche.date_arr != "" || infoReherche.nom != "" || infoReherche.date_naiss != "" || infoReherche.numero_arr != "" ? <Button icon={PrimeIcons.REFRESH} className='p-buttom-sm p-1 p-button-warning ' tooltip='actualiser' tooltipOptions={{ position: 'top' }} onClick={() => setrefreshData(1)} />
                 :
                 <>
                     <h3 className='m-3'>Examens éffectuées</h3>
@@ -166,7 +171,8 @@ export default function ExamenEffValide(props) {
             <div className="flex flex-column justify-content-center">
 
                 <DataTable header={header} globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listExamenNonEff} loading={charge} scrollable scrollHeight="550px" responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun examen à éffectuées"} >
-
+                    {/*  */}
+                    <Column field='date_examen' header={'Date Examen'} style={{ fontWeight: '600' }}></Column>
                     <Column field='numero' header={'Numéro d\'Arrivée'} style={{ fontWeight: '600' }}></Column>
                     <Column field={'date_arr'} header={'Date d\'Arrivée'} style={{ fontWeight: '600' }}></Column>
                     <Column field={'id_patient'} header="ID" style={{ fontWeight: '600' }}></Column>

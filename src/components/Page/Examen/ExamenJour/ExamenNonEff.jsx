@@ -85,7 +85,7 @@ export default function ExamenNonEff(props) {
         return (
             <div className='flex flex-row justify-content-between align-items-center m-0 '>
                 <div className='my-0  py-2'>
-                    <AjoutExamen url={props.url} type_pat={data.type_pat} data={data} setrefreshData={setrefreshData} />
+                    <AjoutExamen setActiveIndex={props.setActiveIndex} url={props.url} type_pat={data.type_pat} data={data} setrefreshData={setrefreshData} />
                 </div>
             </div>
         )

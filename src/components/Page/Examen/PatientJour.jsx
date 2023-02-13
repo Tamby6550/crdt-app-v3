@@ -120,10 +120,10 @@ export default function ExamenJour(props) {
                 }} />
             </>
             :
-            data.verf_exam=='2' && data.verf_fact=='0' ? 
+            data.verf_exam == '2' && data.verf_fact == '0' ?
               <Modifier url={props.url} data={data} setrefreshData={setrefreshData} />
-            :
-            null
+              :
+              null
           }
         </div>
       </div>
@@ -139,7 +139,15 @@ export default function ExamenJour(props) {
             // <Tag className="mr-2 " icon={PrimeIcons.CHECK_SQUARE} severity={"success"}   ></Tag>
             null
             :
-            <Tag className="mr-2 " severity={"warning"} icon={PrimeIcons.CLOCK} ></Tag>
+            <Button tooltip='En retard' style={{
+              margin: '0px',
+              padding: '0px',
+              width: '22%',
+              backgroundColor: 'yellow',
+              border: '0px solid yellow'
+            }} tooltipOptions={{ position: 'top' }} >
+              <Tag className="mr-2 " severity={"warning"} icon={PrimeIcons.CLOCK} ></Tag>
+            </Button>
           }
         </div>
       </div>

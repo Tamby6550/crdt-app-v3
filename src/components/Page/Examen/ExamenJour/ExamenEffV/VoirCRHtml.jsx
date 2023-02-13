@@ -157,9 +157,7 @@ export default function VoirCRHtml(props) {
                 <div className="p-1  style-modal-tamby">
                     <div className='mb-3 ' id='doccrhtml' ></div>
                 </div>
-                <ReactToPrint trigger={() =>
-                        <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-primary ml-3 ' label={'Imprimer'} />
-                    } content={() => document.getElementById("doccrhtml")} />
+               
             </Dialog>
         </>
     )

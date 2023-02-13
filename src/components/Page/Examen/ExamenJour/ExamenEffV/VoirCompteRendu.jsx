@@ -211,7 +211,7 @@ export default function VoirCompteRendu(props) {
     return (
         <>
 
-            <Button icon={PrimeIcons.PENCIL} className='p-buttom-sm p-1 ml-4 p-button-info ' tooltip='Modifier le compte rendu' tooltipOptions={{ position: 'top' }}
+            <Button icon={PrimeIcons.PENCIL} className='p-buttom-sm p-1 ml-4 p-button-secondary ' tooltip='Modifier le compte rendu' tooltipOptions={{ position: 'top' }}
                 onClick={() => { onClick('displayBasic2'); chargeProps(); getData(); }} />
 
             <Dialog maximizable header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-8 md:col-9 col-10 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
@@ -248,9 +248,9 @@ export default function VoirCompteRendu(props) {
                 <div id="scann" ref={(el) => (reportTemplateRef = el)}>
                     <div id="print" style={{ fontSize: '1.4em' }}></div>
                     <div className='w-100 flex justify-content-end'>
-                        <div style={{ width: "45px", height: "45px" }}>
+                    <div style={{ width: "45px", height: "45px",position:'absolute',bottom:'50px',right:'0px' ,margin:'0px',padding:'0px'}} >
                             <QRCode
-                                size={256}
+                                size={100}
                                 style={{ height: "auto", maxWidth: "100%", width: "100%" }}
                                 value={numQr}
                                 viewBox={`0 0 256 256`}

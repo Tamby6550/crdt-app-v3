@@ -97,7 +97,7 @@ export default function AjoutExamen(props) {
                 notificationAction(res.data.etat, 'Enregistrement', res.data.message);//message avy @back
                 setcharge({ chajoute: false });
                 setTimeout(() => {
-                    props.setrefreshData(1);
+                    props.setActiveIndex(1);
                     onHide('displayBasic2');
                     onVide();
                 }, 600)

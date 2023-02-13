@@ -178,7 +178,8 @@ export default function Voir(props) {
                 setchargeV({ chupdate: false });
                 setTimeout(() => {
                     onHide('displayBasic2');
-                    props.changecharge(1);
+                    props.setActiveIndex(2)
+                    // props.changecharge(1);
                 }, 600)
             })
             .catch(err => {

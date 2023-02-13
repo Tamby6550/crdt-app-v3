@@ -284,10 +284,10 @@ export default function RFacture(props) {
 
     const bodyConfirme = () => {
         return (
-            <div>
+            <div style={{fontSize:'1.1em'}}>
                 <label className='m-2'>Reglement fait par : <strong className='m-1'>{dataReglement.type_reglmnt == 'P' ? 'Patient' : 'Client'}</strong> </label> <hr />
                 <label className='m-2'>Type règlement : <strong className='m-1'>{dataReglement.nomreglement}</strong> </label> <hr />
-                <label className='m-2'>Montant : <strong className='m-1'>{format(dataReglement.montantreglement, 0, " ")} Ar </strong> </label><hr />
+                <label className='m-2'>Montant : <strong className='m-1'>{dataReglement.montantreglement} Ar </strong> </label><hr />
                 <label className='m-2'>RIB : <strong className='m-1'>{dataReglement.rib == '' ? '-' : dataReglement.rib}</strong> </label>
             </div>
         );
@@ -347,19 +347,24 @@ export default function RFacture(props) {
     }
 
 
-
     const onInsertReglement = async () => {
 
         setCharge(true);
         await axios.post(props.url + 'insertReglementFacture', dataReglement)
             .then(res => {
                 //message avy @back
-
                 notificationAction(res.data.etat, 'Règlement ', res.data.message);
 
                 setTimeout(() => {
                     chargementData();
 
+                    setverffaireReglmnt(true);
+
+                    //Raha vita daholo ny reglement
+                    if (res.data.regle == '1') {
+                        setchRegle(true);
+                        props.setredirege(2);
+                    }
 
                 }, 900)
             })

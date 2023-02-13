@@ -23,7 +23,7 @@ import Reglement from './Reglement'
 export default function RFacture(props) {
 
     const [blockedPanel, setBlockedPanel] = useState(true);
-    const [printDesact, setprintDesact] = useState(true)
+    const [redirege, setredirege] = useState(0);
 
     function numberV(value) {
         let numberValue = parseFloat(value.replace(/[^0-9.-]+/g, ""));
@@ -291,7 +291,7 @@ export default function RFacture(props) {
     const onHide1 = (name) => {
         dialogFuncMap1[`${name}`](false);
         onHide('displayBasic2');
-        props.setActiveIndex(1);
+        props.setActiveIndex(redirege);
     }
 
     const renderFooter = (name) => {
@@ -420,7 +420,8 @@ export default function RFacture(props) {
                 setTimeout(() => {
                     // onHide('displayBasic2');
                     // props.changecharge(1);
-                    onClick1('displayBasic')
+                    onClick1('displayBasic');
+                    setredirege(1);
                 }, 600)
                 console.log(res.data)
             })
@@ -442,7 +443,7 @@ export default function RFacture(props) {
 
             {/* Saisie Reglement */}
             <Dialog header={renderH('displayBasic')} maximizable visible={displayBasic} className="lg:col-10 col-10 md:col-11 sm:col-12 p-0" footer={renderFooter('displayBasic')} onHide={() => onHide1('displayBasic')}  >
-                <Reglement onHide1={onHide1} displayBasic={displayBasic} url={props.url} type_patient={infoFacture.type} numero={infoFacture.num_arriv} date_arr={infoFacture.date_arriv} num_fact={infoFacture.num_facture} changecharge={props.changecharge}  />
+                <Reglement setredirege={setredirege}  onHide1={onHide1} displayBasic={displayBasic} url={props.url} type_patient={infoFacture.type} numero={infoFacture.num_arriv} date_arr={infoFacture.date_arriv} num_fact={infoFacture.num_facture} changecharge={props.changecharge}  />
             </Dialog>
             {/* Saisie Reglement */}
 

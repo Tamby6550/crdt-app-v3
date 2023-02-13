@@ -392,7 +392,11 @@ function nombreTable(data){
                                                     <td height="22" class="table Style3">
                                                         <div align='right'>
                                                             <font size="1"  >
-                                                                <b>{format(parseFloat(Total.montant_chq) + parseFloat(Total.montant_esp), 2, ' ')}</b>
+                                                                <b>{
+                                                                    Total.montant_chq==""?format(parseFloat(Total.montant_esp), 2, ' ') :
+                                                                    Total.montant_esp==""?  format(parseFloat(Total.montant_chq), 2, ' ') :
+                                                                format(parseFloat(Total.montant_chq) + parseFloat(Total.montant_esp), 2, ' ')
+                                                                }</b>
                                                             </font>
                                                         </div>
                                                     </td>

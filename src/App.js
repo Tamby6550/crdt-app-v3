@@ -72,16 +72,18 @@ function App() {
     }
     const navigate = useNavigate()
 
-    const [url, seturl] = useState('http://127.0.0.1:3353/api/')
-    const urlip=()=>{
-        let ip = window.location.hostname;
-        let urls ='http://'+ip+':3353/api/'
-        seturl(urls);
-    }
+    const [url, seturl] = useState('http://127.0.0.1:8000/api/')
 
-    useEffect(() => {
-        urlip()
-    }, [navigate])
+    ////Rehefa deployer
+    // const urlip=()=>{
+    //     let ip = window.location.hostname;
+    //     let urls ='http://'+ip+':3353/api/'
+    //     seturl(urls);
+    // }
+
+    // useEffect(() => {
+    //     urlip()
+    // }, [navigate])
     
 
     const { pathname } = useLocation();
