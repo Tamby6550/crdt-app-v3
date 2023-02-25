@@ -400,7 +400,7 @@ export default function ModifReglement(props) {
                                         <label htmlFor="username2" className="label-input-sm mt-2">Client*</label>
                                         <div className='m-0 flex flex-row align-items-center  '>
                                             <InputText id="username2" style={{ backgroundColor: 'rgb(251 251 251)',width:'100%' }} aria-describedby="username2-help" className={"form-input-css-tamby"} name='code_cli' value={infoFacture.nom_cli} readOnly />
-                                            <ChoixClient setverfChamp={setverfChamp} url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} typeclient={infoFacture.type} />
+                                            <ChoixClient setverfChamp={setverfChamp} url={props.url} infoFacture={infoFacture} setinfoFacture={setinfoFacture} typeclient={props.data.type_patient} />
                                         </div>
                                     </div>
 

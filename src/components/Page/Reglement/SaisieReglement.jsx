@@ -1,67 +1,146 @@
 
-import React, { useRef, useState } from 'react';
-import BundledEditor from '../../service/EditorTiny/BundledEditor';
+import React, { useRef, useState, useEffect } from 'react';
+import { DataTable } from 'primereact/datatable'
+import { Column } from 'primereact/column'
+import { Toast } from 'primereact/toast';
+import axios from 'axios';
+import ModeReglement from './ModeReglement';
+import Modification from './Modification';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { PrimeIcons } from 'primereact/api';
+import { Button } from 'primereact/button'
+import CryptoJS from 'crypto-js';
 
-import Facture from '../Facture';
-import ReactToPrint from 'react-to-print'
-  
-export default function App() {
-  const editorRef = useRef(null);
-  let reportTemplateRef = useRef();
-  const [content, setContent] = useState(null)
+export default function SaisieReglement(props) {
 
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-      var myElement = document.getElementById("test");
-      myElement.innerHTML = editorRef.current.getContent();
+  const secret= "tamby6550";
+  const decrypt = () => {
+      const virus = localStorage.getItem("virus");
+      const decryptedData = CryptoJS.AES.decrypt(virus, secret);
+      const dataString = decryptedData.toString(CryptoJS.enc.Utf8);
+      const data = JSON.parse(dataString);
+      return { data };
+  }
 
-      setContent(editorRef.current.getContent())
+
+  const [user, setuser] = useState('');
+  useEffect(() => {
+       setuser(decrypt().data.login)
+   }, [decrypt().data.login]);
+
+  const [infoReglment, setinfoReglment] = useState({
+    nom: '',
+    desc: ''
+  });
+  const [listReglement, setlistReglement] = useState([
+    {
+      reglement_id: "",
+      libelle: "",
+      description: "",
     }
+  ]);
+  const [charge, setCharge] = useState(false);
+  const [refresh, setrefresh] = useState(0)
+
+  //Affichage notification Toast primereact (del :7s )
+  const toastTR = useRef(null);
+  const notificationAction = (etat, titre, message) => {
+    toastTR.current.show({ severity: etat, summary: titre, detail: message, life: 3000 });
+  }
+  const stylebtnDetele = {
+    fontSize: '1rem', padding: ' 0.8375rem 0.975rem', backgroundColor: 'rgb(195 46 46 / 85%)', border: '1px solid #d32f2fa1'
   };
-  return (
-    <div className=''>
-      <div className='mb-3'>
-        <BundledEditor
-          onInit={(evt, editor) => editorRef.current = editor}
-          initialValue='<p>Ito no donne donne initial afaka atao anaty use state ,forme string en forme html.</p>'
-          init={{
-            height: 500,
-            menubar: false,
-            plugins: [
-              'advlist', 'anchor', 'autolink', 'help', 'image', 'link', 'lists',
-              'searchreplace', 'table', 'wordcount', 'pagebreak',
-            ],
-            toolbar: 'undo redo | blocks | ' +
-              'bold italic forecolor | alignleft aligncenter ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol' +
-              'removeformat | help',
-            language:'fr_FR',
-            content_style: 'body { font-family:Helvetica,Arial,sans-serif;width:21cm;min-height:21cm;padding:3px 10px;clip-path:inset(-15px -15px 0px -15px); margin:1cm 4cm;box-shadow:0 0 3px 0px rgba(0, 0, 0, 0.219); font-size:12px }'
-          }}
-        />
+
+  const loadReglemnt = async () => {
+    setCharge(true)
+    await axios.get(props.url + `getAllReglementFact`)
+      .then(
+        (results) => {
+          setrefresh(0);
+          setlistReglement(results.data);
+          setCharge(false)
+        }
+      );
+  }
+
+  useEffect(() => {
+    loadReglemnt();
+  }, [refresh])
+
+
+
+
+  const header = (
+    <div className='flex flex-row justify-content-between align-items-center m-0 '>
+      <div className='my-0 ml-2 py-2 flex'>
+        
+        <ModeReglement url={props.url} setrefresh={setrefresh} />
       </div>
-      <button onClick={log} className="p-button mr-2">Enregistrer ici avant generation pdf</button>
-      <ReactToPrint trigger={() => <button className="p-button">
-        Generer pdf
-      </button>} content={() => reportTemplateRef} />
+      <label >Liste des Patients</label>
+      <label style={{visibility:'hidden'}}>Liste des Patients</label>
+    </div>
+  )
 
-      <div>
+  const bodyBoutton = (data) => {
+    return (
+      <div className='flex flex-row justify-content-between align-items-center m-0 '>
+        
+          <Modification data={data} url={props.url} setrefresh={setrefresh} />
+          <Button icon={PrimeIcons.TIMES} className='p-buttom-sm p-1 ' style={stylebtnDetele} tooltip='Supprimer' tooltipOptions={{ position: 'top' }}
+            onClick={() => {
 
-        <div className='ito' ref={(el) => (reportTemplateRef = el)}>
-          <div>
-            <div className='flex justify-content-between align-items center'>
-              <div >
-                <h1>Reglemenent</h1>
-              </div>
-              <div style={{ width: "45px", height: "auto" }}>
-                <Facture />
-              </div>
-            </div>
+              const accept = () => {
+                axios.delete(props.url + `deleteReglementFact/${data.reglement_id}`)
+                  .then(res => {
+                    notificationAction('info', 'Suppression reuissie !', 'Enregistrement bien supprimer !');
+                    setrefresh(1)
+                  })
+                  .catch(err => {
+                    console.log(err);
+                    notificationAction('error', 'Suppression non reuissie !', 'Enregirement non supprimer !');
+                  })
+              }
+              const reject = () => {
+                return null;
+              }
+              confirmDialog({
+                message: 'Voulez vous supprimer l\'enregistrement : ' + data.libelle,
+                header: 'Suppression  ',
+                icon: 'pi pi-exclamation-circle',
+                acceptClassName: 'p-button-danger',
+                acceptLabel: 'Ok',
+                rejectLabel: 'Annuler',
+                accept,
+                reject
+              });
+            }} />
+      
+      </div>
+    )
+  }
 
-            <div id='test' className='col-12 amboaro'></div>
-          </div>
+if (decrypt().data.login=='admin') {
+  return (
+    <div className="card">
+      <Toast ref={toastTR} position="top-right" />
+      <ConfirmDialog></ConfirmDialog>
+      <div className="p-fluid  formgrid grid">
+        <div className="field px-4  lg:col-12 md:col-12 col:12 my-1 flex flex-column">
+          <DataTable header={header} value={listReglement} scrollable scrollHeight="500px" loading={charge} responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun réglement "} style={{ fontSize: '0.98em' }} >
+            <Column field='reglement_id' header={'Id'}></Column>
+            <Column field={'libelle'} header={'Libellé'} ></Column>
+            <Column field={'description'} header="Déscription"></Column>
+            <Column header="Acction" body={bodyBoutton} align={'left'}></Column>
+
+          </DataTable>
         </div>
       </div>
     </div>
   );
+}
+else{
+  return(
+    <center><h1>Spécial pour l'admin !</h1></center>
+  );
+}
 }

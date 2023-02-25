@@ -22,7 +22,6 @@ import Examen from './components/Page/Examen';
 import PatientJour from './components/Page/Examen/PatientJour';
 import ExamenJour from './components/Page/Examen/ExamenJour';
 import SaisieReglement from './components/Page/Reglement/SaisieReglement';
-import ModePaiment from './components/Page/Reglement/ModePaiment';
 import FactureJour from './components/Page/Rapport/FactureJ/FactureJour'
 import StatExamen from './components/Page/Rapport/Examen/StatExamen';
 import StatExamenDetaille from './components/Page/Rapport/Examen/StatExamenDetaille'
@@ -41,6 +40,7 @@ import CryptoJS from 'crypto-js';
 import LogoutTimer from './components/Login/LogoutTimer';
 import { Toast } from 'primereact/toast';
 import ExamenJours from './components/Page/Rapport/ExamenJour/ExamenJour';
+import InsertModel from './components/Page/ModelCR/InsertModel';
 function App() {
 
 
@@ -72,9 +72,10 @@ function App() {
     }
     const navigate = useNavigate()
 
-    const [url, seturl] = useState('http://127.0.0.1:8000/api/')
+    // const [url, seturl] = useState('http://127.0.0.1:8000/api/') //pour php 7.4.33
+    const [url, seturl] = useState('http://localhost:8000/') //pour php 5.5
 
-    ////Rehefa deployer
+    //Rehefa deployer, commentena refa en mode dev
     // const urlip=()=>{
     //     let ip = window.location.hostname;
     //     let urls ='http://'+ip+':3353/api/'
@@ -222,19 +223,13 @@ function App() {
                             <img src={logo} style={{width:'250px',height:'90px'}} />
 
                         </div>
-                        <div className='col-9 p-0' >
+                        <div className='col-10 p-0' >
+                            <i>
+                            <h3>1578x100</h3>
+                            </i>
                             {/* <img src={logoH} className=" max-h-4rem flex m-2 headerimg" /> */}
                         </div>
-                        <div className='col-1 flex flex-column justify-content-center pl-4' style={{color:'#4c4c4c'}} >
-                            {isAuthenticated ?
-                                <>
-                                    <h4 className='m-2'> <>Nom :</>  {decrypt().data.nom} </h4>
-                                    <h4 className='m-2'> <>Rôle  :</>  {decrypt().data.login} </h4>
-                                </>
-                                :
-                                null}
-
-                        </div>
+                      
 
                     </div>
                     <div className='col-12 container-tamby'>
@@ -290,7 +285,6 @@ function App() {
                     <Route path='/examen' element={<Examen url={url} />} />
                     <Route path='/patient' element={<Patient url={url} />} />
                     <Route path='/saisie_reglement' element={<SaisieReglement url={url} />} />
-                    <Route path='/mode_paiement' element={<ModePaiment url={url} />} />
                     <Route path='/facture' element={<Facture url={url} />} />
                     <Route path='/patient_jour' element={<PatientJour url={url} />} />
                     <Route path='/examen_jour' element={<ExamenJour url={url} />} />
@@ -306,6 +300,7 @@ function App() {
                     <Route path='/releve_facture' element={<ReleveFacture url={url} />} />
                     <Route path='/journal_jour' element={<JournalJour url={url} />} />
                     <Route path='/rapport_examen_jour' element={<ExamenJours url={url} />} />
+                    <Route path='/modele_cr' element={<InsertModel url={url} />} />
                     <Route path='/test' element={<Formulaire url={url} />} />
                     <Route path='/acceuil' element={<Accueil url={url} />} />
                 </Route>

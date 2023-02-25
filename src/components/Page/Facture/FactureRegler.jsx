@@ -13,14 +13,14 @@ import { Tag } from 'primereact/tag';
 import FFactureVoir from './FactureNonReg/FFactureVoir';
 import ModifReglement from './FactureNonReg/ModifReglement'
 import ImpressionFact from './FactureNonReg/ImpressionFact';
-
+import Recherche from './FactureRegler/Recherche';
 export default function FactureNonRegler(props) {
 
     //Chargement de données
     const [charge, setCharge] = useState(false);
     const [refreshData, setrefreshData] = useState(0);
     const [listeFactureRegle, setlisteFactureRegle] = useState([{ numero: '', date_arr: '', id_patient: '', type_pat: '', verf_exam: '', nom: '', date_naiss: '', telephone: '' }]);
-    const [infoReherche, setinfoReherche] = useState({ numero_arr: '', date_arr: '', date_naiss: '', nom: '' })
+    const [infoReherche, setinfoReherche] = useState({ num_facture: '', date_facture: '', nom_patient: '', nom_client: '', numero_arr: '', date_arr: '', date_naiss: '' })
 
     /**Style css */
     const stylebtnRec = {
@@ -40,8 +40,9 @@ export default function FactureNonRegler(props) {
     const changecharge = (value) => {
         setrefreshData(value)
     }
+
     const onVide = () => {
-        setinfoReherche({ numero_arr: '', date_arr: '', date_naiss: '', nom: '' })
+        setinfoReherche({ num_facture: '', date_facture: '', nom_patient: '', nom_client: '', numero_arr: '', date_arr: '', date_naiss: '' })
     }
 
     //Get List patient
@@ -87,19 +88,40 @@ export default function FactureNonRegler(props) {
         </div>
     )
 
-
-    // const header1 = header();
-
-    //Global filters
+    const headerReherche = (
+        <div className='flex flex-row justify-content-between align-items-center m-0 '>
+            <div className='my-0 flex  py-2'>
+                <Recherche icon={PrimeIcons.SEARCH} setCharge={setCharge} setlisteFactureRegle={setlisteFactureRegle} changecharge={changecharge} url={props.url} infoReherche={infoReherche} setinfoReherche={setinfoReherche} />
+                {infoReherche.num_facture == "" && infoReherche.date_facture == "" && infoReherche.nom_patient == "" && infoReherche.nom_client == ""
+                    && infoReherche.numero_arr == "" && infoReherche.date_arr == "" ? null :
+                    <label className='ml-5 mt-2'>
+                        Resultat de recherche ,
+                        Numéro facture : <i style={{ fontWeight: '700' }}>"{(infoReherche.num_facture)}"</i>  ,
+                        Date facture : <i style={{ fontWeight: '700' }}>"{(infoReherche.date_facture)}"</i>,
+                        Numéro d'arrivé : <i style={{ fontWeight: '700' }}>"{(infoReherche.numero_arr)}"</i>,
+                        Date d'arrivé : <i style={{ fontWeight: '700' }}>"{(infoReherche.date_arr)}"</i>,
+                        Nom Patient : <i style={{ fontWeight: '700' }}>"{(infoReherche.nom_patient)}"</i>,
+                        Nom client : <i style={{ fontWeight: '700' }}>"{(infoReherche.nom_client)}"</i>,
+                    </label>}
+            </div>
+            {infoReherche.num_facture != "" || infoReherche.date_facture != "" || infoReherche.nom_patient != "" || infoReherche.nom_client != ""
+                || infoReherche.numero_arr != "" || infoReherche.date_arr != "" ?
+                <Button icon={PrimeIcons.REFRESH} className='p-buttom-sm p-1 p-button-warning ' tooltip='actualiser' tooltipOptions={{ position: 'top' }} onClick={() => setrefreshData(1)} />
+                :
+                <>
+                    <h3 className='m-3'>Liste facture régler (5 dernier jour)</h3>
+                    <h3 className='m-3' style={{ visibility: 'hidden' }} >Examens éffectuées</h3>
+                </>
+            }
+        </div>
+    )
     return (
         <>
             <Toast ref={toastTR} position="top-right" />
             <ConfirmDialog />
 
             <div className="flex flex-column justify-content-center" >
-
-                <DataTable header={header} showGridlines globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listeFactureRegle} loading={charge} scrollable scrollHeight="550px" responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun examen à éffectuées"} >
-
+                <DataTable header={headerReherche} showGridlines globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listeFactureRegle} loading={charge} scrollable scrollHeight="550px" responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun examen à éffectuées"} >
                     <Column field='num_fact' header={'N° Facture'} style={{ fontWeight: '700' }}></Column>
                     <Column field={'date_facture'} header="Date Facture" style={{ fontWeight: '600' }} ></Column>
                     <Column field='numero' header={'Numéro d\'Arrivée'} style={{ fontWeight: '600' }} ></Column>

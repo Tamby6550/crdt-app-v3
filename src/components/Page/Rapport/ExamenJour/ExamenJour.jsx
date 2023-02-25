@@ -218,7 +218,7 @@ function nombreTable(data){
                             <div
                                 style={{
                                     margin: "50px 0",
-                                    fontSize: "3em",
+                                    fontSize: "2em",
                                     fontWeight: "bold",
                                     textAlign: "center",
                                 }}
@@ -232,7 +232,8 @@ function nombreTable(data){
                                 const pagededonnees = DataAll.slice(debut, fin);
 
                                 return (
-                                    <div key={index} className='m-0 p-0 rapportxxx'>                                        <span class="Style5" style={{ fontWeight: "bold" }}>CRDT</span>
+                                    <div key={index} className='m-0 p-0 rapportxxx'>                                       
+                                     <span class="Style5" style={{ fontWeight: "bold" }}>CRDT</span>
                                         <table width="777" border="0" align="center">
                                             <tr>
                                                 <td width="771">
@@ -395,6 +396,7 @@ function nombreTable(data){
                                                                 <b>{
                                                                     Total.montant_chq==""?format(parseFloat(Total.montant_esp), 2, ' ') :
                                                                     Total.montant_esp==""?  format(parseFloat(Total.montant_chq), 2, ' ') :
+                                                                    Total.montant_chq=="" && Total.montant_esp==""? "0":
                                                                 format(parseFloat(Total.montant_chq) + parseFloat(Total.montant_esp), 2, ' ')
                                                                 }</b>
                                                             </font>

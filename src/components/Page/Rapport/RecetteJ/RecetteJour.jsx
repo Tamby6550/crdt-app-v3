@@ -3,17 +3,16 @@ import { Button } from 'primereact/button'
 import { PrimeIcons } from 'primereact/api';
 import ReactToPrint from 'react-to-print'
 import { Dialog } from 'primereact/dialog';
-import { InputText } from 'primereact/inputtext'
-import { Dropdown } from 'primereact/dropdown';
-import { InputMask } from 'primereact/inputmask';
 import { BlockUI } from 'primereact/blockui';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import axios from 'axios';
 import moment from 'moment/moment';
+import FormatF from "../../Facture/FormatF";
 
 export default function Recettejour(props) {
 
     const messagesParPage = 19;
+    const { format } = FormatF();
 
 
     const [donne, setdonne] = useState({ date: '' })
@@ -215,7 +214,7 @@ export default function Recettejour(props) {
                                                 </td>
                                                 <td height="22" class="table Style3">
                                                     <div align="right">
-                                                        <font size="1">{el.montant}</font>
+                                                        <font size="1">{ el.montant==""? "0" : format(parseFloat(el.montant), 2, ' ')}</font>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -256,7 +255,7 @@ export default function Recettejour(props) {
                                                 <td height="22" class="table Style3">
                                                     <div align="right">
                                                         <font size="1">
-                                                            <b>{Total.montant}</b>
+                                                            <b>{ Total.montant==""? "0" :  format(parseFloat(Total.montant), 2, ' ')}</b>
                                                         </font>
                                                     </div>
                                                 </td>
@@ -295,7 +294,7 @@ export default function Recettejour(props) {
                                                 <td height="22" class="table Style3">
                                                     <div align="right">
                                                         <font size="1">
-                                                            <b>{Total.montant_esp}</b>
+                                                            <b>{ Total.montant_esp==""? "0" :  format(parseFloat(Total.montant_esp), 2, ' ')}</b>
                                                         </font>
                                                     </div>
                                                 </td>
@@ -334,7 +333,7 @@ export default function Recettejour(props) {
                                                 <td height="22" class="table Style3">
                                                     <div align="right">
                                                         <font size="1">
-                                                            <b>{Total.montant_chq}</b>
+                                                            <b>{Total.montant_chq==""? "0" :  format(parseFloat(Total.montant_chq), 2, ' ')}</b>
                                                         </font>
                                                     </div>
                                                 </td>

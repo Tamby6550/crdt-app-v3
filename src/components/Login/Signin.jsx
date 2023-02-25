@@ -102,6 +102,7 @@ export default function Signin(props) {
                             <Components.Title style={{ color: '#546372', fontSize: '1.6em' }} >Centre de RadioDiagnostic et de Thérapie</Components.Title>
                             <Components.Paragraph>
                                 <img src={logo} alt="" width={"148px"} />
+                                <h2 style={{color:'black'}} >Taille  400 x 480</h2>
                             </Components.Paragraph>
                             <Components.GhostButton style={{ display: 'none' }} onClick={() => toggle(false)}>
                                 S'inscrire

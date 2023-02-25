@@ -44,11 +44,7 @@ const useAuth = () => {
         setchargement(true)
         try {
             await axios.post(url + 'login', info,
-                {
-                    headers: {
-                        "Content-Type": "application/json; charset=utf-8",
-                    },
-                }
+             
             ).then(res => {
                 setloginpass('res.data.login.password');
                 if (res.data.login.login != 'Login ou mot de passe erronne , Merci de verifier' && res.data.login.password!="" ) {
