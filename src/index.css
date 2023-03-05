@@ -11,20 +11,45 @@
         overflow: initial !important;
         -webkit-print-color-adjust:exact;
     }
+    /* Réçu */
+    #scan{
+        font-size: 0.78em;
+        padding: 0px;
+    }
+    .crdtfont{
+        font-size: 10em !important;
+    }
+    .crdt__{
+        padding-top: 5% !important;
+        padding-left: 20% !important;
+    }
+   
 }
 
 @page{
-    size: auto;
-    margin: 20mm;
+    size: portrait;
+    margin: 10mm;
 }
 
-
+/* Rapport */
 .rapportxxx{
     page:special;
 }
 
+/* Récu */
+#scan{
+    page:special1;
+}
 
-    @page special{
-        margin: 10mm;
-        size:landscape
-    }
+
+@page special{
+    margin: 10mm;
+    size:portrait
+}
+
+/* Réçu */
+@page special1{
+    size: 64mm 72mm;
+    margin: 0mm 4mm 0mm 4mm;
+    
+}

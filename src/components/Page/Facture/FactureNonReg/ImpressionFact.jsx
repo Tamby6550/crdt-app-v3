@@ -221,7 +221,7 @@ export default function ImpressionFact(props) {
 
                         <div
                             className="facture w-100 h-100"
-                            style={{ position: 'relative' }}
+                            style={{ position: 'relative'  }}
                             ref={(el) => (reportTemplateRef = el)}
                         >
                             <div className='crdt co-12 ' style={{ position: 'absolute', paddingTop: '35%',alignItems:'center',width:'100%'  }}>

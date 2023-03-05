@@ -61,14 +61,16 @@ export default function Impression(props) {
         <>
             <Button icon={PrimeIcons.PRINT} tooltip='Aperçu' className='p-buttom-sm p-1 mr-2 p-button-secondary ' tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); }} />
 
-            <Dialog header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-5 md:col-5 col-5 p-0" onHide={() => onHide('displayBasic2')}  >
-                <div className='recu-imprime' style={{ padding: '50px', border: '1px solid black' }} >
+            <Dialog header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-4 md:col-5 col-5 p-0" onHide={() => onHide('displayBasic2')}  >
+                <div className='recu-imprime' style={{ padding: '20px', border: '1px solid black' }} >
                     <div id="scan" style={{ color: 'rgb(38 38 38)' }} >
-                        <div className="flex justify-content-center formgrid grid w-100 " style={{ border: '2px solid white',position:'relative' }}>
-                            <div className='crdt co-12 ' style={{ position: 'absolute',alignItems: 'center',paddingTop:'12%'}}>
-                                <h1 className='m-0' style={{ fontSize:'15em',color:'rgb(0 0 0 / 9%)' }}>CRDT</h1>
+                        <div className="flex justify-content-center formgrid grid w-100 " style={{ border: '2px solid white',position:'relative'}}>
+                            <div className='crdt__ co-12 ' style={{ position: 'absolute',alignItems: 'center',paddingTop:'0%',paddingLeft:'0%',transform:'rotate(60deg)'}}>
+                                <h1 className='m-0 crdtfont' style={{ fontSize:'10em',color:'rgb(0 0 0 / 6%)' }}>CRDT</h1>
+                                <h1 className='m-0 crdtfont' style={{ fontSize:'10em',color:'rgb(0 0 0 / 6%)' }}>CRDT</h1>
+                                <h1 className='m-0 crdtfont' style={{ fontSize:'10em',color:'rgb(0 0 0 / 6%)' }}>CRDT</h1>
                             </div>
-                            <div className="field  col-12 flex flex-column align-items-center m-0 mb-5 p-0" style={{ position:'relative', zIndex:'-2'}}>
+                            <div className="field  col-12 flex flex-column align-items-center m-0 mb-5 p-0" style={{ position:'relative', zIndex:'0'}}>
 
                                 <div className="field col-12 m-0 p-0" style={{ border: '1px solid white', textAlign: 'center' }} >
                                     <h3 className='m-2' >{("Reçu  reglement , date : " + props.data.date_reglement).toUpperCase()}</h3>
@@ -79,7 +81,7 @@ export default function Impression(props) {
                             </div>
                             <div className="field  col-12 m-0 p-0" style={{ border: '1px solid white' }}>
                                 <div className="field col-12 m-0 p-0 flex flex-row"  >
-                                    <table width="60%" border="0" align="center" class="table">
+                                    <table width="100%" border="0" align="center" class="table">
                                         {props.data.type_rglmt == 'P' ?
                                             <tr>
                                                 <td class="table-col" width="26%"><strong>PATIENT(E) :</strong></td>
@@ -95,7 +97,7 @@ export default function Impression(props) {
 
                                 </div>
                                 <div className="field col-12 m-0 p-0 flex flex-row"  >
-                                    <table width="60%" border="0" align="center" class="table">
+                                    <table width="100%" border="0" align="center" class="table">
                                         <tr>
                                             <td class="table-col" width="26%"><strong>REGLEMENT PAR :</strong></td>
                                             <td colspan="2" class="table-col" width="26%"> <label style={{ fontSize: '1.3em' }}>{props.data.reglement}</label> </td>
@@ -106,7 +108,7 @@ export default function Impression(props) {
                                         </tr>
                                         <tr>
                                             <td class="table-col" width="26%"><strong >MONTANT PAYE :</strong></td>
-                                            <td colspan="2" class="table-col" width="26%"> <label style={{ fontSize: '1.3em', fontWeight: '600' }}>{props.format(props.data.montant, 2, ' ')} Ar</label></td>
+                                            <td colspan="2" class="table-col" width="26%"> <label style={{ fontSize: '1.3em', fontWeight: '700' }}>{props.format(props.data.montant, 2, ' ')} Ar</label></td>
                                         </tr>
                                         <tr>
                                             <td class="table-col" width="26%"><strong>MONTANT RESTE A PAYER :</strong></td>
@@ -125,7 +127,7 @@ export default function Impression(props) {
                                         /{manisyLettre(props.data.net)} Ariary /
                                     </label><br />
                                 </center>
-                                <center className='mt-5'>
+                                <center className='mt-2'>
 
                                     <label style={{ fontSize: '1.3em' }} >Pour le CRDT</label>
                                 </center>
