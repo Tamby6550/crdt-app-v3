@@ -9,6 +9,7 @@
     "@tinymce/tinymce-react": "^4.2.0",
     "axios": "^1.2.1",
     "bootstrap": "^5.2.3",
+    "chart.js": "^4.2.1",
     "ckbox": "^1.2.1",
     "convertir-nombre-lettre": "^1.0.2",
     "crypto-js": "^4.1.1",
