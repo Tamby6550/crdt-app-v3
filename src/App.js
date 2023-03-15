@@ -72,17 +72,17 @@ function App() {
     }
     const navigate = useNavigate()
 
-    const [url, seturl] = useState('http://127.0.0.1:3353/api/') //pour php 7.4.33
-    // const [url, seturl] = useState('http://localhost:8000/') //pour php 5.5
+    // const [url, seturl] = useState('http://127.0.0.1:3353/api/') //pour php 7.4.33
+    const [url, seturl] = useState('http://localhost:8000/') //pour php 5.5
 
     //Rehefa deployer, commentena refa en mode dev 
     
     // php 7.4.33
-    const urlip=()=>{
-        let ip = window.location.hostname;
-        let urls ='http://'+ip+':3353/api/'
-        seturl(urls);
-    }
+    // const urlip=()=>{
+    //     let ip = window.location.hostname;
+    //     let urls ='http://'+ip+':3353/api/'
+    //     seturl(urls);
+    // }
 
     //  php 5.5
     // const urlip=()=>{
@@ -91,9 +91,9 @@ function App() {
     //     seturl(urls);
     // }
 
-    useEffect(() => {
-        urlip()
-    }, [navigate])
+    // useEffect(() => {
+    //     urlip()
+    // }, [navigate])
     
 
     const { pathname } = useLocation();
