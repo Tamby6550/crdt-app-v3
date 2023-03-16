@@ -618,7 +618,7 @@ export default function RFacture(props) {
                                         </div>
                                         <div className='flex mt-3 mr-4 justify-content-between '>
                                             <Button icon={PrimeIcons.TIMES} className='p-button-sm p-button-secondary mr-2 '
-                                                tooltip="Annuler et Fermer " tooltipOptions={{ position: 'top' }} style={{ cursor: 'pointer' }} label={'Annuler'} onClick={()=>{props.onHide1('displayBasic')}}
+                                                tooltip="Fermer " tooltipOptions={{ position: 'top' }} style={{ cursor: 'pointer' }} label={'Fermer'} onClick={()=>{props.onHide1('displayBasic')}}
                                             />
 
                                             <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-success '

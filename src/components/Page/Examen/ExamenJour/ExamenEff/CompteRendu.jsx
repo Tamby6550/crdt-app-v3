@@ -31,9 +31,9 @@ export default function CompteRendu(props) {
     const [content, setContent] = useState(null)
 
     const log = () => {
-        if (editorRef.current.getContent()=="") {
+        if (editorRef.current.getContent() == "") {
             alert('Compte Rendu vide !')
-        }else{
+        } else {
             if (editorRef.current) {
                 let strin = JSON.stringify({ data: editorRef.current.getContent() });
                 let pars = JSON.parse(strin);
@@ -187,7 +187,7 @@ export default function CompteRendu(props) {
         return (
             <div>
                 <h4 className='m-1'>
-                    Compte Rendu 
+                    Compte Rendu
                     <center className='m-0 p-0'>
 
                         <label style={{ fontWeight: '800' }} >
@@ -224,7 +224,7 @@ export default function CompteRendu(props) {
             <Button icon={PrimeIcons.BOOK} className='p-buttom-sm p-1 ml-4 p-button-info ' tooltip='Ajout compte rendu' tooltipOptions={{ position: 'top' }}
                 onClick={() => { onClick('displayBasic2'); chargeProps(); }} />
 
-            <Dialog maximizable header={renderHeader('displayBasic2')} style={{zIndex: '1101 !important'}} visible={displayBasic2} className="lg:col-8 md:col-9 col-10 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
+            <Dialog maximizable header={renderHeader('displayBasic2')} style={{ zIndex: '1101 !important' }} visible={displayBasic2} className="lg:col-8 md:col-9 col-10 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
                 <Toast ref={toastTR} position="top-right" />
                 {/* <SaisieReglement/> */}
                 <div className="p-1  style-modal-tamby">
@@ -233,16 +233,23 @@ export default function CompteRendu(props) {
                             <CRmodel sethtmlm={sethtmlm} setrecHtml={setrecHtml} recHtml={recHtml} />
                         </div>
                         <div className='col-8'>
-                            <p className='m-1'style={{ fontWeight: 'bold', color: '#2c2b2b',fontSize:'1.2em' }} >Nom : <span  ><strong>{props.nom}</strong></span></p>
-                            <p className='m-1'style={{ fontWeight: 'bold', color: '#2c2b2b',fontSize:'1.2em' }} >Examen : <span  ><strong>{props.lib_examen}</strong></span></p>
+                            <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.2em' }} >Nom : <span  ><strong>{props.nom}</strong></span></p>
+                            <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.2em' }} >Examen : <span  ><strong>{props.lib_examen}</strong></span></p>
                         </div>
+                    </div>
+                    <div className='flex px-4 p-3'>
+                        <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-primary ' label={chargePost.chajoute ? 'Enregistrement...' : 'Enregistrer'} onClick={log} />
+                        <ReactToPrint trigger={() =>
+                            <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-info ml-3 ' label={'Imprimer'} disabled={printDesact} />
+                        } content={() => document.getElementById("scann")} />
+
                     </div>
                     <div className='mb-3' >
                         <BundledEditor
                             onInit={(evt, editor) => editorRef.current = editor}
-                            initialValue={recHtml != null ? recHtml :  htmlm}
+                            initialValue={recHtml != null ? recHtml : htmlm}
                             init={{
-                                height: 500,
+                                height: 700,
                                 menubar: false,
                                 plugins: [
                                     'advlist', 'anchor', 'autolink', 'help', 'image', 'link', 'lists',
@@ -256,18 +263,15 @@ export default function CompteRendu(props) {
                             }}
                         />
                     </div>
-                    <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-primary ' label={chargePost.chajoute ? 'Enregistrement...' : 'Enregistrer'} onClick={log} />
-                    <ReactToPrint trigger={() =>
-                        <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-primary ml-3 ' label={'Imprimer'} disabled={printDesact} />
-                    } content={() => document.getElementById("scan")} />
+
                 </div>
             </Dialog>
             <div className='hidden'>
-                <div id="scan" ref={(el) => (reportTemplateRef = el)}>
+                <div id="scann" ref={(el) => (reportTemplateRef = el)}>
                     <div id="print" className='cr_ins' style={{ fontSize: '1.4em' }}></div>
                     <div className='flex justify-content-end w-100' >
-                       
-                        <div style={{ width: "45px", height: "45px",position:'absolute',bottom:'50px',margin:'0px',padding:'0px',right:'0px' }} >
+
+                        <div style={{ width: "45px", height: "45px", position: 'absolute', bottom: '50px', margin: '0px', padding: '0px', right: '0px' }} >
                             <QRCode
                                 size={100}
                                 style={{ height: "auto", maxWidth: "100%", width: "100%" }}

@@ -40,6 +40,10 @@
 #scan{
     page:special1;
 }
+/* Récu */
+#scann{
+    page:special2;
+}
 
 
 @page special{
@@ -52,4 +56,9 @@
     size: 64mm 72mm;
     margin: 0mm 4mm 0mm 4mm;
     
+}
+/* CR */
+@page special2{
+    margin: 20mm;
+    size:portrait
 }

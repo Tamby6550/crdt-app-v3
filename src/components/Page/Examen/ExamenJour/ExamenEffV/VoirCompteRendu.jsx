@@ -216,7 +216,7 @@ export default function VoirCompteRendu(props) {
 
             <Dialog maximizable header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-8 md:col-9 col-10 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
                 <Toast ref={toastTR} position="top-right" />
-                {/* <SaisieReglement/> */}
+               
                 <div className="p-1  style-modal-tamby">
                     <div className='mb-3'>
                         <BundledEditor
