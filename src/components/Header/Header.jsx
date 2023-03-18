@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { Sidebar } from 'primereact/sidebar'
 import { Card } from 'primereact/card'
 import { PanelMenu } from 'primereact/panelmenu'
@@ -9,6 +9,7 @@ import { PrimeIcons } from 'primereact/api'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import useAuth from '../Login/useAuth'
 import CryptoJS from 'crypto-js';
+import { Button } from 'primereact/button'
 
 export default function Header() {
 
@@ -27,6 +28,7 @@ export default function Header() {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const classactive = "menu-active"
+  const [visibleLeft, setVisibleLeft] = useState(false);
 
   const items = [
     {
@@ -258,7 +260,12 @@ export default function Header() {
 
   return (
     <>
-      <div className="lg:col-2 md:col-2 sm:col-3 col-3 p-0 " style={{ minHeight: "88vh" }}>
+     <div className='humbergeur' >
+        {/* <h1 className='text-center my-0 text-lg pt-2'>Menu</h1> */}
+        <Button icon={PrimeIcons.BARS} tooltip={'Menu'} onClick={() => setVisibleLeft(true)} className="ml-3 mt-3 p-button-sm p-button-secondary" />
+      </div>
+
+      <div className="lg:col-2 md:col-2 sm:col-3 col-3 p-0 mobile-m" style={{ minHeight: "88vh" }}>
 
         <Card className='h-full p-0 card-custom' style={{ position: 'relative' }}>
           <h1 className='text-center my-0 text-lg pt-2'>Menu</h1>
@@ -273,6 +280,12 @@ export default function Header() {
               null}
           </div>
         </Card>
+        <Sidebar visible={visibleLeft} onHide={() => setVisibleLeft(false)}>
+          <h1 className='text-center my-0 text-lg pt-2'>Menu</h1>
+          <Card className='h-full p-0 card-custom'  >
+            <PanelMenu model={items} className="bg-white w-full pt-2 tamby-menu" />
+          </Card>
+        </Sidebar>
       </div>
     </>
   )

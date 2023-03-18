@@ -85,15 +85,15 @@ function App() {
     // }
 
     //  php 5.5
-    // const urlip=()=>{
-    //     let ip = window.location.hostname;
-    //     let urls ='http://'+ip+':3353/'
-    //     seturl(urls);
-    // }
+    const urlip=()=>{
+        let ip = window.location.hostname;
+        let urls ='http://'+ip+':3353/'
+        seturl(urls);
+    }
 
-    // useEffect(() => {
-    //     urlip()
-    // }, [navigate])
+    useEffect(() => {
+        urlip()
+    }, [navigate])
     
 
     const { pathname } = useLocation();

@@ -66,17 +66,26 @@ export default function Impression(props) {
                     <div id="scan" style={{ color: 'rgb(38 38 38)' }} >
                         <div className="flex justify-content-center formgrid grid w-100 " style={{ border: '2px solid white',position:'relative'}}>
                             <div className='crdt__ co-12 ' style={{ position: 'absolute',alignItems: 'center',paddingTop:'0%',paddingLeft:'0%',transform:'rotate(60deg)'}}>
+                                {/* <h1 className='m-0 crdtfont' style={{ fontSize:'10em',color:'rgb(0 0 0 / 6%)' }}>CRDT</h1>
                                 <h1 className='m-0 crdtfont' style={{ fontSize:'10em',color:'rgb(0 0 0 / 6%)' }}>CRDT</h1>
-                                <h1 className='m-0 crdtfont' style={{ fontSize:'10em',color:'rgb(0 0 0 / 6%)' }}>CRDT</h1>
-                                <h1 className='m-0 crdtfont' style={{ fontSize:'10em',color:'rgb(0 0 0 / 6%)' }}>CRDT</h1>
+                                <h1 className='m-0 crdtfont' style={{ fontSize:'10em',color:'rgb(0 0 0 / 6%)' }}>CRDT</h1> */}
                             </div>
                             <div className="field  col-12 flex flex-column align-items-center m-0 mb-5 p-0" style={{ position:'relative', zIndex:'0'}}>
 
                                 <div className="field col-12 m-0 p-0" style={{ border: '1px solid white', textAlign: 'center' }} >
-                                    <h3 className='m-2' >{("Reçu  reglement , date : " + props.data.date_reglement).toUpperCase()}</h3>
+                                    <h1 className='m-1' >C.R.D.T.</h1>
+                                    <h3 className='m-1' style={{ fontWeight: '500' }} >RCS: 2011B00436 - NIF : 5000434986  </h3>
+                                </div>
+
+                                <div className="field col-12 m-0 p-0" style={{ border: '1px solid white', textAlign: 'center' }} >
+                                    <h3 className='m-1' style={{ fontWeight: '500' }} >{("Reçu de règlement").toUpperCase()}</h3>
                                 </div>
                                 <div className="field col-12 m-0 p-0" style={{ border: '1px solid white', textAlign: 'center' }} >
-                                    <h3 className='m-2' style={{ fontWeight: 'bold' }} >{("Facture N° : ").toUpperCase()}<u>{props.data.num_fact}</u> </h3>
+                                    <h3 className='m-1' style={{ fontWeight: '500' }} >{("Date : " + props.data.date_reglement).toUpperCase()}</h3>
+                                </div>
+                              
+                                <div className="field col-12 m-0 p-0" style={{ border: '1px solid white', textAlign: 'center' }} >
+                                    <h3 className='m-1' style={{ fontWeight: '500' }} >{("Facture N° : ").toUpperCase()}{props.data.num_fact} </h3>
                                 </div>
                             </div>
                             <div className="field  col-12 m-0 p-0" style={{ border: '1px solid white' }}>
@@ -84,12 +93,12 @@ export default function Impression(props) {
                                     <table width="100%" border="0" align="center" class="table">
                                         {props.data.type_rglmt == 'P' ?
                                             <tr>
-                                                <td class="table-col" width="26%"><strong>PATIENT(E) :</strong></td>
+                                                <td class="table-col" width="26%"><strong>PATIENT(E) </strong></td>
                                                 <td colspan="2" class="table-col"> <label style={{ fontSize: '1.3em' }}>{props.patient}</label> </td>
                                             </tr>
                                             :
                                             <tr>
-                                                <td class="table-col" width="26%"><strong>CLIENT(E) :</strong></td>
+                                                <td class="table-col" width="26%"><strong>CLIENT(E) </strong></td>
                                                 <td colspan="2" class="table-col"> <label style={{ fontSize: '1.3em' }}>{props.client}</label> </td>
                                             </tr>
                                         }
@@ -97,20 +106,20 @@ export default function Impression(props) {
 
                                 </div>
                                 <div className="field col-12 m-0 p-0 flex flex-row"  >
-                                    <table width="100%" border="0" align="center" class="table">
+                                    <table width="100%" border="0" align="center" class="table m-0">
                                         <tr>
-                                            <td class="table-col" width="26%"><strong>REGLEMENT PAR :</strong></td>
+                                            <td class="table-col" width="26%"><strong>REGLEMENT PAR </strong></td>
                                             <td colspan="2" class="table-col" width="26%"> <label style={{ fontSize: '1.3em' }}>{props.data.reglement}</label> </td>
                                         </tr>
-                                        <tr>
+                                        {/* <tr>
                                             <td class="table-col" width="26%"><strong>RIB :</strong></td>
                                             <td colspan="2" class="table-col" width="26%"> <label style={{ fontSize: '1.3em' }}>{props.data.rib}</label> </td>
-                                        </tr>
+                                        </tr> */}
                                         <tr>
-                                            <td class="table-col" width="26%"><strong >MONTANT PAYE :</strong></td>
+                                            <td class="table-col" width="26%"><strong >MONTANT PAYE </strong></td>
                                             <td colspan="2" class="table-col" width="26%"> <label style={{ fontSize: '1.3em', fontWeight: '700' }}>{props.format(props.data.montant, 2, ' ')} Ar</label></td>
                                         </tr>
-                                        <tr>
+                                        {/* <tr>
                                             <td class="table-col" width="26%"><strong>MONTANT RESTE A PAYER :</strong></td>
 
                                             {props.data.type_rglmt == 'P' ?
@@ -118,19 +127,19 @@ export default function Impression(props) {
                                                 :
                                                 <td colspan="2" class="table-col"> <label style={{ fontSize: '1.3em' }}>{props.format(props.restClie, 2, ' ')} Ar</label> </td>
                                             }
-                                        </tr>
+                                        </tr> */}
                                     </table>
                                 </div>
                                 <center className='mt-3 p-2'>
-                                    <label style={{ fontSize: '1.3em' }}>Arrêté la présente récu à la somme de:</label> <br />
-                                    <label style={{ fontSize: '1.3em', fontWeight: '700' }}>
+                                    <label style={{ fontSize: '1.3em' }}>Arrêté le présent récu à la somme de:</label> <br />
+                                    <label style={{ fontSize: '1.3em', fontWeight: '500' }}>
                                         /{manisyLettre(props.data.net)} Ariary /
                                     </label><br />
                                 </center>
-                                <center className='mt-2'>
+                                {/* <center className='mt-2'>
 
                                     <label style={{ fontSize: '1.3em' }} >Pour le CRDT</label>
-                                </center>
+                                </center> */}
                             </div>
                         </div>
                     </div>

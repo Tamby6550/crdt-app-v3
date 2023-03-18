@@ -24,7 +24,7 @@ export default function InsertModel() {
                 let strin = JSON.stringify({ data: editorRef.current.getContent() });
                 let pars = JSON.parse(strin);
                 var myElement = document.getElementById("print");
-                myElement.innerHTML = editorRef.current.getContent();
+                // myElement.innerHTML = editorRef.current.getContent();
                 console.log(editorRef.current.getContent())
                 envoyeData(pars.data)
             }
@@ -39,14 +39,17 @@ export default function InsertModel() {
         setchargePost({ chajoute: true });
 
         try {
-            await axios.post(`http://${window.location.hostname}:3354/api/hello/${nomFichier}`, {
+            await axios.post(`http://${window.location.hostname}:3354/api/savemodel/${nomFichier}`, {
                 headers: {
                     'Content-Type': 'text/html'
                 },
                 body: data
             }).then(
                 (result) => {
-                    console.log('Insertion ok !')
+                    console.log(result)
+                    alert('Model bien Sauver !');
+                    setchargePost({ chajoute: false });
+
                 }
             )
                 .catch((e) => {
@@ -87,10 +90,13 @@ export default function InsertModel() {
         <div className="p-1  style-modal-tamby">
             <div className='col-12 pt-0 flex flex-row justify-conten-between' style={{ borderBottom: '1px solid #efefef' }} >
 
-                <div className='col-3'>
+                <div className='col-5'>
                     <div className="field   lg:col-12 md:col-12 col:12 m-0 p-0">
-                        <label className="label-input-sm mr-2">Nom examen :</label>
-                        <InputText id="username2" aria-describedby="username2-help" name='nom' value={nomFichier.nom} onChange={(e) => { setnomFichier(e.target.value) }} />
+                        <h4 className=" m-1">Nom examen :</h4>
+                        <div >
+
+                        <InputText id="username2" style={{width:'100%'}} aria-describedby="username2-help" name='nom' value={nomFichier.nom} onChange={(e) => { setnomFichier(e.target.value) }} />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -101,7 +107,7 @@ export default function InsertModel() {
                     onInit={(evt, editor) => editorRef.current = editor}
                     initialValue={'<h3>Hello word !</h3>'}
                     init={{
-                        height: 500,
+                        height: 700,
                         menubar: false,
                         plugins: [
                             'advlist', 'anchor', 'autolink', 'help', 'image', 'link', 'lists',

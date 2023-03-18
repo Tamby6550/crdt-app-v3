@@ -5,48 +5,39 @@ export default function Statistique(props) {
     const [chartData, setChartData] = useState({});
     const [chartOptions, setChartOptions] = useState({});
 
+
     useEffect(() => {
+        console.log(props.dtChart)
         const documentStyle = getComputedStyle(document.documentElement);
-        const textColor = documentStyle.getPropertyValue('--text-color');
-        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
         const data = {
-            labels: ['Tarif E', 'Tarif L1', 'Tarif L2'],
+            labels:  ['Tarif E', 'Tarif L1', 'Tarif L2'],
             datasets: [
                 {
-                    label: 'Nombre',
-                    borderColor: documentStyle.getPropertyValue('--pink-400'),
-                    pointBackgroundColor: documentStyle.getPropertyValue('--pink-400'),
-                    pointBorderColor: documentStyle.getPropertyValue('--pink-400'),
-                    pointHoverBackgroundColor: textColor,
-                    pointHoverBorderColor: documentStyle.getPropertyValue('--pink-400'),
-                    data: props.dtChart
+                    data: props.dtChart,
+                    backgroundColor: [
+                        documentStyle.getPropertyValue('--blue-500'), 
+                        documentStyle.getPropertyValue('--yellow-500'), 
+                        documentStyle.getPropertyValue('--green-500')
+                    ],
+                    hoverBackgroundColor: [
+                        documentStyle.getPropertyValue('--blue-400'), 
+                        documentStyle.getPropertyValue('--yellow-400'), 
+                        documentStyle.getPropertyValue('--green-400')
+                    ]
                 }
             ]
         };
         const options = {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: textColor
-                    }
-                }
-            },
-            scales: {
-                r: {
-                    grid: {
-                        color: textColorSecondary
-                    }
-                }
-            }
+            cutout: '60%'
         };
 
         setChartData(data);
         setChartOptions(options);
-    }, [props.dtChart]);
+    }, []);
 
     return (
         <div className="card flex justify-content-center">
-            <Chart type="radar" data={chartData} options={chartOptions} className="w-full md:w-30rem" />
+            <Chart type="doughnut" data={chartData} options={chartOptions} className="w-full md:w-30rem" />
         </div>
     )
 }

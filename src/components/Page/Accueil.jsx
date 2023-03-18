@@ -189,9 +189,12 @@ export default function Accueil(props) {
           </div>
         </div>
       </div>
-      <div className="pt-5 pb-2">
+      <div className="pt-5 pb-2 flex flex-row justify-content-between">
         <div className="p-3 py-1 text-800 surface-ground h-4 w-25rem border-round-3xl">
-          <h4>Localisation de toute les points de vente :</h4>
+          <h4>Statistique tarifs :</h4>
+        </div>
+        <div className="p-3 py-1 text-800 surface-ground h-4 w-25rem border-round-3xl">
+          <h4>Autre Statistique :</h4>
         </div>
       </div>
       <div className="grid align-items-center">
@@ -211,7 +214,6 @@ export default function Accueil(props) {
 
       <div className="grid">
         <div className="lg:col-6 md:col-12 col-12 mt-5">
-          <h2 className="m-1 mb-3">Liste des tarifs</h2>
           <Statistique dtChart={dtChart} />
         </div>
       </div>
