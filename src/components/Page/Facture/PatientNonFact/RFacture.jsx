@@ -71,8 +71,8 @@ export default function RFacture(props) {
     const [infoFacture, setinfoFacture] = useState({
         num_facture: '', date_facture: '', patient: '', type: '', type_facture: '0',
         reglement_id: '0', nomreglement: '', montantreglement: '0', rib: '',
-        code_cli: '', nom_cli: '', pec: '0', remise: '0',
-        code_presc: '', nom_presc: '',
+        code_cli: 'AAAA', nom_cli: '-', pec: '0', remise: '0',
+        code_presc: 'AAAA', nom_presc: 'Dr   -',
         num_arriv: '', date_arriv: '',
         montant_brute: '0', montant_net: '0',
         montant_patient: '0', montant_pech: '0', montant_remise: '0', montantRestPatient: '0'
@@ -434,6 +434,9 @@ export default function RFacture(props) {
     }
 
 
+   useEffect(() => {
+     console.log(infoFacture)
+   }, [infoFacture.nom_presc,infoFacture.nom_cli])
    
 
     return (

@@ -70,18 +70,18 @@ export default function RFacture(props) {
         reste: ""
     });
     const [dataReglement, setdataReglement] = useState({
-        num_facture: '',
+        num_facture: props.num_fact,
+        num_arriv: props.numero,
+        date_arriv: props.date_arr,
         reglement_id: '0',
         nomreglement: '',
-        type_reglmnt: '',
+        type_reglmnt: 'P',
         montantreglement: '0',
         rib: null,
-        num_arriv: '',
-        date_arriv: ''
     })
 
     const [resteVerf, setresteVerf] = useState('0')
-    const [typePC, settypePC] = useState({ pat: false, cli: false })
+    const [typePC, settypePC] = useState({ pat: true, cli: false });
     const [montantPatient, setmontantPatient] = useState(0)
     const [verfChamp, setverfChamp] = useState({ nom_presc: false, nom_cli: false });
     const [aujourd, setaujourd] = useState();
@@ -179,14 +179,13 @@ export default function RFacture(props) {
     };
 
 
-
-
     const loadData = async (num_facture) => {
 
         await axios.get(props.url + `getInfoPatientReglementFacture/${num_facture}`)
             .then(
                 (results) => {
                     setinfoFacture(results.data);
+                    setdataReglement({...dataReglement,montantreglement:results.data.reste_patient});
                     setTimeout(() => {
                         loadReglemnt(num_facture);
                     }, 200)
@@ -202,7 +201,6 @@ export default function RFacture(props) {
                     setlistReglement(results.data);
                     setBlockedPanel(false);
                     setCharge(false)
-                    onVideReglement();
                 }
             );
     }
@@ -422,6 +420,9 @@ export default function RFacture(props) {
             </div>
         )
     }
+
+
+    
     return (
         <>
             <Toast ref={toastTR} position="top-right" />

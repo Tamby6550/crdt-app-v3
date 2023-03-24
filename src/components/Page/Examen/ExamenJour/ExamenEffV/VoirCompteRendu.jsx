@@ -8,6 +8,7 @@ import axios from 'axios'
 import BundledEditor from './service/EditorTiny/BundledEditor';
 import ReactToPrint from 'react-to-print'
 import QRCode from 'react-qr-code'
+import CRmodel from '../../../ModelCR/CRmodel';
 
 
 export default function VoirCompteRendu(props) {
@@ -216,14 +217,29 @@ export default function VoirCompteRendu(props) {
 
             <Dialog maximizable header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-8 md:col-9 col-10 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
                 <Toast ref={toastTR} position="top-right" />
-               
+
                 <div className="p-1  style-modal-tamby">
+                    <div className='col-12 pt-0 flex flex-row justify-conten-between' style={{ borderBottom: '1px solid #efefef' }} >
+                        <div className='col-4'>
+                            <CRmodel setrecHtml={setrecHtml} recHtml={recHtml} />
+                        </div>
+                        <div className='col-8'>
+                            <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.2em' }} >Nom : <span  ><strong>{props.nom}</strong></span></p>
+                            <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.2em' }} >Examen : <span  ><strong>{props.lib_examen}</strong></span></p>
+                        </div>
+                    </div>
+                    <div className='flex px-4 p-3'>
+                        <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-primary ' label={chargePost.chajoute ? 'Enregistrement...' : 'Enregistrer'} onClick={log} />
+                        <ReactToPrint trigger={() =>
+                            <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-primary ml-3 ' label={'Imprimer'} />
+                        } content={() => document.getElementById("scann")} />
+                    </div>
                     <div className='mb-3'>
                         <BundledEditor
                             onInit={(evt, editor) => editorRef.current = editor}
                             initialValue={recHtml === null ? '<h1>' + textchrg + '</h1>' : recHtml}
                             init={{
-                                height: 500,
+                                height: 700,
                                 menubar: false,
                                 plugins: [
                                     'advlist', 'anchor', 'autolink', 'help', 'image', 'link', 'lists',
@@ -234,21 +250,18 @@ export default function VoirCompteRendu(props) {
                                     'removeformat | help',
                                 language: 'fr_FR',
 
-                                content_style: 'body { font-family:Helvetica,Arial,sans-serif;min-height:21cm;padding:3px 25px;margin:0 20%;clip-path:inset(-15px -15px 0px -15px); box-shadow:0 0 3px 0px rgba(0, 0, 0, 0.219); font-size:12px } '
+                                content_style: 'body { font-family:Helvetica,Arial,sans-serif;min-height:21cm;padding:3px 25px;margin:0 2%;clip-path:inset(-15px -15px 0px -15px); box-shadow:0 0 3px 0px rgba(0, 0, 0, 0.219); font-size:12px } '
                             }}
                         />
                     </div>
-                    <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-primary ' label={chargePost.chajoute ? 'Enregistrement...' : 'Enregistrer'} onClick={log} />
-                    <ReactToPrint trigger={() =>
-                        <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-primary ml-3 ' label={'Imprimer'} />
-                    } content={() => document.getElementById("scann")} />
+
                 </div>
             </Dialog>
             <div className='hidden'>
                 <div id="scann" ref={(el) => (reportTemplateRef = el)}>
                     <div id="print" style={{ fontSize: '1.4em' }}></div>
                     <div className='w-100 flex justify-content-end'>
-                    <div style={{ width: "45px", height: "45px",position:'absolute',bottom:'50px',right:'0px' ,margin:'0px',padding:'0px'}} >
+                        <div style={{ width: "45px", height: "45px", position: 'absolute', bottom: '50px', right: '0px', margin: '0px', padding: '0px' }} >
                             <QRCode
                                 size={100}
                                 style={{ height: "auto", maxWidth: "100%", width: "100%" }}

@@ -33,7 +33,7 @@ export default function Statistique(props) {
 
         setChartData(data);
         setChartOptions(options);
-    }, []);
+    }, [props.dtChart]);
 
     return (
         <div className="card flex justify-content-center">

@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import { Sidebar } from 'primereact/sidebar'
 import { Card } from 'primereact/card'
 import { PanelMenu } from 'primereact/panelmenu'
@@ -41,48 +41,14 @@ export default function Header() {
       }
     },
     {
-      label: 'Référentiels',
-      icon: PrimeIcons.BOOKMARK,
-      expanded: pathname === "/client" || pathname === "/patient" || pathname === "/prescripteur" || pathname === "/examen" ? true : false,
-      items: [
-        {
-          label: 'Patient',
-          icon: PrimeIcons.FILE,
-          className: pathname === "/patient" && classactive,
-          command: () => {
-            navigate("/patient");
-
-          }
-        },
-        {
-          label: 'Client',
-          icon: PrimeIcons.CREDIT_CARD,
-          className: pathname === "/client" && classactive,
-          command: () => {
-            navigate("/client");
-
-          }
-        },
-        {
-          label: 'Prescripteur',
-          icon: PrimeIcons.FILE,
-          className: pathname === "/prescripteur" && classactive,
-          command: () => {
-            navigate("/prescripteur");
-
-          }
-        },
-        {
-          label: 'Examen',
-          icon: PrimeIcons.FILE,
-          className: pathname === "/examen" && classactive,
-          command: () => {
-            navigate("/examen");
-
-          }
-        }
-      ]
+      label: 'Patient',
+      icon: PrimeIcons.USER,
+      className: pathname === "/patient" && classactive,
+      command: () => {
+        navigate("/patient");
+      }
     },
+
     {
       label: 'Patient du jour',
       icon: PrimeIcons.BOOK,
@@ -229,6 +195,40 @@ export default function Header() {
       ]
     },
     {
+      label: 'Référentiels',
+      icon: PrimeIcons.BOOKMARK,
+      expanded: pathname === "/client" || pathname === "/prescripteur" || pathname === "/examen" ? true : false,
+      items: [
+        {
+          label: 'Client',
+          icon: PrimeIcons.CREDIT_CARD,
+          className: pathname === "/client" && classactive,
+          command: () => {
+            navigate("/client");
+
+          }
+        },
+        {
+          label: 'Prescripteur',
+          icon: PrimeIcons.FILE,
+          className: pathname === "/prescripteur" && classactive,
+          command: () => {
+            navigate("/prescripteur");
+
+          }
+        },
+        {
+          label: 'Examen',
+          icon: PrimeIcons.FILE,
+          className: pathname === "/examen" && classactive,
+          command: () => {
+            navigate("/examen");
+
+          }
+        }
+      ]
+    },
+    {
       label: 'Reglement',
       icon: PrimeIcons.COG,
       className: pathname === "/saisie_reglement" && classactive,
@@ -260,7 +260,7 @@ export default function Header() {
 
   return (
     <>
-     <div className='humbergeur' >
+      <div className='humbergeur' >
         {/* <h1 className='text-center my-0 text-lg pt-2'>Menu</h1> */}
         <Button icon={PrimeIcons.BARS} tooltip={'Menu'} onClick={() => setVisibleLeft(true)} className="ml-3 mt-3 p-button-sm p-button-secondary" />
       </div>
@@ -270,7 +270,7 @@ export default function Header() {
         <Card className='h-full p-0 card-custom' style={{ position: 'relative' }}>
           <h1 className='text-center my-0 text-lg pt-2'>Menu</h1>
           <PanelMenu model={items} className="bg-white w-full pt-2" />
-          <div style={{ position: 'absolute', bottom: '10px',borderTop:'1px solid grey',width:'100%' }} >
+          <div style={{ position: 'absolute', bottom: '10px', borderTop: '1px solid grey', width: '100%' }} >
             {isAuthenticated ?
               <>
                 <h4 className='m-2'> <>Nom :</>  {decrypt().data.nom} </h4>

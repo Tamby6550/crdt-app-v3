@@ -16,6 +16,7 @@ export default function AjoutExamen(props) {
 
     const [charge, setcharge] = useState({ chajoute: false });
     const [infoajoutExamen, setinfoajoutExamen] = useState({ num_arriv: '', date_arriv: '', donne: null });
+    const [contrleBtn, setcontrleBtn] = useState(true);
     // ****************************ATO ABY NY ZAVATRA NATAOKO AMNAZY**********************************************  
     const [infoExamen, setinfoExamen] = useState([{ lib_examen: '', code_tarif: '', quantite: '', montant: '', type_examen: '' }]);
     let Nouveau = { lib_examen: '', code_tarif: '', quantite: '', montant: '', type_examen: '' };
@@ -92,6 +93,7 @@ export default function AjoutExamen(props) {
 
     const onSub = async () => { //Ajout de donnees vers Laravel
         setcharge({ chajoute: true });
+        setcontrleBtn(false)
         await axios.post(props.url + 'insertExamenJour', { num_arriv: props.data.numero, date_arriv: props.data.date_arr, donne: infoExamen })
             .then(res => {
                 notificationAction(res.data.etat, 'Enregistrement', res.data.message);//message avy @back
@@ -100,7 +102,7 @@ export default function AjoutExamen(props) {
                     props.setActiveIndex(1);
                     onHide('displayBasic2');
                     onVide();
-                }, 600)
+                }, 200)
             })
             .catch(err => {
                 console.log(err);
@@ -192,19 +194,21 @@ export default function AjoutExamen(props) {
                     <div className='flex mt-3 mr-4 justify-content-center '>
                         <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-primary ' label={charge.chajoute ? 'Enregistrement en cours...' : 'Enregistrer'}
                             onClick={() => {
-                                let verf = 0;
-                                for (let i = 0; i < infoExamen.length; i++) {
-                                    if (infoExamen[i].code_tarif != "") {
-                                        setverfChamp(false);
-                                        verf = 1;
-                                    } else {
-                                        verf = 0
-                                        setverfChamp(true);
-                                        break;
+                                if (contrleBtn) {     
+                                    let verf = 0;
+                                    for (let i = 0; i < infoExamen.length; i++) {
+                                        if (infoExamen[i].code_tarif != "") {
+                                            setverfChamp(false);
+                                            verf = 1;
+                                        } else {
+                                            verf = 0
+                                            setverfChamp(true);
+                                            break;
+                                        }
                                     }
-                                }
-                                if (verf == 1) {
-                                    onSub()
+                                    if (verf == 1) {
+                                        onSub()
+                                    }
                                 }
                             }} />
                     </div>
