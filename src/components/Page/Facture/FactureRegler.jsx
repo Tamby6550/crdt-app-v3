@@ -55,6 +55,8 @@ export default function FactureNonRegler(props) {
                     setrefreshData(0);
                     setCharge(false);
                     setlisteFactureRegle(result.data);
+                    // console.log(result.data)
+
                 }
             );
     }

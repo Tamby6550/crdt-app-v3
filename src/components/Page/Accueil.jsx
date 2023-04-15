@@ -96,7 +96,7 @@ export default function Accueil(props) {
   return (
     <div className="mt-3 lg:px-8 md:px-5 sm:px-3">
       <div className="grid">
-        <div className="col-12 md:col-6 lg:col-3 lg:px-3">
+        <div className="col-12 md:col-6 lg:col-4 lg:px-4">
           <div
             style={{ boxShadow: "0 3px 8px rgba(0,0,0,0.2)" }}
             className="surface-0 h-100  p-4 border-1 border-50 border-round-3xl"
@@ -120,7 +120,7 @@ export default function Accueil(props) {
             </span>
           </div>
         </div>
-        <div className="col-12 md:col-6 lg:col-3 lg:px-3">
+        <div className="col-12 md:col-6 lg:col-4 lg:px-4">
           <div
             style={{ boxShadow: "0 3px 8px rgba(0,0,0,0.2)" }}
             className="surface-0 h-100 p-4 border-1 border-50 border-round-3xl"
@@ -142,7 +142,7 @@ export default function Accueil(props) {
             </span>
           </div>
         </div>
-        <div className="col-12 md:col-6 lg:col-3 lg:px-3">
+        <div className="col-12 md:col-6 lg:col-4 lg:px-4">
           <div
             style={{ boxShadow: "0 3px 8px rgba(0,0,0,0.2)" }}
             className="surface-0 h-100 p-4 border-1 border-50 border-round-3xl"
@@ -164,7 +164,7 @@ export default function Accueil(props) {
             </span>
           </div>
         </div>
-        <div className="col-12 md:col-6 lg:col-3 lg:px-3">
+        {/* <div className="col-12 md:col-6 lg:col-3 lg:px-3">
           <div
             style={{ boxShadow: "0 3px 8px rgba(0,0,0,0.2)" }}
             className="surface-0 h-100 p-4 border-1 border-50 border-round-3xl"
@@ -187,15 +187,15 @@ export default function Accueil(props) {
               Actuellement
             </span>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="pt-5 pb-2 flex flex-row justify-content-between">
         <div className="p-3 py-1 text-800 surface-ground h-4 w-25rem border-round-3xl">
           <h4>Statistique tarifs :</h4>
         </div>
-        <div className="p-3 py-1 text-800 surface-ground h-4 w-25rem border-round-3xl">
+        {/* <div className="p-3 py-1 text-800 surface-ground h-4 w-25rem border-round-3xl">
           <h4>Autre Statistique :</h4>
-        </div>
+        </div> */}
       </div>
       <div className="grid align-items-center">
         <div className="lg:col-6 col-12 flex gap-3">

@@ -13,6 +13,7 @@ import { Tag } from 'primereact/tag';
 import VoirCR from './ExamenEffV/VoirCR';
 import VoirCRModif from './ExamenEffV/VoirCRModif'
 import Recherche from './ExamenEffV/Recherche';
+import moment from 'moment/moment';
 
 export default function ExamenEffValide(props) {
 
@@ -20,8 +21,8 @@ export default function ExamenEffValide(props) {
     const [charge, setCharge] = useState(false);
     const [chRetour, setchRetour] = useState(false)
     const [refreshData, setrefreshData] = useState(0);
-    const [listExamenNonEff, setlistExamenNonEff] = useState([{ numero: '', date_arr: '', id_patient: '', type_pat: '', verf_exam: '', nom: '', date_naiss: '', telephone: '' }]);
-    const [infoReherche, setinfoReherche] = useState({ date_examen:'',numero_arr: '', date_arr: '', date_naiss: '', nom: '' })
+    const [listExamenEffV, setlistExamenEffV] = useState([{ numero: '', date_arr: '', id_patient: '', type_pat: '', verf_exam: '', nom: '', date_naiss: '', telephone: '' }]);
+    const [infoReherche, setinfoReherche] = useState({ date_examen: '', numero_arr: '', date_arr: '', date_naiss: '', nom: '' })
 
     const [recHtml, setrecHtml] = useState(null)
 
@@ -49,9 +50,14 @@ export default function ExamenEffValide(props) {
         setrefreshData(value)
     }
     const onVide = () => {
-        setinfoReherche({ date_examen:'',numero_arr: '', date_arr: '', date_naiss: '', nom: '' })
+        setinfoReherche({ date_examen: '', numero_arr: '', date_arr: '', date_naiss: '', nom: '' })
     }
 
+    //Calcule décalage entre deux date
+    const decalage2Date = (date1, date2) => {
+        const diffInDays = moment(date1, "MM/DD/YYYY").diff(moment(date2, "DD/MM/YYYY"), 'days');
+        return diffInDays;
+    }
     //Get List patient
     const loadData = async () => {
 
@@ -61,14 +67,14 @@ export default function ExamenEffValide(props) {
                     onVide();
                     setrefreshData(0);
                     setCharge(false);
-                    setlistExamenNonEff(result.data);
+                    setlistExamenEffV(result.data);
                 }
             );
     }
 
     useEffect(() => {
         setCharge(true);
-        setlistExamenNonEff([{ nom: 'Chargement de données...' }])
+        setlistExamenEffV([{ nom: 'Chargement de données...' }])
         setTimeout(() => {
             loadData();
         }, 800)
@@ -84,19 +90,25 @@ export default function ExamenEffValide(props) {
     }
 
     const bodyBoutton = (data) => {
+        // console.log(decalage2Date(data.jourj,data.date_examen));
         return (
             <div className='flex flex-row justify-content-between align-items-center m-0 '>
                 <div className='my-0  py-2'>
                     <VoirCR url={props.url} data={data} changecharge={changecharge} />
 
-                    <VoirCRModif url={props.url} data={data} changecharge={changecharge} />
+                    {/*Modification CR delai 48 heures */}
+                    {decalage2Date(data.jourj, data.date_examen) > 2 ?
+                        null
+                        :
+                        <VoirCRModif url={props.url} data={data} changecharge={changecharge} />
+                    }
 
+                    {/*Retourner les examens quand il n'est pas facturé */}
                     {data.verf_fact == '1' || data.verf_fact == '2' ?
                         null
                         :
                         <Button icon={PrimeIcons.REPLAY} className='p-buttom-sm p-1 ' style={stylebtnRetourner} tooltip='Retourner' tooltipOptions={{ position: 'top' }}
                             onClick={() => {
-
                                 const accept = async () => {
                                     setchRetour(true);
                                     await axios.put(props.url + 'validationExamen', { num_arriv: data.numero, date_arriv: data.date_arr, verfexamen: '1' })
@@ -133,24 +145,20 @@ export default function ExamenEffValide(props) {
         )
     }
 
-
-
-
     const header = (
         <div className='flex flex-row justify-content-between align-items-center m-0 '>
             <div className='my-0 flex  py-2'>
-                <Recherche icon={PrimeIcons.SEARCH} setCharge={setCharge} setlistExamenNonEff={setlistExamenNonEff} changecharge={changecharge} url={props.url} infoReherche={infoReherche} setinfoReherche={setinfoReherche} />
-                {infoReherche.date_examen=='' && infoReherche.date_arr == "" && infoReherche.nom == "" && infoReherche.date_naiss == "" && infoReherche.numero_arr == "" ? null :
+                <Recherche icon={PrimeIcons.SEARCH} setCharge={setCharge} setlistExamenEffV={setlistExamenEffV} changecharge={changecharge} url={props.url} infoReherche={infoReherche} setinfoReherche={setinfoReherche} />
+                {infoReherche.date_examen == '' && infoReherche.date_arr == "" && infoReherche.nom == "" && infoReherche.date_naiss == "" && infoReherche.numero_arr == "" ? null :
                     <label className='ml-5 mt-2'>
                         Resultat de recherche ,
-                        {/* Date d'examen : <i style={{ fontWeight: '700' }}>"{(infoReherche.date_examen)}"</i>  , */}
                         Date d'arrivée : <i style={{ fontWeight: '700' }}>"{(infoReherche.date_arr)}"</i>  ,
                         Numéro d'arrivée : <i style={{ fontWeight: '700' }}>"{(infoReherche.numero_arr)}"</i>,
                         Nom : <i style={{ fontWeight: '700' }}>"{(infoReherche.nom).toUpperCase()}"</i>,
                         Date naiss : <i style={{ fontWeight: '700' }}>"{(infoReherche.date_naiss)}"</i>,
                     </label>}
             </div>
-            {infoReherche.date_examen !=="" || infoReherche.date_arr != "" || infoReherche.nom != "" || infoReherche.date_naiss != "" || infoReherche.numero_arr != "" ? <Button icon={PrimeIcons.REFRESH} className='p-buttom-sm p-1 p-button-warning ' tooltip='actualiser' tooltipOptions={{ position: 'top' }} onClick={() => setrefreshData(1)} />
+            {infoReherche.date_examen !== "" || infoReherche.date_arr != "" || infoReherche.nom != "" || infoReherche.date_naiss != "" || infoReherche.numero_arr != "" ? <Button icon={PrimeIcons.REFRESH} className='p-buttom-sm p-1 p-button-warning ' tooltip='actualiser' tooltipOptions={{ position: 'top' }} onClick={() => setrefreshData(1)} />
                 :
                 <>
                     <h3 className='m-3'>Examens éffectuées</h3>
@@ -160,7 +168,6 @@ export default function ExamenEffValide(props) {
         </div>
     )
 
-    // const header1 = header();
 
     //Global filters
     return (
@@ -169,9 +176,7 @@ export default function ExamenEffValide(props) {
             <ConfirmDialog />
 
             <div className="flex flex-column justify-content-center">
-
-                <DataTable header={header} globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listExamenNonEff} loading={charge} scrollable scrollHeight="550px" responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun examen à éffectuées"} >
-                    {/*  */}
+                <DataTable header={header} globalFilterFields={['numero', 'date_arr', 'id_patient', 'nom', 'date_naiss', 'type_pat']} value={listExamenEffV} loading={charge} scrollable scrollHeight="550px" responsiveLayout="scroll" className='bg-white' emptyMessage={"Aucun examen à éffectuées"} >
                     <Column field='date_examen' header={'Date Examen'} style={{ fontWeight: '600' }}></Column>
                     <Column field='numero' header={'Numéro d\'Arrivée'} style={{ fontWeight: '600' }}></Column>
                     <Column field={'date_arr'} header={'Date d\'Arrivée'} style={{ fontWeight: '600' }}></Column>
@@ -180,7 +185,6 @@ export default function ExamenEffValide(props) {
                     <Column field='date_naiss' header="Date_Naiss"></Column>
                     <Column field='type_pat' header="Tarif"></Column>
                     <Column header="Action" body={bodyBoutton} align={'left'}></Column>
-                    {/* <Column field='telephone' header="Tél"></Column> */}
                 </DataTable>
 
 

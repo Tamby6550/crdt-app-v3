@@ -24,7 +24,7 @@ export default function Voir(props) {
     const [charge, setCharge] = useState(false);
     const [infoexamenPatient, setinfoexamenPatient] = useState([{ lib_examen: '', code_tarif: '', quantite: '', montant: '', date_examen: '', type: '' }]);
     const [verfCompteRendu, setverfCompteRendu] = useState(false);
-    const [infoExamenVal, setinfoExamenVal] = useState({ num_arriv: '', date_arriv: '' , verfexamen:'2'})
+    const [infoExamenVal, setinfoExamenVal] = useState({ num_arriv: '', date_arriv: '', verfexamen: '2' })
     //Get List Examen
     const loadData = async (numero, datearr) => {
         await axios.get(props.url + `getPatientExamenEff/${numero}&${datearr}`)
@@ -38,7 +38,7 @@ export default function Voir(props) {
     }
 
     const chargementData = () => {
-        setinfoExamenVal({ num_arriv: props.data.numero, date_arriv: props.data.date_arr,verfexamen:'2' })
+        setinfoExamenVal({ num_arriv: props.data.numero, date_arriv: props.data.date_arr, verfexamen: '2' })
         setCharge(true);
         let dt = (props.data.date_arr).split('/');
         let cmpltDate = dt[0] + '-' + dt[1] + '-' + dt[2];
@@ -146,7 +146,7 @@ export default function Voir(props) {
                             });
                         }} />
 
-                    <CompteRendu nom={props.data.nom} url={props.url} test={"<div>"+data.lib_examen+"</div >"} data={data} date_arriv={props.data.date_arr} num_arriv={props.data.numero} chargementData={chargementData} lib_examen={data.lib_examen} />
+                    <CompteRendu nom={props.data.nom} url={props.url} test={"<div>" + data.lib_examen + "</div >"} data={data} date_arriv={props.data.date_arr} num_arriv={props.data.numero} chargementData={chargementData} lib_examen={data.lib_examen} />
                 </div>
             </div>
         )
@@ -170,24 +170,28 @@ export default function Voir(props) {
 
 
 
-    const onValideExamen = async () => { //Modification  donnees vers Laravel
+    //Modification  donnees vers Laravel
+    const onValideExamen = async () => {
         setchargeV({ chupdate: true });
         await axios.put(props.url + 'validationExamen', infoExamenVal)
             .then(res => {
-                notificationAction(res.data.etat, 'Validation examen', res.data.message);//message avy @back
+                //message avy @back
+                notificationAction(res.data.etat, 'Validation examen', res.data.message);
                 setchargeV({ chupdate: false });
                 setTimeout(() => {
                     onHide('displayBasic2');
+                    //rediriger vers patient examiné
                     props.setActiveIndex(2)
-                    // props.changecharge(1);
                 }, 600)
             })
             .catch(err => {
                 console.log(err);
-                notificationAction('error', 'Erreur', err.data.message);//message avy @back
+                //message avy @back
+                notificationAction('error', 'Erreur', err.data.message);
                 setchargeV({ chupdate: false });
             });
     }
+
 
 
 
@@ -217,7 +221,11 @@ export default function Voir(props) {
                     <div className='flex mt-3 mr-4 justify-content-center '>
                         <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-success ' tooltip="Valider l'examen" disabled={verfCompteRendu} style={{ cursor: 'pointer' }} label={chargeV.chupdate ? 'Veuillez attendez...' : 'Valider'}
                             onClick={() => {
-                                onValideExamen()
+                                if (chargeV.chupdate) {
+                                    return null
+                                } else {
+                                    onValideExamen()
+                                }
                             }} />
                     </div>
                     {verfCompteRendu ? <center><label id="username2-help" className="p-error block justify-content-center" style={{ fontWeight: 'bold' }}>Vous devez ajouter compte rendu pour <i style={{ fontWeight: '800' }} >Valider </i> l'examen </label></center> : null}

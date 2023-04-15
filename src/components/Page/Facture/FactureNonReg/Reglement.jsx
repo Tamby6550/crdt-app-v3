@@ -645,15 +645,6 @@ export default function RFacture(props) {
                         </div>
 
                     </div>
-                    {/* <div className='flex mt-3 mr-4 justify-content-center '>
-                        <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-success ' tooltip="Valider l'examen" style={{ cursor: 'pointer' }} label={charge ? 'Veuillez attendez...' : 'Valider reglement'}
-                            onClick={() => {
-                                onVerfeCh()
-                            }} />
-                        <ReactToPrint trigger={() =>
-                            <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-primary ml-5 ' label={'Imprimer'} disabled={verffaireReglmnt} />
-                        } content={() => document.getElementById("scan")} />
-                    </div> */}
                 </BlockUI>
             </Dialog >
         </>

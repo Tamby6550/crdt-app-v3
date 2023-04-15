@@ -92,7 +92,6 @@ export default function ExamenNonEff(props) {
     }
 
     //Global filters
-
     const [filters1, setFilters1] = useState(null);
     const [globalFilterValue1, setGlobalFilterValue1] = useState('');
     const onGlobalFilterChange1 = (e) => {
@@ -144,7 +143,6 @@ export default function ExamenNonEff(props) {
                     <Column field='date_naiss' header="Date_Naiss"></Column>
                     <Column field='type_pat' header="Tarif"></Column>
                     <Column header="Action" body={bodyBoutton} align={'left'}></Column>
-                    {/* <Column field='telephone' header="Tél"></Column> */}
                 </DataTable>
             </div>
         </>

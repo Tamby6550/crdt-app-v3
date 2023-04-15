@@ -47,7 +47,11 @@ export default function JournalJour(props) {
                     setDataall(result.data.Data);
                     setCharge(false);
                 }
-            );
+            )
+            .catch((error) => {
+                console.log(error);
+                setCharge(false);
+            })
     }
 
     const recherche = () => {

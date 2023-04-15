@@ -6,9 +6,9 @@ import ExamenEffValide from './ExamenJour/ExamenEffValide';
 export default function ExamenParPatient(props) {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  useEffect(() => {
-    console.log(activeIndex)
-  }, [activeIndex])
+  // useEffect(() => {
+  //   console.log(activeIndex)
+  // }, [activeIndex])
   
   return (
     <div className="tabview-demo">

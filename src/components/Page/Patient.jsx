@@ -18,7 +18,7 @@ export default function Patient(props) {
 
     const [numJournal, setnumJournal] = useState({ num: 0, datej: '' })
 
-    //Chargement de données
+    //Timer affichage numéro journal
     const [timer, setTimer] = useState(100);
 
     const [charge, setCharge] = useState(false);
@@ -48,10 +48,8 @@ export default function Patient(props) {
     }
 
 
-    //Get List patient
+    //Get List patients
     const loadData = async () => {
-
-
         await axios.get(props.url + `getPatient`)
             .then(
                 (result) => {
@@ -96,7 +94,6 @@ export default function Patient(props) {
             <div className='flex flex-row justify-content-between align-items-center m-0 '>
                 <div className='my-0  py-2'>
                     <Registre url={props.url} onClick={onClick} setnumJournal={setnumJournal} id_patient={data.id_patient} nom={data.nom} prenom={data.prenom} date_naiss={data.datenaiss} telephone={data.telephone} tambyR={'nouveau'} />
-                    {/* <Voir data={data} url={props.url} setrefreshData={setrefreshData} /> */}
                     <Modification data={data} url={props.url} setrefreshData={setrefreshData} />
                     <Button icon={PrimeIcons.TIMES} className='p-buttom-sm p-1 ' style={stylebtnDetele} tooltip='Supprimer' tooltipOptions={{ position: 'top' }}
                         onClick={() => {
@@ -167,7 +164,7 @@ export default function Patient(props) {
                 setTimer(prevValue => prevValue - (100 / 7));
             }, 1000);
 
-            return () => {clearInterval(intervalId);}
+            return () => { clearInterval(intervalId); }
         }
     }, [timer, displayBasic]);
 
@@ -176,7 +173,7 @@ export default function Patient(props) {
             <Toast ref={toastTR} position="top-right" />
             <Dialog header={"Date d'arriver : " + numJournal.datej} visible={displayBasic} className="lg:col-3 md:col-5 col-8 p-0" onHide={() => onHide('displayBasic')} >
                 <center><h3 className='m-3'>Numéro de journal d'arriver :  <u style={{ color: 'rgb(34, 197, 94)', fontWeight: 'bold', fontSize: '1.8rem' }}> {numJournal.num}</u>   </h3></center>
-                <ProgressBar value={timer}  showValue={false} style={{ height: "3px"}}></ProgressBar>
+                <ProgressBar value={timer} showValue={false} style={{ height: "3px" }}></ProgressBar>
             </Dialog>
             <div className="flex flex-column justify-content-center">
                 <DataTable header={header} value={listPatient} loading={charge} responsiveLayout="scroll" scrollable scrollHeight="500px" rows={10} rowsPerPageOptions={[10, 20, 50]} paginator className='bg-white' emptyMessage={'Aucun resultat trouvé'}>

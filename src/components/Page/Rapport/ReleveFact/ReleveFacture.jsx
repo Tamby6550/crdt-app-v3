@@ -70,7 +70,10 @@ export default function ReleveFacture(props) {
                     setDataAll(result.data.Data);
                     setCharge(false);
                 }
-            );
+            ).catch((error) => {
+                console.log(error);
+                setCharge(false);
+            })
     }
 
     const recherche = () => {
@@ -178,8 +181,8 @@ export default function ReleveFacture(props) {
                                                             <strong> au </strong>
                                                             {moment(donne.date_fin).format('DD/MM/YYYY')}
                                                             <br />
-                                                            
-                                                           
+
+
                                                         </div>
                                                     </td>
                                                 </tr>

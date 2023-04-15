@@ -47,7 +47,10 @@ export default function StatCategorie(props) {
                     setCharge(false);
                     onHide('displayBasic2')
                 }
-            );
+            ).catch((error) => {
+                console.log(error);
+                setCharge(false);
+            })
     }
 
     const recherche = () => {

@@ -105,10 +105,8 @@ export default function RFacture(props) {
         let v2 = e.target.value;
         let v1 = montantPatient;
         let s = v1 - v2;
-        // setinfoFacture({ ...infoFacture, montant_patient: format(s, 2, " "), montantreglement: e.target.value });
         setinfoFacture({ ...infoFacture, montantRestPatient: format(s, 2, " "), montantreglement: e.target.value });
         setresteVerf('1');
-        // console.log(infoFacture.montantRestPatient);
     }
 
 
@@ -423,7 +421,7 @@ export default function RFacture(props) {
                     onClick1('displayBasic');
                     setredirege(1);
                 }, 600)
-                console.log(res.data)
+                // console.log(res.data)
             })
             .catch(err => {
                 console.log(err);
@@ -434,9 +432,9 @@ export default function RFacture(props) {
     }
 
 
-   useEffect(() => {
-     console.log(infoFacture)
-   }, [infoFacture.nom_presc,infoFacture.nom_cli])
+//    useEffect(() => {
+//      console.log(infoFacture)
+//    }, [infoFacture.nom_presc,infoFacture.nom_cli])
    
 
     return (

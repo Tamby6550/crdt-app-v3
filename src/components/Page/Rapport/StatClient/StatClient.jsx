@@ -73,7 +73,10 @@ export default function StatClient(props) {
                     setDataAll(result.data.Data);
                     setCharge(false);
                 }
-            );
+            ).catch((error) => {
+                console.log(error);
+                setCharge(false);
+            })
     }
 
     const recherche = () => {

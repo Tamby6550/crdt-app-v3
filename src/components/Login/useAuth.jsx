@@ -25,7 +25,7 @@ const useAuth = () => {
     useEffect(() => {
         const token = localStorage.getItem('virus');
         if (token!=null) {
-            console.log(decrypt().data.login)
+            // console.log(decrypt().data.login)
                 setIsAuthenticated(true);
                 //Rehefa mbola conncté nefa te hiverina @/login ,tonga de dirigeny 
                 if (pathname=='/') {

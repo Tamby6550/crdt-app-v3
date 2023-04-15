@@ -89,7 +89,7 @@ export default function ChangementTarif(props) {
                 (res) => {
                     //message avy @back
                     notificationAction(res.data.etat, 'Tarif ', res.data.message);
-                    props.setinfoFacture({ ...props.infoFacture, type: infoNecess.tarif,pec: '', remise: '',  });
+                    props.setinfoFacture({ ...props.infoFacture, type: infoNecess.tarif, pec: '', remise: '', });
                     props.settarifCh(infoNecess.tarif)
                     props.loadData();
                     setcharge(false)
@@ -102,9 +102,9 @@ export default function ChangementTarif(props) {
 
     const confirmeTarif = () => {
         return (
-            <div style={{fontSize:'1.2em'}}>
-                <label className='m-2'> <strong className='m-1'>Voulez vous modifier le tarif ?</strong> </label> 
-                
+            <div style={{ fontSize: '1.2em' }}>
+                <label className='m-2'> <strong className='m-1'>Voulez vous modifier le tarif ?</strong> </label>
+
             </div>
         );
     }
@@ -128,7 +128,7 @@ export default function ChangementTarif(props) {
                         rejectLabel: 'Fermer',
                         accept,
                         reject,
-                    
+
                     });
 
                 }} />
@@ -146,9 +146,12 @@ export default function ChangementTarif(props) {
                                     setverfChamp(true)
                                 }
                                 else {
-
-                                    setverfChamp(false);
-                                    onUpdateTarif();
+                                    if (charge) {
+                                        return null;
+                                    } else {
+                                        setverfChamp(false);
+                                        onUpdateTarif();
+                                    }
                                 }
                             }} />
                         </div>

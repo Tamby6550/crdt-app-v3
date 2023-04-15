@@ -201,7 +201,7 @@ export default function Header() {
       items: [
         {
           label: 'Client',
-          icon: PrimeIcons.CREDIT_CARD,
+          icon: PrimeIcons.BUILDING,
           className: pathname === "/client" && classactive,
           command: () => {
             navigate("/client");
@@ -223,14 +223,13 @@ export default function Header() {
           className: pathname === "/examen" && classactive,
           command: () => {
             navigate("/examen");
-
           }
         }
       ]
     },
     {
       label: 'Reglement',
-      icon: PrimeIcons.COG,
+      icon: PrimeIcons.MONEY_BILL,
       className: pathname === "/saisie_reglement" && classactive,
       command: () => {
         navigate("/saisie_reglement");
@@ -239,22 +238,22 @@ export default function Header() {
     },
     {
       label: 'Modele CR',
-      icon: PrimeIcons.USERS,
+      icon: PrimeIcons.COG,
       className: pathname === "/modele_cr" && classactive,
       command: () => {
         navigate("/modele_cr");
 
       }
     },
-    {
-      label: 'Test',
-      icon: PrimeIcons.USERS,
-      className: pathname === "/test" && classactive,
-      command: () => {
-        navigate("/test");
+    // {
+    //   label: 'Test',
+    //   icon: PrimeIcons.USERS,
+    //   className: pathname === "/test" && classactive,
+    //   command: () => {
+    //     navigate("/test");
 
-      }
-    }
+    //   }
+    // }
   ];
 
 

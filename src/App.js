@@ -41,6 +41,7 @@ import LogoutTimer from './components/Login/LogoutTimer';
 import { Toast } from 'primereact/toast';
 import ExamenJours from './components/Page/Rapport/ExamenJour/ExamenJour';
 import InsertModel from './components/Page/ModelCR/InsertModel';
+import ModelPage from './components/Page/ModelCR/ModelPage';
 function App() {
 
 
@@ -309,7 +310,7 @@ function App() {
                     <Route path='/releve_facture' element={<ReleveFacture url={url} />} />
                     <Route path='/journal_jour' element={<JournalJour url={url} />} />
                     <Route path='/rapport_examen_jour' element={<ExamenJours url={url} />} />
-                    <Route path='/modele_cr' element={<InsertModel url={url} />} />
+                    <Route path='/modele_cr' element={<ModelPage url={url} />} />
                     <Route path='/test' element={<Formulaire url={url} />} />
                     <Route path='/acceuil' element={<Accueil url={url} />} />
                 </Route>

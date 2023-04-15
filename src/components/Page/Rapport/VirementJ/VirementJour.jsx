@@ -56,7 +56,11 @@ export default function VirementJour(props) {
                     setDataall(result.data.Data);
                     setCharge(false);
                 }
-            );
+            )
+            .catch((error) => {
+                console.log(error);
+                setCharge(false);
+            })
     }
 
     const recherche = () => {
@@ -144,7 +148,7 @@ export default function VirementJour(props) {
                                     </table>
                                     <table width="100%" border="0" align="center" class="table">
                                         <tr>
-                                        <td width="2%" class="Style3 table">
+                                            <td width="2%" class="Style3 table">
                                                 <div align="center">
                                                     <span class="Style1 Style3">N° ARRIV</span>
                                                 </div>

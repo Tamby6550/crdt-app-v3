@@ -17,6 +17,7 @@ export default function AjoutExamen(props) {
     const [charge, setcharge] = useState({ chajoute: false });
     const [infoajoutExamen, setinfoajoutExamen] = useState({ num_arriv: '', date_arriv: '', donne: null });
     const [contrleBtn, setcontrleBtn] = useState(true);
+    
     // ****************************ATO ABY NY ZAVATRA NATAOKO AMNAZY**********************************************  
     const [infoExamen, setinfoExamen] = useState([{ lib_examen: '', code_tarif: '', quantite: '', montant: '', type_examen: '' }]);
     let Nouveau = { lib_examen: '', code_tarif: '', quantite: '', montant: '', type_examen: '' };

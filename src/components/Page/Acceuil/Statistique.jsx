@@ -7,7 +7,7 @@ export default function Statistique(props) {
 
 
     useEffect(() => {
-        console.log(props.dtChart)
+        // console.log(props.dtChart)
         const documentStyle = getComputedStyle(document.documentElement);
         const data = {
             labels:  ['Tarif E', 'Tarif L1', 'Tarif L2'],

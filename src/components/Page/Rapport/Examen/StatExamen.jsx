@@ -45,7 +45,10 @@ export default function StatExamen(props) {
                     setCharge(false);
                     onHide('displayBasic2')
                 }
-            );
+            ).catch((error) => {
+                console.log(error);
+                setCharge(false);
+            })
     }
 
     const recherche = () => {

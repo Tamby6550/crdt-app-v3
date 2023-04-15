@@ -66,7 +66,11 @@ export default function ExamenJours(props) {
 
                     setCharge(false);
                 }
-            );
+            )
+            .catch((error) => {
+                console.log(error);
+                setCharge(false);
+            })
     }
     //   const DataAll = [
     //     {

@@ -19,7 +19,7 @@ export default function CRmodel(props) {
             }).then(
                 (result) => {
                     setallhtml(result.data);
-                    console.log(result.data)
+                    // console.log(result.data)
                 }
             )
                 .catch((e) => {
@@ -57,8 +57,8 @@ export default function CRmodel(props) {
     return (
         <div>
             <div className='grid h-full '>
-                <div className='col-12 pt-0 ' style={{  width: '80%',height:'55px' }} >
-                    <Components.Label >Choisir le model CR </Components.Label>
+                <div className='col-12 pt-0 ' style={{  width: '70%',height:'55px' }} >
+                    <Components.Label >Choisir un model CR </Components.Label>
                     <Components.Select name='grad_id' onChange={(e) => { getHtmlContent(e) }} style={{height:'42px'}}  >
                         <Components.Option value={''}  ></Components.Option>
                         {allhtml.map((element, index) => (

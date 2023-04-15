@@ -22,9 +22,12 @@ export default function CompteRendu(props) {
 
     const [numQr, setnumQr] = useState('null')
 
+    const [copy, setcopy] = useState(false);
+    //Code QR
     const chgQr = () => {
         setnumQr((props.date_arriv).replace(/\//g, "") + '' + (props.num_arriv))
     };
+
     /*Word */
     const editorRef = useRef(null);
     let reportTemplateRef = useRef();
@@ -39,7 +42,7 @@ export default function CompteRendu(props) {
                 let pars = JSON.parse(strin);
                 var myElement = document.getElementById("print");
                 myElement.innerHTML = editorRef.current.getContent();
-                console.log(editorRef.current.getContent())
+                // console.log(editorRef.current.getContent())
                 envoyeData(pars.data)
             }
         }
@@ -218,6 +221,21 @@ export default function CompteRendu(props) {
             });
     }
 
+    function copyToClipBoard() {
+        var content = document.getElementById('textCopy').innerText;
+        navigator.clipboard.writeText(content)
+            .then(() => {
+                setcopy(true);
+                setTimeout(() => {
+                    setcopy(false);
+                }, 800)
+
+            })
+            .catch(err => {
+                console.log('Something went wrong', err);
+            })
+    }
+
     return (
         <>
 
@@ -228,13 +246,16 @@ export default function CompteRendu(props) {
                 <Toast ref={toastTR} position="top-right" />
                 {/* <SaisieReglement/> */}
                 <div className="p-1  style-modal-tamby">
-                    <div className='col-12 pt-0 flex flex-row justify-conten-between' style={{ borderBottom: '1px solid #efefef' }} >
+                    <div className='col-12 pt-0 flex flex-row justify-conten-between' style={{ borderBottom: '1px solid #efefef',alignItems:'center' }} >
                         <div className='col-4'>
                             <CRmodel sethtmlm={sethtmlm} setrecHtml={setrecHtml} recHtml={recHtml} />
                         </div>
                         <div className='col-8'>
-                            <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.2em' }} >Nom : <span  ><strong>{props.nom}</strong></span></p>
-                            <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.2em' }} >Examen : <span  ><strong>{props.lib_examen}</strong></span></p>
+                            <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.5em',display:'flex',alignItems:'center' }} >
+                                Nom: <span  > <strong id='textCopy' > {props.nom}</strong></span>
+                                <Button icon={copy?PrimeIcons.CHECK :PrimeIcons.COPY}  className={'p-button-sm p-button-success ml-5'} label={copy? 'Copie !' :'Copier '} onClick={copyToClipBoard} />
+                            </p>
+                            <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.5em' }} >Examen : <span  ><strong>{props.lib_examen}</strong></span></p>
                         </div>
                     </div>
                     <div className='flex px-4 p-3'>
