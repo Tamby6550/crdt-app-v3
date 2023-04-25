@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { TabView, TabPanel } from 'primereact/tabview';
 import InsertModel from './InsertModel';
-
+import ListeModel from './ListeModel'
 export default function ModelPage(props) {
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -18,8 +18,8 @@ export default function ModelPage(props) {
             <InsertModel url={props.url}  activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
           </TabPanel>
           <TabPanel header="LISTE DES MODELES">
-            <h1>hello</h1>
-            {/* <ExamenEff url={props.url}  activeIndex={activeIndex} setActiveIndex={setActiveIndex} /> */}
+            <ListeModel url={props.url}  activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
+
           </TabPanel>
          
         </TabView>
