@@ -29,7 +29,7 @@ export default function FactureNonRegler(props) {
     const [charge, setCharge] = useState(false);
     const [refreshData, setrefreshData] = useState(0);
     const [listFactureEff, setlistFactureEff] = useState([{ numero: '', date_arr: '', id_patient: '', type_pat: '', verf_exam: '', nom: '', date_naiss: '', telephone: '' }]);
-    const [infoReherche, setinfoReherche] = useState({ num_facture: '', date_facture: '', nom_patient:'', nom_client: '', numero_arr: '', date_arr: '', date_naiss: ''})
+    const [infoReherche, setinfoReherche] = useState({ num_facture: '', date_facture: '', nom_patient:'', nom_client: '', numero_arr: '', date_arr: '', date_naiss: '',pec:false})
 
     /**Style css */
     const stylebtnRec = {
@@ -55,7 +55,7 @@ export default function FactureNonRegler(props) {
         setrefreshData(value)
     }
     const onVide = () => {
-        setinfoReherche({ num_facture: '', date_facture: '', nom_patient:'', nom_client: '', numero_arr: '', date_arr: '', date_naiss: '' })
+        setinfoReherche({ num_facture: '', date_facture: '', nom_patient:'', nom_client: '', numero_arr: '', date_arr: '', date_naiss: '',pec:false })
     }
 
     //Get List patient
@@ -176,7 +176,7 @@ export default function FactureNonRegler(props) {
             <div className='my-0 flex  py-2'>
                 <Recherche icon={PrimeIcons.SEARCH} setCharge={setCharge} setlistFactureEff={setlistFactureEff} changecharge={changecharge} url={props.url} infoReherche={infoReherche} setinfoReherche={setinfoReherche} />
                 {infoReherche.num_facture == "" && infoReherche.date_facture == "" && infoReherche.nom_patient == "" && infoReherche.nom_client == ""
-                    && infoReherche.numero_arr == "" && infoReherche.date_arr == "" ? null :
+                    && infoReherche.numero_arr == "" && infoReherche.date_arr == "" && infoReherche.pec===false ? null :
                     <label className='ml-5 mt-2'>
                         Resultat de recherche ,
                         Numéro facture : <i style={{ fontWeight: '700' }}>"{(infoReherche.num_facture)}"</i>  ,
@@ -185,6 +185,7 @@ export default function FactureNonRegler(props) {
                         Date d'arrivé : <i style={{ fontWeight: '700' }}>"{(infoReherche.date_arr)}"</i>,
                         Nom Patient : <i style={{ fontWeight: '700' }}>"{(infoReherche.nom_patient)}"</i>,
                         Nom client : <i style={{ fontWeight: '700' }}>"{(infoReherche.nom_client)}"</i>,
+                        PEC : <i style={{ fontWeight: '700' }}>"{(infoReherche.pec?'OK':null)}"</i>,
                     </label>}
             </div>
             {infoReherche.num_facture != "" || infoReherche.date_facture != "" || infoReherche.nom_patient != "" || infoReherche.nom_client != ""

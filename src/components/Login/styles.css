@@ -5,17 +5,33 @@
 }
 
 .login-page {
-  background: #f6f5f7;
+  background: url('../../images/sall.jpg');
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   font-family: "Montserrat", sans-serif;
   height: 100vh;
-  margin: -20px 0 50px;
+  /* margin: -20px 0 50px; */
+  
 }
 
 .ktsypz {
   top: 100px;
   left: 15%;
+}
+
+.sc-hLBbgP.cvHqBj {
+  background-color: #ebf0ff9c    !important;
+}
+
+.sc-bcXHqe.hrpWbX {
+  background-color: #fff0;
+}
+
+.sary_login{
+  background-image:url('../../images/login.png') !important;
+  background-size: cover;
+  z-index: 200;
 }

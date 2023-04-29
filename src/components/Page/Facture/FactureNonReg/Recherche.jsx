@@ -5,15 +5,17 @@ import { InputText } from 'primereact/inputtext'
 import { InputMask } from 'primereact/inputmask'
 /*Importer modal */
 import { Dialog } from 'primereact/dialog';
+import { Checkbox } from 'primereact/checkbox'
+
 import axios from 'axios';
 
 export default function Recherche(props) {
 
 
-    const [infoRehFact, setinfoRehFact] = useState({ num_facture:'',date_facture:'',nom_patient:'', nom_client:'',numero_arr: '', date_arr: '' });
+    const [infoRehFact, setinfoRehFact] = useState({ num_facture: '', date_facture: '', nom_patient: '', nom_client: '', numero_arr: '', date_arr: '', pec: false });
     const [verfChamp, setverfChamp] = useState(false);
     const onVide = () => {
-        setinfoRehFact({ num_facture:'',date_facture:'',nom_patient:'', nom_client:'',numero_arr: '', date_arr: '', date_naiss: '', nom: '' })
+        setinfoRehFact({ num_facture: '', date_facture: '', nom_patient: '', nom_client: '', numero_arr: '', date_arr: '', date_naiss: '', nom: '', pec: false })
     }
 
     /* Modal */
@@ -73,12 +75,15 @@ export default function Recherche(props) {
                     onHide('displayBasic2');
                     onVide()
                 }
-            );
+            )
+            .catch((error)=>{
+                console.log(error)
+            })
     }
     return (
         <div>
 
-            <Button tooltip='Recherche'  icon={PrimeIcons.SEARCH} value="chercher" label='Recherche' className=' p-button-secondary' onClick={() => onClick('displayBasic2')} />
+            <Button tooltip='Recherche' icon={PrimeIcons.SEARCH} value="chercher" label='Recherche' className=' p-button-secondary' onClick={() => onClick('displayBasic2')} />
             <div className='grid'>
                 <Dialog header={renderHeader('displayBasic2')} className="lg:col-4 md:col-5 col-8 p-0" visible={displayBasic2} footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
                     <div className="p-1 style-modal-tamby" >
@@ -92,7 +97,7 @@ export default function Recherche(props) {
                                     <label htmlFor="username2" className="label-input-sm">Date facture</label>
                                     <InputMask id="basic" value={infoRehFact.date_facture} mask='99/99/9999' name='date_facture' className={"form-input-css-tamby"} onChange={(e) => { chDonneRech(e) }} />
                                 </div>
-                              
+
                             </div>
 
                             <div className='grid px-4'>
@@ -104,7 +109,7 @@ export default function Recherche(props) {
                                     <label htmlFor="username2" className="label-input-sm">Date d'arrivée </label>
                                     <InputMask id="basic" value={infoRehFact.date_arr} mask='99/99/9999' name='date_arr' className={"form-input-css-tamby"} onChange={(e) => { chDonneRech(e) }} />
                                 </div>
-                              
+
 
                             </div>
                             <div className='grid px-4'>
@@ -114,15 +119,25 @@ export default function Recherche(props) {
                                 </div>
                                 <div className="col-6 field my-1 flex flex-column">
                                     <label htmlFor="username2" className="label-input-sm">Nom client </label>
-                                    <InputText id="basic" value={infoRehFact.nom_client}  name='nom_client' className={"form-input-css-tamby"} onChange={(e) => { chDonneRech(e) }} />
+                                    <InputText id="basic" value={infoRehFact.nom_client} name='nom_client' className={"form-input-css-tamby"} onChange={(e) => { chDonneRech(e) }} />
+                                </div>
+                                <div className="col-6 field my-1 flex flex-column">
+                                    <label htmlFor="username2" className="label-input-sm">PEC </label>
+                                    <Checkbox id="basic" checked={infoRehFact.pec} name='pec' className={"form-input-css-tamby"} onChange={(e) => {
+                                        if (infoRehFact.pec) {
+                                            setinfoRehFact({...infoRehFact,pec:false})
+                                        }else{
+                                            setinfoRehFact({...infoRehFact,pec:true})
+                                        }
+                                    }} />
                                 </div>
                             </div>
                         </form>
                         {verfChamp ? <center><small id="username2-help" className="p-error block justify-content-center" style={{ fontWeight: 'bold' }}>Veuillez entrer la critère pour la recherche - Code ou Nom </small></center> : null}
                         <div className='flex mt-3 mr-4 justify-content-end '>
                             <Button icon={PrimeIcons.SEARCH} className='p-button-sm p-button-secondary ' label={'Reherche'} onClick={() => {
-                                if (infoRehFact.num_facture == "" && infoRehFact.date_facture == "" && infoRehFact.nom_patient == "" && infoRehFact.nom_client == "" && infoRehFact.numero_arr == "" && infoRehFact.date_arr == "") {
-                                   alert('Entrez le(s) critère(s) de recherche ! ')
+                                if (infoRehFact.num_facture == "" && infoRehFact.pec==false && infoRehFact.date_facture == "" && infoRehFact.nom_patient == "" && infoRehFact.nom_client == "" && infoRehFact.numero_arr == "" && infoRehFact.date_arr == "") {
+                                    alert('Entrez le(s) critère(s) de recherche ! ')
                                     return false;
 
                                 } else {

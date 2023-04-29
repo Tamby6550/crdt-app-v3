@@ -228,20 +228,14 @@ function App() {
             }
             <Routes>
                 <Route element={<div className='grid p-0 mb-3' style={{ minWidth: "500px" }}>
-                    <div className='grid col-12 tete-logo flex justify-content-between h-3em ' style={{ alignItems: 'center',background:'linear-gradient(to right, rgb(241 232 206), rgb(255 254 251))',height: '100px' }} >
-                        <div className='col-2 m-0'  >
-                            <img src={logo} style={{width:'250px',height:'90px'}} />
-
-                        </div>
-                        <div className='col-10 p-0' >
-                            <i>
-                            <h3>1578x100</h3>
-                            </i>
+                    {/* <div className='grid col-12  flex justify-content-between h-2em ' style={{ alignItems: 'center',height: '200px' }} > */}
+                        <div className='col-12 m-0 tete-logo' style={{height:'100px'}}  >
+                           
                             {/* <img src={logoH} className=" max-h-4rem flex m-2 headerimg" /> */}
                         </div>
                       
 
-                    </div>
+                    {/* </div> */}
                     <div className='col-12 container-tamby'>
                         <div className='grid p-0 pl-1'>
                             <Header />
@@ -284,7 +278,7 @@ function App() {
                                 </div>
                             </div>
                         </div>
-                        <footer className='col-12 tete-logo flex justify-content-center h-2em'>
+                        <footer className='col-12 footer-logo flex justify-content-center h-2em'>
                             <small style={{color:'gray'}} >Copyright © 2023, Centre de RadioDiagnostic et de Thérapie design by tambyarimisaemit@gmail.com</small>
                         </footer>
                     </div>

@@ -1,12 +1,22 @@
 html,body {
   font-size: 11.1px;
   height: 100%;
+  margin: 0px;
+  overflow-x: hidden;
 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 .p-toast {
 
   max-width: 28rem;
 }
+.tete-logo{
+  background-image: url('../src/images/header.png');
+  background-size: cover;
+}
+/* .footer-logo{
+  background-image: url('../src/images/footer.png');
+  background-size: cover;
+} */
 .p-panelmenu .p-panelmenu-panel .p-panelmenu-header>a {
   padding: 10px 9px;
   /* padding: 1vmax; */
@@ -99,7 +109,7 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, A
 }
 
 .menu-active {
-  background-color: rgb(101, 103, 105);
+  background-color: rgb(110, 140, 170);
 }
 
 /*Hoany menu tsis sous menu rehefa active izy*/
@@ -230,7 +240,7 @@ ul.p-submenu-list.p-panelmenu-root-submenu {
 .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
   background: #f5f4f4;
   border-color: #a8b6db;
-  color: #7370f9;
+  color: #4373ec;
 }
 
 /*Tag sucess*/
@@ -305,9 +315,14 @@ div#doccrhtml {
 }
 
 .p-button.p-button-text {
-  background-color: transparent;
-  color: #876ae1;
-  border-color: transparent;
+  background-color: transparent !important;
+  color: #4873de ;
+  border-color: transparent !important;
+}
+
+.p-button{
+  background: #225FFF ;
+  border: 1px solid #225FFF ;
 }
 
 .p-dialog-mask.p-dialog-center.p-component-overlay.p-component-overlay-enter.p-dialog-visible.p-dialog-draggable.p-dialog-resizable {

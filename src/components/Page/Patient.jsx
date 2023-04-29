@@ -175,7 +175,7 @@ export default function Patient(props) {
                 <center><h3 className='m-3'>Numéro de journal d'arriver :  <u style={{ color: 'rgb(34, 197, 94)', fontWeight: 'bold', fontSize: '1.8rem' }}> {numJournal.num}</u>   </h3></center>
                 <ProgressBar value={timer} showValue={false} style={{ height: "3px" }}></ProgressBar>
             </Dialog>
-            <div className="flex flex-column justify-content-center">
+            <div className="flex flex-column justify-content-center m-1">
                 <DataTable header={header} value={listPatient} loading={charge} responsiveLayout="scroll" scrollable scrollHeight="500px" rows={10} rowsPerPageOptions={[10, 20, 50]} paginator className='bg-white' emptyMessage={'Aucun resultat trouvé'}>
                     <Column field='id_patient' header="Id"></Column>
                     <Column field={'nom'} header="Nom"></Column>

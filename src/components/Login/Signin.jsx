@@ -11,7 +11,7 @@ import { Button } from 'primereact/button';
 import * as Components from './Components';
 import { Toast } from 'primereact/toast';
 import { PrimeIcons } from 'primereact/api';
-
+import styles from './styles.css'
 
 export default function Signin(props) {
 
@@ -71,7 +71,7 @@ export default function Signin(props) {
     }
 
     return (
-        <div className='flex flex-row justify-content-center  align-items-center m-0 w-full '>
+        <div className='flex flex-row justify-content-center  align-items-center m-0 w-full  login-page'>
             <Toast ref={toastTR} position="top-center" />
             <Components.Container class='.login-page' >
 
@@ -105,12 +105,12 @@ export default function Signin(props) {
                             </Components.GhostButton>
                         </Components.LeftOverlayPanel>
 
-                        <Components.RightOverlayPanel signinIn={signIn}>
-                            <Components.Title style={{ color: '#546372', fontSize: '1.6em' }} >Centre de RadioDiagnostic et de Thérapie</Components.Title>
+                        <Components.RightOverlayPanel signinIn={signIn} className='sary_login' >
+                            {/* <Components.Title style={{ color: '#546372', fontSize: '1.6em' }} >Centre de RadioDiagnostic et de Thérapie</Components.Title>
                             <Components.Paragraph>
                                 <img src={logo} alt="" width={"148px"} />
                                 <h2 style={{ color: 'black' }} >Taille  400 x 480</h2>
-                            </Components.Paragraph>
+                            </Components.Paragraph> */}
                             <Components.GhostButton style={{ display: 'none' }} onClick={() => toggle(false)}>
                                 S'inscrire
                             </Components.GhostButton>
