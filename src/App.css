@@ -336,6 +336,9 @@ div#doccrhtml {
 div.humbergeur{
   display: none;
 }
+.sary_login {
+  display: block !important;
+}
 @media screen and (max-width: 767px)
 {
     div .mobile-m{
@@ -350,10 +353,10 @@ div.humbergeur{
     h1.m-1.p-1.mobile-non-titre {
         display: none;
     }
-    div .ciWiuv{
-        width: 100%;
+    div.sc-dkrFOg{
+        width: 100% !important;
     }
-    div .gJVUZI{
+    div.sc-ipEyDJ{
         position: relative;
     }
     div .cECpmY {
@@ -377,6 +380,9 @@ div.humbergeur{
         width: 65%;
         z-index: 2;
     }
+    .sary_login {
+      display: none !important;
+  }
     html,body {
         font-size: 16px;
         zoom: 84%;
