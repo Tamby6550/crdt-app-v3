@@ -22,6 +22,9 @@ export default function VoirCompteRendu(props) {
 
     const [numQr, setnumQr] = useState('null')
 
+    const [copy, setcopy] = useState(false);
+
+
     const chgQr = () => {
         setnumQr((props.date_arriv).replace(/\//g, "") + '' + (props.num_arriv))
     };
@@ -141,8 +144,9 @@ export default function VoirCompteRendu(props) {
     /**Style css */
 
     const stylebtnRec = {
-        fontSize: '1rem', padding: ' 0.8375rem 0.975rem', backgroundColor: '#a79d34', border: '1px solid #a79d34'
+        fontSize: '1rem', padding: ' 0.2rem 0.3rem', backgroundColor: '#0FBD6F', border: '1px solid #0FBD6F'
     };
+    
     const stylebtnDetele = {
         fontSize: '1rem', padding: ' 0.8375rem 0.975rem', backgroundColor: 'rgb(195 46 46 / 85%)', border: '1px solid #d32f2fa1'
     };
@@ -209,6 +213,21 @@ export default function VoirCompteRendu(props) {
         //     });
     }
 
+    function copyToClipBoard() {
+        var content = document.getElementById('textCopy').innerText;
+        navigator.clipboard.writeText(content)
+            .then(() => {
+                setcopy(true);
+                setTimeout(() => {
+                    setcopy(false);
+                }, 800)
+
+            })
+            .catch(err => {
+                console.log('Something went wrong', err);
+            })
+    }
+
     return (
         <>
 
@@ -224,14 +243,17 @@ export default function VoirCompteRendu(props) {
                             <CRmodel setrecHtml={setrecHtml} recHtml={recHtml} />
                         </div>
                         <div className='col-8'>
-                            <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.2em' }} >Nom : <span  ><strong>{props.nom}</strong></span></p>
+                            <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.2em' }} >Nom : <span  ><strong  id='textCopy' >{props.nom}</strong>
+                            <Button icon={copy?PrimeIcons.CHECK :PrimeIcons.COPY}  className={'p-button-sm p-button-info ml-5'} style={stylebtnRec} label={copy? 'Copie !' :'Copier '} onClick={copyToClipBoard} />
+
+                            </span></p>
                             <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.2em' }} >Examen : <span  ><strong>{props.lib_examen}</strong></span></p>
                         </div>
                     </div>
                     <div className='flex px-4 p-3'>
                         <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-primary ' label={chargePost.chajoute ? 'Enregistrement...' : 'Enregistrer'} onClick={log} />
                         <ReactToPrint trigger={() =>
-                            <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-primary ml-3 ' label={'Imprimer'} />
+                            <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-secondary ml-3 ' label={'Imprimer'} />
                         } content={() => document.getElementById("scann")} />
                     </div>
                     <div className='mb-3'>

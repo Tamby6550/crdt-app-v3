@@ -148,7 +148,7 @@ export default function CompteRendu(props) {
     /**Style css */
 
     const stylebtnRec = {
-        fontSize: '1rem', padding: ' 0.8375rem 0.975rem', backgroundColor: '#a79d34', border: '1px solid #a79d34'
+        fontSize: '1rem', padding: ' 0.2rem 0.3rem', backgroundColor: '#0FBD6F', border: '1px solid #0FBD6F'
     };
     const stylebtnDetele = {
         fontSize: '1rem', padding: ' 0.8375rem 0.975rem', backgroundColor: 'rgb(195 46 46 / 85%)', border: '1px solid #d32f2fa1'
@@ -238,7 +238,6 @@ export default function CompteRendu(props) {
 
     return (
         <>
-
             <Button icon={PrimeIcons.BOOK} className='p-buttom-sm p-1 ml-4 p-button-info ' tooltip='Ajout compte rendu' tooltipOptions={{ position: 'top' }}
                 onClick={() => { onClick('displayBasic2'); chargeProps(); }} />
 
@@ -253,7 +252,7 @@ export default function CompteRendu(props) {
                         <div className='col-8'>
                             <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.5em',display:'flex',alignItems:'center' }} >
                                 Nom: <span  > <strong id='textCopy' > {props.nom}</strong></span>
-                                <Button icon={copy?PrimeIcons.CHECK :PrimeIcons.COPY}  className={'p-button-sm p-button-success ml-5'} label={copy? 'Copie !' :'Copier '} onClick={copyToClipBoard} />
+                                <Button icon={copy?PrimeIcons.CHECK :PrimeIcons.COPY}  className={'p-button-sm p-button-info ml-5'} style={stylebtnRec} label={copy? 'Copie !' :'Copier '} onClick={copyToClipBoard} />
                             </p>
                             <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.5em' }} >Examen : <span  ><strong>{props.lib_examen}</strong></span></p>
                         </div>
@@ -261,9 +260,8 @@ export default function CompteRendu(props) {
                     <div className='flex px-4 p-3'>
                         <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-primary ' label={chargePost.chajoute ? 'Enregistrement...' : 'Enregistrer'} onClick={log} />
                         <ReactToPrint trigger={() =>
-                            <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-info ml-3 ' label={'Imprimer'} disabled={printDesact} />
+                            <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-secondary ml-3 ' label={'Imprimer'} disabled={printDesact} />
                         } content={() => document.getElementById("scann")} />
-
                     </div>
                     <div className='mb-3' >
                         <BundledEditor

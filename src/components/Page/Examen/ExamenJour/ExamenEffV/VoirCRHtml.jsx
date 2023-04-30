@@ -26,7 +26,7 @@ export default function VoirCRHtml(props) {
     /*Word */
     const editorRef = useRef(null);
 
-
+    let reportTemplateRef = useRef();
 
     /*Word */
 
@@ -144,7 +144,7 @@ export default function VoirCRHtml(props) {
 
     /** Fin modal */
 
-   
+
 
     return (
         <>
@@ -153,11 +153,24 @@ export default function VoirCRHtml(props) {
                 onClick={() => { onClick('displayBasic2'); chargeProps(); getData(); }} />
 
             <Dialog maximizable header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-8 md:col-9 col-10 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
-
-                <div className="p-1  style-modal-tamby">
-                    <div className='mb-3 ' id='doccrhtml' ></div>
+                <ReactToPrint trigger={() =>
+                    <Button icon={PrimeIcons.PRINT} className='p-button-sm p-button-primary ml-3 ' label={'Imprimer'} />
+                } content={() => document.getElementById("scann")} />
+            
+                <div id="scann" ref={(el) => (reportTemplateRef = el)}>
+                    <div id="doccrhtml" style={{ fontSize: '1.4em' }}></div>
+                    <div className='w-100 flex justify-content-end'>
+                        <div style={{ width: "45px", height: "45px", position: 'absolute', bottom: '100px', right: '50px', margin: '0px', padding: '0px' }} >
+                            <QRCode
+                                size={100}
+                                style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                                value={numQr}
+                                viewBox={`0 0 256 256`}
+                            />
+                        </div>
+                    </div>
                 </div>
-               
+
             </Dialog>
         </>
     )
