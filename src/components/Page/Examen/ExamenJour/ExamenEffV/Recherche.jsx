@@ -10,10 +10,10 @@ import axios from 'axios';
 export default function Recherche(props) {
 
 
-    const [infoRecherche, setinfoRecherche] = useState({ date_examen:'',numero_arr: '', date_arr: '', date_naiss: '', nom: '' });
+    const [infoRecherche, setinfoRecherche] = useState({ date_examen: '', numero_arr: '', date_arr: '', date_naiss: '', nom: '' });
     const [verfChamp, setverfChamp] = useState(false);
     const onVide = () => {
-        setinfoRecherche({date_examen:'', numero_arr: '', date_arr: '',date_naiss:'',nom: '' })
+        setinfoRecherche({ date_examen: '', numero_arr: '', date_arr: '', date_naiss: '', nom: '' })
     }
 
     /* Modal */
@@ -67,12 +67,16 @@ export default function Recherche(props) {
                 (result) => {
                     // props.setrefreshData(0);
                     props.setinfoReherche(infoRecherche)
-                    props.setlistExamenNonEff(result.data)
+                    props.setlistExamenEffV(result.data)
                     props.setCharge(false);
                     onHide('displayBasic2');
                     onVide()
                 }
-            );
+            ).catch((error) => {
+                props.setCharge(false);
+                onHide('displayBasic2');
+                onVide()
+            })
     }
     return (
         <div>
@@ -113,9 +117,9 @@ export default function Recherche(props) {
                         {verfChamp ? <center><small id="username2-help" className="p-error block justify-content-center" style={{ fontWeight: 'bold' }}>Veuillez entrer la critère pour la recherche - Code ou Nom </small></center> : null}
                         <div className='flex mt-3 mr-4 justify-content-end '>
                             <Button icon={PrimeIcons.SEARCH} className='p-button-sm p-button-secondary ' label={'Reherche'} onClick={() => {
-                                if (infoRecherche.date_arr == "" && infoRecherche.date_examen == "" &&  infoRecherche.nom == "" && infoRecherche.date_naiss == "" && infoRecherche.numero_arr == "") {
-return false;
-                                }else{
+                                if (infoRecherche.date_arr == "" && infoRecherche.date_examen == "" && infoRecherche.nom == "" && infoRecherche.date_naiss == "" && infoRecherche.numero_arr == "") {
+                                    return false;
+                                } else {
                                     RechercheloadData();
                                 }
                             }} />

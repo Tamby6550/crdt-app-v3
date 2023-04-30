@@ -149,7 +149,6 @@ export default function ChoixClient(props) {
     const renderHeader1 = () => {
         return (
             <div className="flex justify-content-between">
-                {/* <Button type="button" icon="pi pi-filter-slash" label="Vider" className="p-button-outlined" onClick={clearFilter1} /> */}
                 <h3 className='m-3'>Liste Clients</h3>
                 <span className="p-input-icon-left global-tamby">
                     <i className="pi pi-search" />

@@ -186,8 +186,8 @@ function App() {
         <div className="App p-0" >
                         <Toast ref={toastTR} position="top-center" />
 
-             <Dialog header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-3 md:col-5 col-8 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
-                <div className="p-1  style-modal-tamby">
+             <Dialog header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-3 md:col-5 col-8 p-0"  footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
+                <div className="p-1  style-modal-tamby" style={{backgroundColor:'#f1f1f16e'}}>
                     <div className="col-12 field my-1 flex flex-column">
                         <Components.Label >Ancien mot de passe </Components.Label>
                         <Components.Input type='password' placeholder='Ancien mot de passe'  name='an_mdp' onChange={onChargeDonneChMdp} />
@@ -248,7 +248,7 @@ function App() {
                                                 {bred === "mode_paiement" || bred === "saisie_reglement" ?
                                                     <BreadCrumb model={reglement} home={Home} className=" w-full" />
                                                     :
-                                                    bred === "client" || bred === "examen" || bred === "patient" || bred === "prescripteur" ?
+                                                    bred === "client" || bred === "examen" ||  bred === "prescripteur" ?
                                                         <BreadCrumb model={referentielss} home={Home} className=" w-full" />
                                                         :
                                                         bred === "ajout" || bred === "details" || bred === "impression" || bred === "annulation" ?
@@ -256,7 +256,7 @@ function App() {
                                                             :
                                                             bred === "facture_jour" || bred === "recette_jour" || bred === "virement_jour" || bred === "stat_examen" || bred === "stat_client"
                                                                 || bred === "stat_detail_examen" || bred === "stat_prescripteur" || bred === "stat_categorie"
-                                                                || bred === "cumul_chiffre_affaire" || bred === "releve_facture"  ||bred === "examen_jour" || bred === "journal_jour" ?
+                                                                || bred === "cumul_chiffre_affaire" || bred === "releve_facture"  ||bred === "rapport_examen_jour" || bred === "journal_jour" ?
                                                                 <BreadCrumb model={rapport} home={Home} className=" w-full" />
                                                                 :
                                                                 <BreadCrumb model={items} home={Home} className=" w-full" />
