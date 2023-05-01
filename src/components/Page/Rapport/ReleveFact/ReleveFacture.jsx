@@ -199,7 +199,7 @@ export default function ReleveFacture(props) {
 
                                             <br />
 
-                                            <table width="99%" border="0" align="center" class="table">
+                                            <table width="98.5%" border="0" align="center" class="table">
                                                 <tr>
                                                     <td width="1%" class="Style3 table">
                                                         <div align="left" class="Style1">

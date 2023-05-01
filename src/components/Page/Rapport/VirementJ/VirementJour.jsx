@@ -15,7 +15,7 @@ export default function VirementJour(props) {
 
     const messagesParPage = 19;
 
-    const [donne, setdonne] = useState({ date: '' })
+    const [donne, setdonne] = useState({ date_debut: '', date_fin: '' })
     const [Charge, setCharge] = useState(false)
     const [Dataall, setDataall] = useState([{
         id: "",
@@ -35,22 +35,26 @@ export default function VirementJour(props) {
     });
 
     const loadTotal = async () => {
-        let date = moment(donne.date).format('DD-MM-YYYY');
-        await axios.get(props.url + `getMtVirementjour/${date}`)
+        let date_db = moment(donne.date_debut).format('DD-MM-YYYY');
+        let date_fn = moment(donne.date_fin).format('DD-MM-YYYY');
+        await axios.get(props.url + `getMtVirementjour/${date_db}&${date_fn}`)
             .then(
                 (result) => {
                     setTotal(result.data);
                     onHide('displayBasic2')
 
                     setTimeout(() => {
-                        loadData(result.data.starts, result.data.ends, date);
+                        loadData(result.data.starts, result.data.ends, date_db, date_fn);
                     }, 300)
                 }
-            );
+            ).catch((error) => {
+                console.log(error);
+                setCharge(false);
+            })
     }
 
-    const loadData = async (starts, ends, date) => {
-        await axios.get(props.url + `getVirementJour/${starts}&${ends}&${date}`)
+    const loadData = async (starts, ends, date_db, date_fn) => {
+        await axios.get(props.url + `getVirementJour/${starts}&${ends}&${date_db}&${date_fn}`)
             .then(
                 (result) => {
                     setDataall(result.data.Data);
@@ -94,12 +98,22 @@ export default function VirementJour(props) {
             <Dialog header={'VIREMENT DU JOUR'} visible={displayBasic2} className="lg:col-3 md:col-3 col-8 p-0" onHide={() => onHide('displayBasic2')}  >
                 <div className='recu-imprime' >
                     <div className='flex flex-column justify-content-center'>
-                        <center>
+                        {/* <center>
                             <label htmlFor="username2" className="label-input-sm" style={{ fontSize: '1.5em' }}>Date </label>
                         </center>
                         <center>
                             <input id="username2" type={'date'} style={{ height: '40px', borderRadius: '4px', width: '200px', fontWeight: 'bold' }} value={donne.date} aria-describedby="username2-help" className={"form-input-css-tamby"} name='nom' onChange={(e) => { setdonne({ date: e.target.value }) }} />
-                        </center>
+                        </center> */}
+                        <>
+                            <div className='m-3  flex flex-column justify-content-center'>
+                                <label htmlFor="username2" className="label-input-sm" style={{ fontSize: '1.5em' }}>Date début : </label>
+                                <input id="username2" type={'date'} style={{ height: '40px', borderRadius: '4px', width: '50%', fontWeight: 'bold' }} value={donne.date_debut} aria-describedby="username2-help" className={"form-input-css-tamby"} name='nom' onChange={(e) => { setdonne({ ...donne, date_debut: e.target.value }) }} />
+                            </div>
+                            <div className='m-3  flex flex-column justify-content-center'>
+                                <label htmlFor="username2" className="label-input-sm" style={{ fontSize: '1.5em' }}>Date fin :</label>
+                                <input id="username2" type={'date'} style={{ height: '40px', borderRadius: '4px', width: '50%', fontWeight: 'bold' }} value={donne.date_fin} aria-describedby="username2-help" className={"form-input-css-tamby"} name='nom' onChange={(e) => { setdonne({ ...donne, date_fin: e.target.value }) }} />
+                            </div>
+                        </>
                         <center>
                             <Button icon={PrimeIcons.SEARCH} style={{ width: '150px', fontSize: '1.3em' }} className='p-button-sm p-button-secondary mt-3 p-2' label={'Reherche'} onClick={() => {
                                 recherche()
@@ -135,18 +149,16 @@ export default function VirementJour(props) {
                                     <span class="Style5" style={{ fontWeight: "bold" }}>CRDT</span>
                                     <table width="313" border="0" align="center">
                                         <tr>
-                                            <td width="307">
-                                                <div align="center">
-                                                    <strong>
-                                                        <span class="Style4">RECETTE DU : </span>
-                                                        {moment(donne.date).format('DD/MM/YYYY')}
-                                                    </strong>
-                                                    <font> (Virement)</font>
-                                                </div>
+                                            <td width="390">
+                                                <strong>VIREMENT DU : </strong>
+                                                {moment(donne.date_debut).format('DD/MM/YYYY')}
+                                                <strong> au </strong>
+                                                {moment(donne.date_fin).format('DD/MM/YYYY')}
                                             </td>
                                         </tr>
+
                                     </table>
-                                    <table width="100%" border="0" align="center" class="table">
+                                    <table width="98.5%" border="0" align="center" class="table" >
                                         <tr>
                                             <td width="2%" class="Style3 table">
                                                 <div align="center">

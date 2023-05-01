@@ -93,7 +93,7 @@ export default function Examen(props) {
                     {/* <Button icon={PrimeIcons.EYE} className='p-buttom-sm p-1 mr-2' onClick={() => { alert('Nom : ' + data.nom + ' !') }} tooltip='Voir' /> */}
                     <Voir data={data} url={props.url} setrefreshData={setrefreshData} />
                     <Modification data={data} url={props.url} setrefreshData={setrefreshData} />
-                    <Button icon={PrimeIcons.TIMES} className='p-buttom-sm p-1 ' style={stylebtnDetele} tooltip='Supprimer' tooltipOptions={{position: 'top'}}
+                    <Button icon={PrimeIcons.TIMES} className='p-buttom-sm p-1 ' style={stylebtnDetele} tooltip='Supprimer' disabled tooltipOptions={{position: 'top'}}
                         onClick={() => {
 
                             const accept = () => {

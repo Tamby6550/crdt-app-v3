@@ -152,7 +152,7 @@ export default function Recettejour(props) {
                                             </td>
                                         </tr>
                                     </table>
-                                    <table width="100%" border="0" align="center" class="table">
+                                    <table width="98.5%" border="0" align="center" class="table">
                                         <tr>
                                             <td width="2%" class="Style3 table">
                                                 <div align="center">

@@ -90,14 +90,15 @@ export default function Client(props) {
                     {/* <Button icon={PrimeIcons.EYE} className='p-buttom-sm p-1 mr-2' onClick={() => { alert('Nom : ' + data.nom + ' !') }} tooltip='Voir' /> */}
                     <Voir data={data} url={props.url} setrefreshData={setrefreshData} />
                     <Modification data={data} url={props.url} setrefreshData={setrefreshData} />
-                    <Button icon={PrimeIcons.TIMES} className='p-buttom-sm p-1 ' style={stylebtnDetele} tooltip='Supprimer' tooltipOptions={{ position: 'top' }}
+                    <Button icon={PrimeIcons.TIMES} className='p-buttom-sm p-1 ' style={stylebtnDetele} disabled tooltip='Supprimer' tooltipOptions={{ position: 'top' }}
                         onClick={() => {
 
                             const accept = () => {
                                 axios.delete(props.url + `deleteClientFact/${data.code_client}`)
                                     .then(res => {
+                                        // console.log(res)
                                         notificationAction('info', 'Suppression reuissie !', 'Enregistrement bien supprimer !');
-                                        setrefreshData(1)
+                                        // setrefreshData(1)
                                     })
                                     .catch(err => {
                                         console.log(err);
@@ -130,7 +131,7 @@ export default function Client(props) {
             <Toast ref={toastTR} position="top-right" />
             <ConfirmDialog />
 
-            <div className="flex flex-column justify-content-center">
+            <div className="flex flex-column justify-content-center m-1">
                 <DataTable header={header} value={listClient} responsiveLayout="scroll" scrollable scrollHeight="500px"   loading={charge} className='bg-white' emptyMessage={'Aucun resultat trouvé'}>
                     <Column field='code_client' header="Code"></Column>
                     <Column field='nom' header="Nom"></Column>

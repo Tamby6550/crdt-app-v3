@@ -189,16 +189,17 @@ export default function FactureNonRegler(props) {
                         Date arrivé: <i style={{ fontWeight: '700' }}>{infoReherche.date_debut==""?null :  "du " +infoReherche.date_debut +" jusqu'à "+infoReherche.date_fin }"</i>,
                     </label>}
             </div>
-            {/* {infoReherche.num_facture != "" || infoReherche.date_facture != "" || infoReherche.nom_patient != "" || infoReherche.nom_client != ""
+            {infoReherche.num_facture != "" || infoReherche.date_facture != "" || infoReherche.nom_patient != "" || infoReherche.nom_client != ""
                 || infoReherche.numero_arr != "" || infoReherche.date_arr != "" ||  infoReherche.pec===true  || infoReherche.date_debut!="" || infoReherche.date_fin!=""?
-                null
-                : */}
+                
+                <Button icon={PrimeIcons.REFRESH} className='p-buttom-sm p-1 p-button-warning ' tooltip='actualiser' tooltipOptions={{ position: 'top' }} onClick={() => setrefreshData(1)} />
+                :
                 <>
-                    <h3 className='m-3'>Facture non régler (5 dernier jour)</h3>
+                    <h3 className='m-3'  >Facture non régler (5 dernier jour)</h3>
                     <h3 className='m-3' style={{ visibility: 'hidden' }} >facture </h3>
                 <Button icon={PrimeIcons.REFRESH} className='p-buttom-sm p-1 p-button-warning ' tooltip='actualiser' tooltipOptions={{ position: 'top' }} onClick={() => setrefreshData(1)} />
                 </>
-            {/* } */}
+            } 
         </div>
     )
 
