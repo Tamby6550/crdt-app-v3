@@ -9,12 +9,79 @@ import BundledEditor from './service/EditorTiny/BundledEditor';
 import ReactToPrint from 'react-to-print'
 import QRCode from 'react-qr-code'
 import CRmodel from '../../../ModelCR/CRmodel';
+import { Alert } from 'bootstrap';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import moment from 'moment/moment';
 
 export default function CompteRendu(props) {
+
+    moment.locale('fr', {
+        months : 'janvier_février_mars_avril_mai_juin_juillet_août_septembre_octobre_novembre_décembre'.split('_'),
+        monthsShort : 'janv._févr._mars_avr._mai_juin_juil._août_sept._oct._nov._déc.'.split('_'),
+        monthsParseExact : true,
+        weekdays : 'dimanche_lundi_mardi_mercredi_jeudi_vendredi_samedi'.split('_'),
+        weekdaysShort : 'dim._lun._mar._mer._jeu._ven._sam.'.split('_'),
+        weekdaysMin : 'Di_Lu_Ma_Me_Je_Ve_Sa'.split('_'),
+        weekdaysParseExact : true,
+        longDateFormat : {
+            LT : 'HH:mm',
+            LTS : 'HH:mm:ss',
+            L : 'DD/MM/YYYY',
+            LL : 'D MMMM YYYY',
+            LLL : 'D MMMM YYYY HH:mm',
+            LLLL : 'dddd D MMMM YYYY HH:mm'
+        },
+        calendar : {
+            sameDay : '[Aujourd’hui à] LT',
+            nextDay : '[Demain à] LT',
+            nextWeek : 'dddd [à] LT',
+            lastDay : '[Hier à] LT',
+            lastWeek : 'dddd [dernier à] LT',
+            sameElse : 'L'
+        },
+        relativeTime : {
+            future : 'dans %s',
+            past : 'il y a %s',
+            s : 'quelques secondes',
+            m : 'une minute',
+            mm : '%d minutes',
+            h : 'une heure',
+            hh : '%d heures',
+            d : 'un jour',
+            dd : '%d jours',
+            M : 'un mois',
+            MM : '%d mois',
+            y : 'un an',
+            yy : '%d ans'
+        },
+        dayOfMonthOrdinalParse : /\d{1,2}(er|e)/,
+        ordinal : function (number) {
+            return number + (number === 1 ? 'er' : 'e');
+        },
+        meridiemParse : /PD|MD/,
+        isPM : function (input) {
+            return input.charAt(0) === 'M';
+        },
+        // In case the meridiem units are not separated around 12, then implement
+        // this function (look at locale/id.js for an example).
+        // meridiemHour : function (hour, meridiem) {
+        //     return /* 0-23 hour, given meridiem token and hour 1-12 */ ;
+        // },
+        meridiem : function (hours, minutes, isLower) {
+            return hours < 12 ? 'PD' : 'MD';
+        },
+        week : {
+            dow : 1, // Monday is the first day of the week.
+            doy : 4  // Used to determine first week of the year.
+        }
+    });
+
+    moment.locale('fr');
     const [info, setinfo] = useState({ num_arriv: '', date_arriv: '', cr_name: '', lib_examen: '' })
     const [chargePost, setchargePost] = useState({ chajoute: false });
     const [printDesact, setprintDesact] = useState(true);
 
+    const [save, setsave] = useState(0);
     const [htmlm, sethtmlm] = useState('')
 
     const [recHtml, setrecHtml] = useState(null);
@@ -43,10 +110,22 @@ export default function CompteRendu(props) {
                 var myElement = document.getElementById("print");
                 myElement.innerHTML = editorRef.current.getContent();
                 // console.log(editorRef.current.getContent())
-                envoyeData(pars.data)
+                envoyeData(pars.data);
+                setsave(1);
             }
         }
     };
+    useEffect(() => {
+        if (editorRef.current) {
+        var currentDate = new Date();
+        // Formatage de la date au format souhaité (ici, jj/mm/aaaa)
+        var formattedDate = moment().format('DD MMMM YYYY');
+
+        // Remplacement de [DATE] par la date formatée
+        var content = editorRef.current.getContent().replace('[DATE]', formattedDate);
+        editorRef.current.setContent(content);
+    }
+    }, [htmlm])
     /*Word */
 
     const chargeProps = () => {
@@ -175,6 +254,7 @@ export default function CompteRendu(props) {
         dialogFuncMap[`${name}`](false);
         props.chargementData()
         setprintDesact(true)
+        setsave(0);
     }
 
     const renderFooter = (name) => {
@@ -243,33 +323,51 @@ export default function CompteRendu(props) {
         textArea.select();
         try {
             setcopy(true);
-          document.execCommand('copy');
-                setTimeout(() => {
-                    setcopy(false);
-                }, 800)
+            document.execCommand('copy');
+            setTimeout(() => {
+                setcopy(false);
+            }, 800)
         } catch (err) {
-          console.error('Unable to copy to clipboard', err);
+            console.error('Unable to copy to clipboard', err);
         }
         document.body.removeChild(textArea);
-      }
+    }
 
     return (
         <>
             <Button icon={PrimeIcons.BOOK} className='p-buttom-sm p-1 ml-4 p-button-info ' tooltip='Ajout compte rendu' tooltipOptions={{ position: 'top' }}
                 onClick={() => { onClick('displayBasic2'); chargeProps(); }} />
 
-            <Dialog maximizable header={renderHeader('displayBasic2')} style={{ zIndex: '1101 !important' }} visible={displayBasic2} className="lg:col-8 md:col-9 col-10 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
+            <Dialog maximizable header={renderHeader('displayBasic2')} style={{ zIndex: '1101 !important' }} visible={displayBasic2} className="lg:col-8 md:col-9 col-10 p-0" footer={renderFooter('displayBasic2')}
+                onHide={() => {
+                    const accept = () => {
+                        onHide('displayBasic2');
+                    }
+                
+                    const reject = () => {
+                        return null;
+                    }
+                    confirmDialog({
+                        message: 'Avez-vous déjà enregistré ?',
+                        header: 'Confirmation',
+                        icon: 'pi pi-exclamation-triangle',
+                        accept,
+                        reject
+                    });                    
+                    
+                }
+                }>
                 <Toast ref={toastTR} position="top-right" />
                 {/* <SaisieReglement/> */}
                 <div className="p-1  style-modal-tamby">
-                    <div className='col-12 pt-0 flex flex-row justify-conten-between' style={{ borderBottom: '1px solid #efefef',alignItems:'center' }} >
+                    <div className='col-12 pt-0 flex flex-row justify-conten-between' style={{ borderBottom: '1px solid #efefef', alignItems: 'center' }} >
                         <div className='col-4'>
                             <CRmodel sethtmlm={sethtmlm} setrecHtml={setrecHtml} recHtml={recHtml} />
                         </div>
                         <div className='col-8'>
-                            <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.5em',display:'flex',alignItems:'center' }} >
+                            <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.5em', display: 'flex', alignItems: 'center' }} >
                                 Nom: <span  > <strong id='textCopy' > {props.nom}</strong></span>
-                                <Button icon={copy?PrimeIcons.CHECK :PrimeIcons.COPY}  className={'p-button-sm p-button-info ml-5'} style={stylebtnRec} label={copy? 'Copie !' :'Copier '} onClick={()=>{unsecuredCopyToClipboard(props.nom)}} />
+                                <Button icon={copy ? PrimeIcons.CHECK : PrimeIcons.COPY} className={'p-button-sm p-button-info ml-5'} style={stylebtnRec} label={copy ? 'Copie !' : 'Copier '} onClick={() => { unsecuredCopyToClipboard(props.nom) }} />
                             </p>
                             <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.5em' }} >Examen : <span  ><strong>{props.lib_examen}</strong></span></p>
                         </div>
@@ -299,7 +397,6 @@ export default function CompteRendu(props) {
                             }}
                         />
                     </div>
-
                 </div>
             </Dialog>
             <div className='hidden'>

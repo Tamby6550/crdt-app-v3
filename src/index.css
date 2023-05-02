@@ -36,6 +36,7 @@
 /* Rapport */
 .rapportxxx{
     page:special;
+
 }
 
 /* Récu */
@@ -51,7 +52,8 @@
 
 @page special{
     margin: 4mm;
-    size:portrait
+    size: landscape;
+
 }
 
 /* Réçu */

@@ -88,13 +88,13 @@ export default function ChangementTarif(props) {
             .then(
                 (res) => {
                     // message avy @back
-                    // notificationAction(res.data.etat, 'Tarif ', res.data.message);
-                    // props.setinfoFacture({ ...props.infoFacture, type: infoNecess.tarif, pec: '', remise: '', });
-                    // props.settarifCh(infoNecess.tarif)
-                    // props.loadData();
-                    // setcharge(false)
-                    // onHide('displayBasic2');
-                    console.log(res.data)
+                    notificationAction(res.data.etat, 'Tarif ', res.data.message);
+                    props.setinfoFacture({ ...props.infoFacture, type: infoNecess.tarif, pec: '', remise: '', });
+                    props.settarifCh(infoNecess.tarif)
+                    props.loadData();
+                    setcharge(false)
+                    onHide('displayBasic2');
+                    // console.log(res.data)
                 }
             ).catch((erro) => {
                 console.log(erro);

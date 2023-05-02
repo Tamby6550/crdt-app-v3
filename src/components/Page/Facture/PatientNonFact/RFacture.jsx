@@ -72,6 +72,7 @@ export default function RFacture(props) {
         num_facture: '', date_facture: '', patient: '', type: '', type_facture: '0',
         reglement_id: '0', nomreglement: '', montantreglement: '0', rib: '',
         code_cli: 'AAAA', nom_cli: '-', pec: '0', remise: '0',
+        ref_carte:'',
         code_presc: 'AAAA', nom_presc: 'Dr   -',
         num_arriv: '', date_arriv: '',
         montant_brute: '0', montant_net: '0',
@@ -91,6 +92,7 @@ export default function RFacture(props) {
             num_facture: '', date_facture: '', patient: '', type: '', type_facture: '0',
             reglement_id: '0', nomreglement: '', montantreglement: '0', rib: '',
             code_cli: '', nom_cli: '', pec: '0', remise: '0',
+            ref_carte:'',
             code_presc: '', nom_presc: '',
             num_arriv: '', date_arriv: '',
             montant_brute: '0', montant_net: '0',
@@ -496,6 +498,13 @@ export default function RFacture(props) {
                                                             <InputText id="username2" aria-describedby="username2-help" name='remise' value={infoFacture.remise}
                                                                 onChange={(e) => {
                                                                     calculeMis(totalMt, e.target.value, infoFacture.pec, e);
+                                                                }} />
+                                                        </div>
+                                                        <div className="field   lg:col-4 md:col-6 ml-4 col:12 m-0 p-0">
+                                                            <label htmlFor="username2" className="label-input-sm">Référence Carte</label>
+                                                            <InputText id="username2" aria-describedby="username2-help" name='ref_carte' value={infoFacture.ref_carte}
+                                                                onChange={(e) => {
+                                                                    setinfoFacture({...infoFacture,ref_carte:e.target.value})
                                                                 }} />
                                                         </div>
                                                     </div>

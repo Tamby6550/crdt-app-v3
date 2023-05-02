@@ -13,7 +13,7 @@ import moment from 'moment/moment';
 
 export default function FactureJour(props) {
 
-    const messagesParPage = 19;
+    const messagesParPage = 18;
 
 
     const [donne, setdonne] = useState({ date: '' })
@@ -66,6 +66,7 @@ export default function FactureJour(props) {
                 (result) => {
                     setDataall(result.data.Data);
                     setCharge(false);
+                    console.log(result.data.Data)
                 }
             )
             .catch((error) => {
@@ -316,7 +317,7 @@ export default function FactureJour(props) {
                                                 </td>
                                                 <td height="24" class="table Style3">
                                                     <div align="right">
-                                                        <font size="1">0</font>
+                                                        <font size="1">{element.produit}</font>
                                                     </div>
                                                 </td>
                                                 <td height="24" class="table Style3">

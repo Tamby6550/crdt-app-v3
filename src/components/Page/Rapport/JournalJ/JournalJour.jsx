@@ -180,14 +180,14 @@ export default function JournalJour(props) {
                                             <td width="10%" class="table">
                                                 <div align="left" class="Style1">
                                                     <div align="center" class="Style4">
-                                                        STATUS EXAMEN
+                                                        STATUT EXAMEN
                                                     </div>
                                                 </div>
                                             </td>
                                             <td width="10%" class="table">
                                                 <div align="left" class="Style1">
                                                     <div align="center" class="Style4">
-                                                        STATUS FACTURE
+                                                        FACTURATION
                                                     </div>
                                                 </div>
                                             </td>

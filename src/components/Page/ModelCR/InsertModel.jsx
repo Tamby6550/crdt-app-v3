@@ -46,17 +46,28 @@ export default function InsertModel() {
             }
         }
     };
-    const visualier =  () => {
+    const visualier = () => {
         if (editorRef.current) {
             let strin = JSON.stringify({ data: editorRef.current.getContent() });
             let pars = JSON.parse(strin);
             var myElement = document.getElementById("print");
-             myElement.innerHTML = editorRef.current.getContent();
+            myElement.innerHTML = editorRef.current.getContent();
             return document.getElementById("scann");
         }
     };
     /*Word */
 
+    useEffect(() => {
+        if (editorRef.current) {
+        var currentDate = new Date();
+        // Formatage de la date au format souhaité (ici, jj/mm/aaaa)
+        var formattedDate = currentDate.getDate() + '/' + (currentDate.getMonth() + 1) + '/' + currentDate.getFullYear();
+
+        // Remplacement de [DATE] par la date formatée
+        var content = editorRef.current.getContent().replace('[DATE]', formattedDate);
+        editorRef.current.setContent(content);
+    }
+    }, [model])
 
 
 
@@ -111,7 +122,7 @@ export default function InsertModel() {
     }
 
     return (
-        <div className="p-1  style-modal-tamby flex " style={{alignItems:'center',flexDirection:'column'}} >
+        <div className="p-1  style-modal-tamby flex " style={{ alignItems: 'center', flexDirection: 'column' }} >
             <Toast ref={toastTR} position="top-center" />
 
             <div className='col-12 pt-0 flex  justify-conten-between pb-3' style={{ borderBottom: '1px solid #efefef', alignItems: 'center' }} >
@@ -120,7 +131,7 @@ export default function InsertModel() {
                     <div >
                         <InputText id="username2" style={{ width: '50%', height: '35px' }} aria-describedby="username2-help" name='nom' value={nomFichier.nom} onChange={(e) => { setnomFichier(e.target.value) }} />
                     </div>
-                    <small style={{color:'gray'}} >Exemple : Abdominal F</small>
+                    <small style={{ color: 'gray' }} >Exemple : Abdominal F</small>
                 </div>
                 <div className="field   lg:col-6 md:col-12 col:12 m-0 p-0">
                     <CRmodel sethtmlm={setmodel} setrecHtml={setrecHtml} recHtml={recHtml} />
@@ -143,7 +154,7 @@ export default function InsertModel() {
                         menubar: false,
                         plugins: [
                             'advlist', 'anchor', 'autolink', 'help', 'image', 'link', 'lists',
-                            'searchreplace', 'table', 'wordcount', 'pagebreak','spellchecker'
+                            'searchreplace', 'table', 'wordcount', 'pagebreak', 'spellchecker'
                         ],
                         toolbar: 'police| undo redo | blocks | ' +
                             'bold italic forecolor | alignleft aligncenter ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol' +

@@ -9,6 +9,7 @@ import BundledEditor from './service/EditorTiny/BundledEditor';
 import ReactToPrint from 'react-to-print'
 import QRCode from 'react-qr-code'
 import CRmodel from '../../../ModelCR/CRmodel';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 
 
 export default function VoirCompteRendu(props) {
@@ -251,7 +252,24 @@ export default function VoirCompteRendu(props) {
             <Button icon={PrimeIcons.PENCIL} className='p-buttom-sm p-1 ml-4 p-button-secondary ' tooltip='Modifier le compte rendu' tooltipOptions={{ position: 'top' }}
                 onClick={() => { onClick('displayBasic2'); chargeProps(); getData(); }} />
 
-            <Dialog maximizable header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-8 md:col-9 col-10 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}>
+            <Dialog maximizable header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-8 md:col-9 col-10 p-0" footer={renderFooter('displayBasic2')} 
+             onHide={() => {
+                const accept = () => {
+                    onHide('displayBasic2');
+                }
+            
+                const reject = () => {
+                    return null;
+                }
+                confirmDialog({
+                    message: 'Avez-vous déjà enregistré ?',
+                    header: 'Confirmation',
+                    icon: 'pi pi-exclamation-triangle',
+                    accept,
+                    reject
+                });                    
+                
+            }}>
                 <Toast ref={toastTR} position="top-right" />
 
                 <div className="p-1  style-modal-tamby">
