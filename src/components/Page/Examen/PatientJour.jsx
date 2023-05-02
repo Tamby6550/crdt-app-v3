@@ -160,7 +160,7 @@ export default function ExamenJour(props) {
       <ConfirmDialog />
 
       <div className="flex flex-column justify-content-center">
-        <DataTable header={header} value={listRegistre} loading={charge} responsiveLayout="scroll" scrollable scrollHeight="550px" className='bg-white' emptyMessage={"Aucun patient enregistré sur le journal "} >
+        <DataTable header={header} value={listRegistre} loading={charge} autoLayout className='bg-white' emptyMessage={"Aucun patient enregistré sur le journal "} >
           <Column field='numero' header="N° Arrivée" style={{ fontWeight: '700' }}></Column>
           <Column field={'date_arr'} header="Date Arrivée" body={bodyBouttonh} style={{ fontWeight: '600' }}></Column>
           <Column field={'id_patient'} header="Id Patient" style={{ fontWeight: '600' }}></Column>
@@ -168,7 +168,6 @@ export default function ExamenJour(props) {
           <Column field='date_naiss' header="Date_Naiss"></Column>
           <Column field='type_pat' header="Tarif"></Column>
           <Column header="Action" body={bodyBoutton} align={'left'}></Column>
-
         </DataTable>
       </div>
     </>

@@ -151,7 +151,6 @@ export default function JournalJour(props) {
                                                     <span class="Style1 Style4">N° ARRIVE</span>
                                                 </div>
                                             </td>
-
                                             <td width="22%" class="Style3 table">
                                                 <div align="center">
                                                     <span class="Style1 Style4">PATIENT</span>

@@ -227,6 +227,23 @@ export default function VoirCompteRendu(props) {
                 console.log('Something went wrong', err);
             })
     }
+    function unsecuredCopyToClipboard(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            setcopy(true);
+          document.execCommand('copy');
+                setTimeout(() => {
+                    setcopy(false);
+                }, 800)
+        } catch (err) {
+          console.error('Unable to copy to clipboard', err);
+        }
+        document.body.removeChild(textArea);
+      }
 
     return (
         <>
@@ -244,7 +261,7 @@ export default function VoirCompteRendu(props) {
                         </div>
                         <div className='col-8'>
                             <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.2em' }} >Nom : <span  ><strong  id='textCopy' >{props.nom}</strong>
-                            <Button icon={copy?PrimeIcons.CHECK :PrimeIcons.COPY}  className={'p-button-sm p-button-info ml-5'} style={stylebtnRec} label={copy? 'Copie !' :'Copier '} onClick={copyToClipBoard} />
+                            <Button icon={copy?PrimeIcons.CHECK :PrimeIcons.COPY}  className={'p-button-sm p-button-info ml-5'} style={stylebtnRec} label={copy? 'Copie !' :'Copier '} onClick={()=>{unsecuredCopyToClipboard(props.nom)}} />
 
                             </span></p>
                             <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.2em' }} >Examen : <span  ><strong>{props.lib_examen}</strong></span></p>

@@ -10,7 +10,8 @@ import Recherche from './Prescripteur_c/Recherche'
 import Voir from './Prescripteur_c/Voir'
 import axios from 'axios';
 import { Toast } from 'primereact/toast';
-
+import { FilterMatchMode, FilterOperator } from 'primereact/api';
+import { InputText } from 'primereact/inputtext';
 
 export default function Prescripteur(props) {
 
@@ -53,6 +54,7 @@ export default function Prescripteur(props) {
                         setlistClient(result.data.all);
                         settotalenrg(result.data.nbenreg)
                         setCharge(false);
+                        initFilters1();
                     }
                 ).catch((error) => {
                     console.log(error.message);
@@ -72,24 +74,24 @@ export default function Prescripteur(props) {
         }, 500)
     }, [refreshData]);
 
-    const header = (
-        <div className='flex flex-row justify-content-between align-items-center m-0 '>
-            <div className='my-0 ml-2 py-2 flex'>
-                <Insertion url={props.url} setrefreshData={setrefreshData} />
-                <Recherche icon={PrimeIcons.SEARCH} setCharge={setCharge} setlistClient={setlistClient} setrefreshData={setrefreshData} url={props.url} infoClient={infoClient} setinfoClient={setinfoClient} />
-                {infoClient.code_presc == "" && infoClient.nom == "" ? null : <label className='ml-5 mt-2'>Resultat de recherche ,   code client : <i style={{ fontWeight: '700' }}>"{(infoClient.code_presc).toUpperCase()}"</i>  , Nom : <i style={{ fontWeight: '700' }}>"{(infoClient.nom).toUpperCase()}"</i>  </label>}
-            </div>
+    // const header = (
+    //     <div className='flex flex-row justify-content-between align-items-center m-0 '>
+    //         <div className='my-0 ml-2 py-2 flex'>
+    //             <Insertion url={props.url} setrefreshData={setrefreshData} />
+    //             <Recherche icon={PrimeIcons.SEARCH} setCharge={setCharge} setlistClient={setlistClient} setrefreshData={setrefreshData} url={props.url} infoClient={infoClient} setinfoClient={setinfoClient} />
+    //             {infoClient.code_presc == "" && infoClient.nom == "" ? null : <label className='ml-5 mt-2'>Resultat de recherche ,   code client : <i style={{ fontWeight: '700' }}>"{(infoClient.code_presc).toUpperCase()}"</i>  , Nom : <i style={{ fontWeight: '700' }}>"{(infoClient.nom).toUpperCase()}"</i>  </label>}
+    //         </div>
 
-            {infoClient.code_presc != "" || infoClient.nom != "" ? <Button icon={PrimeIcons.REFRESH} className='p-buttom-sm p-1 p-button-warning ' tooltip='actualiser' tooltipOptions={{ position: 'top' }} onClick={() => setrefreshData(1)} />
-                :
-                <>
-                    <label >Liste des Prescripteurs (nb : 10)</label>
-                    <label className='ml-5 mt-1'>Total enregistrement : {totalenrg-1}  </label>
-                </>
-            }
+    //         {infoClient.code_presc != "" || infoClient.nom != "" ? <Button icon={PrimeIcons.REFRESH} className='p-buttom-sm p-1 p-button-warning ' tooltip='actualiser' tooltipOptions={{ position: 'top' }} onClick={() => setrefreshData(1)} />
+    //             :
+    //             <>
+    //                 <label >Liste des Prescripteurs </label>
+    //                 <label className='ml-5 mt-1'>Total enregistrement : {totalenrg-1}  </label>
+    //             </>
+    //         }
 
-        </div>
-    )
+    //     </div>
+    // )
 
     const bodyBoutton = (data) => {
         return (
@@ -131,13 +133,50 @@ export default function Prescripteur(props) {
         )
     }
 
+    
+    const [filters1, setFilters1] = useState(null);
+    const [globalFilterValue1, setGlobalFilterValue1] = useState('');
+    const onGlobalFilterChange1 = (e) => {
+        const value = e.target.value;
+        let _filters1 = { ...filters1 };
+        _filters1['global'].value = value;
+
+        setFilters1(_filters1);
+        setGlobalFilterValue1(value);
+    }
+    const initFilters1 = () => {
+        setFilters1({
+            'global': { value: null, matchMode: FilterMatchMode.CONTAINS }
+        });
+        setGlobalFilterValue1('');
+    }
+    const clearFilter1 = () => {
+        initFilters1();
+    }
+    const renderHeader1 = () => {
+        return (
+            <div className="flex justify-content-between">
+                <Insertion url={props.url} setrefreshData={setrefreshData} />
+
+                <h3 className='m-3'>Liste des Prescripteurs</h3>
+                <div className='flex'>
+                    <Button type="button" icon="pi pi-filter-slash" label="Vider" className="p-button-outlined" onClick={clearFilter1} />
+                    <span className="p-input-icon-left global-tamby ml-2"   >
+                        <i className="pi pi-search" />
+                        <InputText value={globalFilterValue1} onChange={onGlobalFilterChange1} placeholder="Recherche global..." />
+                    </span>
+                </div>
+            </div>
+        )
+    }
+    const header1 = renderHeader1();
     return (
         <>
             <Toast ref={toastTR} position="top-right" />
             <ConfirmDialog />
 
             <div className="flex flex-column justify-content-center">
-                <DataTable header={header} value={listClient} responsiveLayout="scroll" scrollable scrollHeight="500px"  loading={charge} className='bg-white' emptyMessage={'Aucun resultat trouvé'}>
+                <DataTable header={header1} filters={filters1} globalFilterFields={['code_presc', 'nom', 'phone1', 'phone2', 'mobile', 'adresse']} value={listClient} responsiveLayout="scroll" scrollable scrollHeight="500px"  loading={charge} rows={10} rowsPerPageOptions={[10, 20, 50]} paginator className='bg-white' emptyMessage={'Aucun resultat trouvé'}>
                     <Column field='code_presc' header="Code"></Column>
                     <Column field='nom' header="Nom"></Column>
                     <Column field='phone1' header="Phone1"></Column>

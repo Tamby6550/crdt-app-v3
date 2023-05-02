@@ -22,14 +22,20 @@ const useAuth = () => {
         return { data };
     }
 
+    
+    
     useEffect(() => {
+        var conn = sessionStorage.getItem("connect");
+        if (!conn) {
+          logout();  
+        }
         const token = localStorage.getItem('virus');
         if (token!=null) {
             // console.log(decrypt().data.login)
                 setIsAuthenticated(true);
                 //Rehefa mbola conncté nefa te hiverina @/login ,tonga de dirigeny 
                 if (pathname=='/') {
-                    navigate('/acceuil');
+                    navigate('/patient');
                 }else{
                     navigate(pathname);
                 }
@@ -53,9 +59,10 @@ const useAuth = () => {
                     const infoRm=JSON.stringify(res.data.login);
                     const infocrypte=CryptoJS.AES.encrypt(infoRm,secret);
                     localStorage.setItem('virus', infocrypte.toString());
+                    sessionStorage.setItem("connect", true);
 
                     setTimeout(() => {
-                        navigate('/acceuil');
+                        navigate('/patient');
                        
                     }, 500)
                 }else{

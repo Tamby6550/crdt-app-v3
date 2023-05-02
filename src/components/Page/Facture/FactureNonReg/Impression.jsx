@@ -75,6 +75,7 @@ export default function Impression(props) {
                                 <div className="field col-12 m-0 p-0" style={{ border: '1px solid white', textAlign: 'center' }} >
                                     <h1 className='m-1' >C.R.D.T.</h1>
                                     <h3 className='m-1' style={{ fontWeight: '500' }} >RCS: 2011B00436 - NIF : 5000434986  </h3>
+                                    <h3 className='m-1' style={{ fontWeight: '500' }} >STAT : 75004-11-2011-0-10454  </h3>
                                 </div>
 
                                 <div className="field col-12 m-0 p-0" style={{ border: '1px solid white', textAlign: 'center' }} >
@@ -88,7 +89,7 @@ export default function Impression(props) {
                                     <h3 className='m-1' style={{ fontWeight: '500' }} >{("Facture N° : ").toUpperCase()}{props.data.num_fact} </h3>
                                 </div>
                             </div>
-                            <div className="field  col-12 m-0 p-0" style={{ border: '1px solid white' }}>
+                            <div className="field  col-12 m-0 " style={{ border: '1px solid white',padding:'10px' }}>
                                 <div className="field col-12 m-0 p-0 flex flex-row"  >
                                     <table width="100%" border="0" align="center" class="table">
                                         {props.data.type_rglmt == 'P' ?

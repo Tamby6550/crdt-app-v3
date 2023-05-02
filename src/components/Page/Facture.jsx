@@ -14,11 +14,11 @@ export default function Facture(props) {
           <TabPanel header="Patient non facturé"   >
             <PatientNonFacture url={props.url} activeIndex={activeIndex} setActiveIndex={setActiveIndex}  />
           </TabPanel>
-          <TabPanel header="Facture non regler">
+          <TabPanel header="Facture non reglée">
 
             <FactureNonRegler url={props.url} activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
           </TabPanel>
-          <TabPanel header="Facture régler">
+          <TabPanel header="Facture réglée">
             <FactureRegler url={props.url} activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
           </TabPanel>
         </TabView>

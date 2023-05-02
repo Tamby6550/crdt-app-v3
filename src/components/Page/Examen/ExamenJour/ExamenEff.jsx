@@ -84,14 +84,12 @@ export default function ExamenEff(props) {
     }
 
     //Global filters
-
     const [filters1, setFilters1] = useState(null);
     const [globalFilterValue1, setGlobalFilterValue1] = useState('');
     const onGlobalFilterChange1 = (e) => {
         const value = e.target.value;
         let _filters1 = { ...filters1 };
         _filters1['global'].value = value;
-
         setFilters1(_filters1);
         setGlobalFilterValue1(value);
     }

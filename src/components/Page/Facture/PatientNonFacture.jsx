@@ -81,7 +81,7 @@ export default function PatientNonFacture(props) {
 
     const header = (
         <div className='flex flex-row justify-content-center align-items-center m-0 '>
-            <h3 className='m-3'>Liste Patient Non Facturées</h3>
+            <h3 className='m-3'>Liste des patients non facturés</h3>
         </div>
     )
 
@@ -111,7 +111,7 @@ export default function PatientNonFacture(props) {
     const renderHeader1 = () => {
         return (
             <div className="flex justify-content-between">
-                <h3 className='m-3'>Liste Patient Non Facturées</h3>
+                <h3 className='m-3'>Liste des patients non facturés</h3>
                 <div className='flex'>
                     <Button type="button" icon="pi pi-filter-slash" label="Vider" className="p-button-outlined" onClick={clearFilter1} />
                     <span className="p-input-icon-left global-tamby ml-2"   >

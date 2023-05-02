@@ -1,23 +1,25 @@
-html,body {
+html,
+body {
   font-size: 11.1px;
   height: 100%;
   margin: 0px;
   overflow-x: hidden;
-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 .p-toast {
-
   max-width: 28rem;
 }
-.tete-logo{
-  background-image: url('../src/images/header.png');
-  background-size: cover;
+.tete-logo {
+  background-image: url("../src/images/header.png");
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 /* .footer-logo{
   background-image: url('../src/images/footer.png');
   background-size: cover;
 } */
-.p-panelmenu .p-panelmenu-panel .p-panelmenu-header>a {
+.p-panelmenu .p-panelmenu-panel .p-panelmenu-header > a {
   padding: 10px 9px;
   /* padding: 1vmax; */
   /* padding: 0.8vw; */
@@ -58,8 +60,8 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, A
   /* padding: 0.8vw; */
 }
 
-.p-datatable .p-datatable-thead>tr>th,
-.p-datatable .p-datatable-tbody>tr>td {
+.p-datatable .p-datatable-thead > tr > th,
+.p-datatable .p-datatable-tbody > tr > td {
   /* padding: 9px; */
   /* padding: 1vmax; */
   /* padding: 0.8vw; */
@@ -68,19 +70,17 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, A
   /* font-size: 1vmax; */
 }
 
-
 .custom-card-haut .p-card-body .p-card-content {
   padding-top: 0;
   padding-bottom: 0;
   align-items: center;
 }
 
-
 .p-panelmenu .p-panelmenu-content {
   border: none;
 }
 
-.p-panelmenu .p-panelmenu-panel .p-panelmenu-header>a .pi-chevron-right {
+.p-panelmenu .p-panelmenu-panel .p-panelmenu-header > a .pi-chevron-right {
   order: 3;
   margin-left: auto;
   /* font-size: 14px; */
@@ -88,7 +88,7 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, A
   /* font-size: 1vmax; */
 }
 
-.p-panelmenu .p-panelmenu-panel .p-panelmenu-header>a .pi-chevron-down {
+.p-panelmenu .p-panelmenu-panel .p-panelmenu-header > a .pi-chevron-down {
   order: 3;
   margin-left: auto;
   /* font-size: 14px; */
@@ -96,11 +96,11 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, A
   /* font-size: 1vmax; */
 }
 
-.p-panelmenu .p-panelmenu-panel .p-panelmenu-header>a span:nth-child(2) {
+.p-panelmenu .p-panelmenu-panel .p-panelmenu-header > a span:nth-child(2) {
   order: 1;
 }
 
-.p-panelmenu .p-panelmenu-panel .p-panelmenu-header>a span:nth-child(3) {
+.p-panelmenu .p-panelmenu-panel .p-panelmenu-header > a span:nth-child(3) {
   order: 2;
 }
 
@@ -123,8 +123,16 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, A
 }
 
 /*Hoany menu misy sous menu rehefa active izy*/
-.p-panelmenu .p-panelmenu-content .menu-active .p-menuitem-link .p-menuitem-text,
-.p-panelmenu .p-panelmenu-content .menu-active .p-menuitem-link .p-menuitem-icon {
+.p-panelmenu
+  .p-panelmenu-content
+  .menu-active
+  .p-menuitem-link
+  .p-menuitem-text,
+.p-panelmenu
+  .p-panelmenu-content
+  .menu-active
+  .p-menuitem-link
+  .p-menuitem-icon {
   color: white;
 }
 
@@ -147,7 +155,6 @@ ul.p-submenu-list.p-panelmenu-root-submenu {
   /* font-size: 0.9vmin;
   font-size: 0.8vmax; */
 }
-
 
 /*Cursuer @aide navigation breadcrumb atao defaut fa tsy pointeur*/
 .p-breadcrumb .p-menuitem-link {
@@ -180,7 +187,7 @@ ul.p-submenu-list.p-panelmenu-root-submenu {
   border: 1px solid #ced4da;
   border-radius: .25rem; */
 }
-.p-fluid .p-inputtext{
+.p-fluid .p-inputtext {
   height: 20px;
 }
 
@@ -188,12 +195,11 @@ ul.p-submenu-list.p-panelmenu-root-submenu {
   font-size: 1em;
 }
 
-
-.style-modal-tamby{
+.style-modal-tamby {
   font-size: 0.9rem;
   font-weight: normal;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 /* manala espace be am header'n dialog */
@@ -201,22 +207,20 @@ ul.p-submenu-list.p-panelmenu-root-submenu {
   padding-bottom: 0;
 }
 
-
-
 /*Tab View*/
-.tabview-demo .tabview-header-icon i, .tabview-demo .tabview-header-icon span {
+.tabview-demo .tabview-header-icon i,
+.tabview-demo .tabview-header-icon span {
   vertical-align: middle;
 }
 
 .tabview-demo .tabview-header-icon span {
-  margin: 0 .5rem;
+  margin: 0 0.5rem;
 }
 
 .tabview-demo .p-tabview p {
   line-height: 1.5;
   margin: 0;
 }
-
 
 /*Block UI*/
 
@@ -228,13 +232,10 @@ ul.p-submenu-list.p-panelmenu-root-submenu {
   margin-right: 0.5rem;
 }
 
-
-
 /*Patient du jour Id patient recherche*/
 .field.my-1.flex.flex-row.px-4.recherche-pat {
   align-items: center;
 }
-
 
 /*TabView*/
 .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
@@ -245,10 +246,9 @@ ul.p-submenu-list.p-panelmenu-root-submenu {
 
 /*Tag sucess*/
 .p-tag.p-tag-success {
-  background-color: #22C55E;
+  background-color: #22c55e;
   color: #ffffff;
 }
-
 
 /*Tost Success*/
 .p-toast .p-toast-message.p-toast-message-success {
@@ -258,22 +258,22 @@ ul.p-submenu-list.p-panelmenu-root-submenu {
   color: #1ea97c;
 }
 
-
 /*CSS icon recherhce global dans examennonEff*/
 .global-tamby {
   position: relative;
   display: flex;
 }
 
-
 /*Boutton success*/
-.p-button.p-button-success, .p-buttonset.p-button-success > .p-button, .p-splitbutton.p-button-success > .p-button, .p-fileupload-choose.p-button-success {
+.p-button.p-button-success,
+.p-buttonset.p-button-success > .p-button,
+.p-splitbutton.p-button-success > .p-button,
+.p-fileupload-choose.p-button-success {
   color: #ffffff;
-  background: #22C55E;
-  border: 1px solid #22C55E;
+  background: #22c55e;
+  border: 1px solid #22c55e;
   font-size: 1.2rem;
 }
-
 
 /*fieldset*/
 .p-fieldset {
@@ -283,14 +283,13 @@ ul.p-submenu-list.p-panelmenu-root-submenu {
   border-radius: 3px;
 }
 
-
-.p-butttamby-retourner{
+.p-butttamby-retourner {
   font-size: 1rem;
   padding: 0.8375rem 0.975rem;
   background-color: rgb(195 153 46 / 85%);
   border: 1px solid rgb(211 152 47 / 63%);
 }
-button.p-butttamby-retourner:hover{
+button.p-butttamby-retourner:hover {
   font-size: 1rem;
   padding: 0.8375rem 0.975rem;
   background-color: rgb(195 153 46 / 85%);
@@ -302,89 +301,102 @@ img.max-h-4rem.flex.m-2.headerimg {
   height: 100%;
 }
 
-
 div#doccrhtml {
   margin-left: 15%;
   margin-right: 15%;
-  page:specialdoc;
+  page: specialdoc;
 }
 
-@page specialdoc{
+@page specialdoc {
   margin-left: 0%;
   margin-right: 0%;
 }
 
 .p-button.p-button-text {
   background-color: transparent !important;
-  color: #4873de ;
+  color: #4873de;
   border-color: transparent !important;
 }
 
-.p-button{
-  background: #225FFF ;
-  border: 1px solid #225FFF ;
+.p-button {
+  background: #225fff;
+  border: 1px solid #225fff;
 }
 
 .p-dialog-mask.p-dialog-center.p-component-overlay.p-component-overlay-enter.p-dialog-visible.p-dialog-draggable.p-dialog-resizable {
   z-index: 1101 !important;
 }
 
-.form-invalid-tamby{
+.form-invalid-tamby {
   border-color: red !important;
 }
 
-div.humbergeur{
+div.humbergeur {
   display: none;
 }
 .sary_login {
   display: block !important;
 }
-@media screen and (max-width: 767px)
-{
-    div .mobile-m{
-        display: none;
-    }
-    div .humbergeur{
-        display: flex;
-    }
-    h1 .mobile-non-titre{
-        display: none;
-    }
-    h1.m-1.p-1.mobile-non-titre {
-        display: none;
-    }
-    div.sc-dkrFOg{
-        width: 100% !important;
-    }
-    div.sc-ipEyDJ{
-        position: relative;
-    }
-    div .cECpmY {
-        position: absolute;
-        top: 0px;
-        left: 65%;
-        right: 0px;
-        width: 35%;
-        height: 100%;
-        overflow: hidden;
-        transition: transform 0.6s ease-in-out 0s;
-        z-index: 100;
-        font-size: 0.85em;
-    }
-   div  .bpDwEs {
-        position: absolute;
-        top: 0px;
-        height: 100%;
-        transition: all 0.6s ease-in-out 0s;
-        left: 0px;
-        width: 65%;
-        z-index: 2;
-    }
-    .sary_login {
-      display: none !important;
+
+.acceuil-titre{
+  font-size: 16px;
+  color: #9E9E9E !important; 
+  font-weight: bold;
+}
+.acceuil-chiffre{
+  color: #22c55e;
+}
+.acceuil-actifs{
+  font-size: 14px;
+  color: gray !important;
+}
+
+@media screen and (max-width: 767px) {
+  div .mobile-m {
+    display: none;
   }
-    html,body {
-        font-size: 16px;
-        zoom: 84%;
-    }
+  div .humbergeur {
+    display: flex;
+  }
+  h1 .mobile-non-titre {
+    display: none;
+  }
+  h1.m-1.p-1.mobile-non-titre {
+    display: none;
+  }
+  div.sc-dkrFOg {
+    width: 100% !important;
+  }
+  div.sc-ipEyDJ {
+    position: relative;
+  }
+  div .cECpmY {
+    position: absolute;
+    top: 0px;
+    left: 65%;
+    right: 0px;
+    width: 35%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out 0s;
+    z-index: 100;
+    font-size: 0.85em;
+  }
+  div .bpDwEs {
+    position: absolute;
+    top: 0px;
+    height: 100%;
+    transition: all 0.6s ease-in-out 0s;
+    left: 0px;
+    width: 65%;
+    z-index: 2;
+  }
+  .sary_login {
+    display: none !important;
+  }
+  html,
+  body {
+    font-size: 16px;
+    zoom: 84%;
+  }
 }

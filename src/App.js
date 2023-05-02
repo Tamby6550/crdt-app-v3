@@ -86,19 +86,89 @@ function App() {
     // }
 
     //  php 5.5
-    // const urlip=()=>{
-    //     let ip = window.location.hostname;
-    //     let urls ='http://'+ip+':3353/'
-    //     seturl(urls);
-    // }
+    const urlip=()=>{
+        let ip = window.location.hostname;
+        let urls ='http://'+ip+':3353/'
+        seturl(urls);
+    }
 
-    // useEffect(() => {
-    //     urlip()
-    // }, [navigate])
+    useEffect(() => {
+        urlip()
+    }, [navigate])
     
 
     const { pathname } = useLocation();
-    const bred = pathname.slice(1);
+    var bred = pathname.slice(1);
+    if (bred==='client') {
+        bred='Client'
+    }
+    if (bred==='prescripteur') {
+        bred='Prescripteur'
+    }
+    if (bred==='examen') {
+        bred='Examen'
+    }
+    if (bred==='saisie_reglement') {
+        bred='Saisie règlement'
+    }
+
+    if (bred==='modele_cr') {
+        bred='Modèle Compte Rendu'
+    }
+
+
+    if (bred==='patient_jour') {
+        bred='Patient du Jour'
+    }
+    if (bred==='examen_jour') {
+        bred='Examen du Jour'
+    }
+    if (bred==='facture') {
+        bred='Facture'
+    }
+    if (bred==='patient') {
+        bred='Patient'
+    }
+    if (bred==='acceuil') {
+        bred='Acceuil'
+    }
+
+    if (bred==='journal_jour') {
+        bred='Journal du Jour'
+    }
+    if (bred==='facture_jour') {
+        bred='Facture du Jour'
+    }
+    if (bred==='rapport_examen_jour') {
+        bred='Rapport examen du Jour'
+    }
+    if (bred==='virement_jour') {
+        bred='Virement du Jour'
+    }
+    if (bred==='recette_jour') {
+        bred='Recette du Jour'
+    }
+    if (bred==='stat_examen') {
+        bred='Statistique de l\'examen'
+    }
+    if (bred==='stat_client') {
+        bred='Statistique du client'
+    }
+    if (bred==='stat_detail_examen') {
+        bred='Statistique détaillé  de l\'examen'
+    }
+    if (bred==='stat_prescripteur') {
+        bred='Statiqtique Prescripteur'
+    }
+    if (bred==='stat_categorie') {
+        bred='Statistique Catégorie'
+    }
+    if (bred==='cumul_chiffre_affaire') {
+        bred='Cumul C.A'
+    }
+    if (bred==='releve_facture') {
+        bred='Rélévé  Facture'
+    }
     const items = [
         { label: bred }
     ]
@@ -245,18 +315,19 @@ function App() {
                                         <div className='grid'>
                                             <div className='lg:col-8 sm:col-8 col-8'>
 
-                                                {bred === "mode_paiement" || bred === "saisie_reglement" ?
+                                                {bred === "mode_paiement" || bred === "Saisie règlement" ?
                                                     <BreadCrumb model={reglement} home={Home} className=" w-full" />
                                                     :
-                                                    bred === "client" || bred === "examen" ||  bred === "prescripteur" ?
+                                                    bred === "Client" || bred === "Prescripteur" ||  bred === "Examen" ?
                                                         <BreadCrumb model={referentielss} home={Home} className=" w-full" />
                                                         :
                                                         bred === "ajout" || bred === "details" || bred === "impression" || bred === "annulation" ?
                                                             <BreadCrumb model={factures} home={Home} className=" w-full" />
                                                             :
-                                                            bred === "facture_jour" || bred === "recette_jour" || bred === "virement_jour" || bred === "stat_examen" || bred === "stat_client"
-                                                                || bred === "stat_detail_examen" || bred === "stat_prescripteur" || bred === "stat_categorie"
-                                                                || bred === "cumul_chiffre_affaire" || bred === "releve_facture"  ||bred === "rapport_examen_jour" || bred === "journal_jour" ?
+                                                            bred === "Facture du Jour" || bred === "Journal du Jour" || bred === "Rapport examen du Jour" || bred === "Virement du Jour" || bred === "Recette du Jour"
+                                                                || bred === "Statistique de l\'examen" || bred === "Statistique du client" || bred === "Statistique détaillé  de l\'examen"
+                                                                || bred === "Statiqtique Prescripteur" || bred === "Statistique Catégorie"  ||bred === "Cumul C.A" ||
+                                                                 bred === "Rélévé  Facture" ?
                                                                 <BreadCrumb model={rapport} home={Home} className=" w-full" />
                                                                 :
                                                                 <BreadCrumb model={items} home={Home} className=" w-full" />

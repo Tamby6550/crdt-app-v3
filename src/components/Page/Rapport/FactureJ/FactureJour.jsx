@@ -55,7 +55,7 @@ export default function FactureJour(props) {
 
                     setTimeout(() => {
                         loadData(result.data.starts, result.data.ends, date);
-                    }, 300)
+                    }, 200)
                 }
             );
     }

@@ -221,20 +221,37 @@ export default function CompteRendu(props) {
             });
     }
 
-    function copyToClipBoard() {
-        var content = document.getElementById('textCopy').innerText;
-        navigator.clipboard.writeText(content)
-            .then(() => {
-                setcopy(true);
+    // function copyToClipBoard() {
+    //     var content = document.getElementById('textCopy').innerText;
+    //     navigator.clipboard.writeText(content)
+    //         .then(() => {
+    //             setcopy(true);
+    //             setTimeout(() => {
+    //                 setcopy(false);
+    //             }, 800)
+
+    //         })
+    //         .catch(err => {
+    //             console.log('Something went wrong', err);
+    //         })
+    // }
+    function unsecuredCopyToClipboard(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            setcopy(true);
+          document.execCommand('copy');
                 setTimeout(() => {
                     setcopy(false);
                 }, 800)
-
-            })
-            .catch(err => {
-                console.log('Something went wrong', err);
-            })
-    }
+        } catch (err) {
+          console.error('Unable to copy to clipboard', err);
+        }
+        document.body.removeChild(textArea);
+      }
 
     return (
         <>
@@ -252,7 +269,7 @@ export default function CompteRendu(props) {
                         <div className='col-8'>
                             <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.5em',display:'flex',alignItems:'center' }} >
                                 Nom: <span  > <strong id='textCopy' > {props.nom}</strong></span>
-                                <Button icon={copy?PrimeIcons.CHECK :PrimeIcons.COPY}  className={'p-button-sm p-button-info ml-5'} style={stylebtnRec} label={copy? 'Copie !' :'Copier '} onClick={copyToClipBoard} />
+                                <Button icon={copy?PrimeIcons.CHECK :PrimeIcons.COPY}  className={'p-button-sm p-button-info ml-5'} style={stylebtnRec} label={copy? 'Copie !' :'Copier '} onClick={()=>{unsecuredCopyToClipboard(props.nom)}} />
                             </p>
                             <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.5em' }} >Examen : <span  ><strong>{props.lib_examen}</strong></span></p>
                         </div>

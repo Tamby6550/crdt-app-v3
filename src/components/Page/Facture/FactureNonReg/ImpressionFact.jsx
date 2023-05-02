@@ -226,7 +226,7 @@ export default function ImpressionFact(props) {
                         >
                             <div className='crdt co-12 ' style={{ position: 'absolute', paddingTop: '35%',alignItems:'center',width:'100%'  }}>
                                 <center>
-                                    <h1 className='m-0' style={{ fontSize: '15em', color: 'rgb(0 0 0 / 9%)'}}>CRDT</h1>
+                                    <h1 className='m-0' style={{ fontSize: '15em', color: 'rgb(0 0 0 / 0.6%)'}}>CRDT</h1>
                                 </center>
                             </div>
                             <table

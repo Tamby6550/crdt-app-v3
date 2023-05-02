@@ -176,7 +176,7 @@ export default function Patient(props) {
                 <ProgressBar value={timer} showValue={false} style={{ height: "3px" }}></ProgressBar>
             </Dialog>
             <div className="flex flex-column justify-content-center m-1">
-                <DataTable header={header} value={listPatient} loading={charge} responsiveLayout="scroll" scrollable scrollHeight="500px" rows={10} rowsPerPageOptions={[10, 20, 50]} paginator className='bg-white' emptyMessage={'Aucun resultat trouvé'}>
+                <DataTable header={header} value={listPatient} loading={charge} responsiveLayout="scroll" autoLayout rows={10} rowsPerPageOptions={[10, 20, 50]} paginator className='bg-white' emptyMessage={'Aucun resultat trouvé'}>
                     <Column field='id_patient' header="Id"></Column>
                     <Column field={'nom'} header="Nom"></Column>
                     <Column field={'prenom'} header="Prénom"></Column>
@@ -185,7 +185,7 @@ export default function Patient(props) {
                     <Column field='datenaiss' header="Date de naissance"></Column>
                     <Column field='telephone' header="Tél" ></Column>
                     <Column field='adresse' header="Adresse" ></Column>
-                    <Column header="" body={bodyBoutton} align={'left'}></Column>
+                    <Column header="Action" body={bodyBoutton} align={'left'}></Column>
                 </DataTable>
             </div>
         </>
