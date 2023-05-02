@@ -86,7 +86,7 @@ export default function Impression(props) {
                                 </div>
                               
                                 <div className="field col-12 m-0 p-0" style={{ border: '1px solid white', textAlign: 'center' }} >
-                                    <h3 className='m-1' style={{ fontWeight: '500' }} >{("Facture N° : ").toUpperCase()}{props.data.num_fact} </h3>
+                                    <h3 className='m-1' style={{ fontWeight: '500' }} >{("Reçue Caisse N° : ")}{props.data.num_fact} </h3>
                                 </div>
                             </div>
                             <div className="field  col-12 m-0 " style={{ border: '1px solid white',padding:'10px' }}>

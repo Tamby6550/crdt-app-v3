@@ -177,7 +177,7 @@ export default function Accueil(props) {
             </span>
           </div>
         </div>
-        <div className="col-12 md:col-6 lg:col-4 lg:px-4">
+        <div className="col-12 md:col-6 lg:col-6 lg:px-4">
           <div
             style={{ boxShadow: "0 3px 8px rgba(0,0,0,0.2)" }}
             className="surface-0 h-100 p-4 border-1 border-50 border-round-3xl"
@@ -203,7 +203,7 @@ export default function Accueil(props) {
             </span>
           </div>
         </div>
-        <div className="col-12 md:col-6 lg:col-4 lg:px-4">
+        {/* <div className="col-12 md:col-6 lg:col-4 lg:px-4">
           <div
             style={{ boxShadow: "0 3px 8px rgba(0,0,0,0.2)" }}
             className="surface-0 h-100 p-4 border-1 border-50 border-round-3xl"
@@ -224,7 +224,7 @@ export default function Accueil(props) {
               Actuellement
             </span>
           </div>
-        </div>
+        </div> */}
         {/* <div className="col-12 md:col-6 lg:col-3 lg:px-3">
           <div
             style={{ boxShadow: "0 3px 8px rgba(0,0,0,0.2)" }}

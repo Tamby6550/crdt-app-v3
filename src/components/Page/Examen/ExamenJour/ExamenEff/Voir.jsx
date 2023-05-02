@@ -160,6 +160,7 @@ export default function Voir(props) {
                         || data.lib_examen === 'CRANE 1 INC'
                         || data.lib_examen === 'CRANE 2 INC'
                         || data.lib_examen === 'CRANE SHULLER ( les 2 côtés )'
+                        || data.lib_examen === 'PRODUIT DE CONTRTASTE SCAN'
                         ?
                         <Tag className="mr-2 " severity={"info"} >Optionel</Tag>
                         :

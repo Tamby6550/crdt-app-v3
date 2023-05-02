@@ -143,7 +143,7 @@ export default function InsertModel() {
                         menubar: false,
                         plugins: [
                             'advlist', 'anchor', 'autolink', 'help', 'image', 'link', 'lists',
-                            'searchreplace', 'table', 'wordcount', 'pagebreak',
+                            'searchreplace', 'table', 'wordcount', 'pagebreak','spellchecker'
                         ],
                         toolbar: 'police| undo redo | blocks | ' +
                             'bold italic forecolor | alignleft aligncenter ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol' +

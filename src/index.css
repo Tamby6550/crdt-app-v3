@@ -24,6 +24,7 @@
         padding-top: 5% !important;
         padding-left: 20% !important;
     }
+    
    
 }
 
@@ -44,6 +45,7 @@
 /* Récu */
 #scann{
     page:special2;
+    /* font-size: 8px !important; */
 }
 
 
@@ -61,5 +63,11 @@
 /* CR */
 @page special2{
     margin: 20mm;
-    size:portrait
+    margin-top: 50mm;
+    margin-bottom: 30mm;
+    margin-left: 30mm;
+    margin-right: 30mm;
+    size:portrait;
+    
+
 }
