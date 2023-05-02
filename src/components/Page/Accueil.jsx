@@ -152,7 +152,7 @@ export default function Accueil(props) {
   return (
     <div className="mt-3 lg:px-8 md:px-5 sm:px-3">
       <div className="grid">
-        <div className="col-12 md:col-6 lg:col-4 lg:px-4">
+        <div className="col-12 md:col-6 lg:col-6 lg:px-4">
           <div
             style={{ boxShadow: "0 3px 8px rgba(0,0,0,0.2)" }}
             className="surface-0 h-100  p-4 border-1 border-50 border-round-3xl"
