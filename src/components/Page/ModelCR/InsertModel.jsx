@@ -7,18 +7,24 @@ import { Button } from 'primereact/button'
 import { PrimeIcons } from 'primereact/api';
 import CRmodel from './CRmodel';
 import { Toast } from 'primereact/toast';
+import { Checkbox } from 'primereact/checkbox'
 
 
 export default function InsertModel() {
     const [chargePost, setchargePost] = useState({ chajoute: false });
+
+    const [oldfilename, setoldfilename] = useState(null)
     const [nomFichier, setnomFichier] = useState('')
     const [recHtml, setrecHtml] = useState(null);
 
+    const [choixAjoutModif, setchoixAjoutModif] = useState(false)
     const [model, setmodel] = useState("<h3>Hello word !</h3>")
     /*Word */
     const editorRef = useRef(null);
     let reportTemplateRef = useRef();
     const [content, setContent] = useState(null)
+
+
 
 
     const toastTR = useRef(null);
@@ -28,10 +34,14 @@ export default function InsertModel() {
     }
     /*Notification Toast */
 
+    //fonction qui enleve le nom ficheir a partir de lien
+    function getFileNameFromLink(link) {
+        // Retourne le dernier segment du lien, sans l'extension .html
+        return link.split('/').pop().replace('.html', '');
+    }
+
     const log = () => {
-        if (nomFichier === '') {
-            notificationAction('warn', 'Attention !', 'Le nom examen est vide !')
-        } else {
+        if (choixAjoutModif) {
             if (editorRef.current.getContent() == "") {
                 notificationAction('warn', 'Attention !', 'Le compte Rendu est vide !')
             } else {
@@ -41,7 +51,24 @@ export default function InsertModel() {
                     var myElement = document.getElementById("print");
                     // myElement.innerHTML = editorRef.current.getContent();
                     console.log(editorRef.current.getContent())
-                    envoyeData(pars.data)
+                    envoyeData(pars.data,nomFichier)
+                }
+            }
+        } else {
+            if (nomFichier === '') {
+                notificationAction('warn', 'Attention !', 'Le nom examen est vide !')
+            } else {
+                if (editorRef.current.getContent() == "") {
+                    notificationAction('warn', 'Attention !', 'Le compte Rendu est vide !')
+                } else {
+                    if (editorRef.current) {
+                        let strin = JSON.stringify({ data: editorRef.current.getContent() });
+                        let pars = JSON.parse(strin);
+                        var myElement = document.getElementById("print");
+                        // myElement.innerHTML = editorRef.current.getContent();
+                        console.log(editorRef.current.getContent())
+                        envoyeData(pars.data,nomFichier)
+                    }
                 }
             }
         }
@@ -57,25 +84,25 @@ export default function InsertModel() {
     };
     /*Word */
 
-    useEffect(() => {
-        if (editorRef.current) {
-        var currentDate = new Date();
-        // Formatage de la date au format souhaité (ici, jj/mm/aaaa)
-        var formattedDate = currentDate.getDate() + '/' + (currentDate.getMonth() + 1) + '/' + currentDate.getFullYear();
+    // useEffect(() => {
+    //     if (editorRef.current) {
+    //         var currentDate = new Date();
+    //         // Formatage de la date au format souhaité (ici, jj/mm/aaaa)
+    //         var formattedDate = currentDate.getDate() + '/' + (currentDate.getMonth() + 1) + '/' + currentDate.getFullYear();
 
-        // Remplacement de [DATE] par la date formatée
-        var content = editorRef.current.getContent().replace('[DATE]', formattedDate);
-        editorRef.current.setContent(content);
-    }
-    }, [model])
+    //         // Remplacement de [DATE] par la date formatée
+    //         var content = editorRef.current.getContent().replace('[DATE]', formattedDate);
+    //         editorRef.current.setContent(content);
+    //     }
+    // }, [model])
 
 
 
     //Post Vers serveur node js
-    const envoyeData = async (data) => {
+    const envoyeData = async (data,nomfile) => {
         setchargePost({ chajoute: true });
         try {
-            await axios.post(`http://${window.location.hostname}:3354/api/savemodel/${nomFichier}`, {
+            await axios.post(`http://${window.location.hostname}:3354/api/savemodel/${nomfile}`, {
                 headers: {
                     'Content-Type': 'text/html'
                 },
@@ -121,24 +148,54 @@ export default function InsertModel() {
         }
     }
 
+    function getnameFileLink() {
+        if (oldfilename!==null && choixAjoutModif) {
+            setnomFichier(getFileNameFromLink(oldfilename))
+        }
+    }
+
+   
+    useEffect(() => {
+        getnameFileLink();
+    }, [oldfilename,choixAjoutModif])
+
     return (
         <div className="p-1  style-modal-tamby flex " style={{ alignItems: 'center', flexDirection: 'column' }} >
             <Toast ref={toastTR} position="top-center" />
 
             <div className='col-12 pt-0 flex  justify-conten-between pb-3' style={{ borderBottom: '1px solid #efefef', alignItems: 'center' }} >
                 <div className="field   lg:col-6 md:col-12 col:12 m-0 p-0">
-                    <h2 className=" m-1">Nom de la nouvelle examen :</h2>
+                    <h2 className=" m-1">{choixAjoutModif? 'Modifier le modèle de l\'examen ' : 'Entrez le nom de la nouvelle examen'} :</h2>
                     <div >
-                        <InputText id="username2" style={{ width: '50%', height: '35px' }} aria-describedby="username2-help" name='nom' value={nomFichier.nom} onChange={(e) => { setnomFichier(e.target.value) }} />
+                        <InputText disabled={choixAjoutModif} id="username2" style={{ width: '50%', height: '35px' }} aria-describedby="username2-help" name='nom' value={nomFichier} onChange={(e) => { setnomFichier(e.target.value) }} />
+
                     </div>
                     <small style={{ color: 'gray' }} >Exemple : Abdominal F</small>
+                    <div className="lg:col-6 md:col-12 col-12 field my-1 flex flex-column">
+                        <label style={{ color: 'gray' }} >Cocher içi si vous voulez modifier le modele de compte rendu</label>
+                        <Checkbox id="basic" checked={choixAjoutModif} name='pec' className={"form-input-css-tamby"} tooltip='Cliquer ici pour faire le modification de modèle' onChange={(e) => {
+                            if (choixAjoutModif) {
+                                setchoixAjoutModif(false);
+                                setnomFichier('')
+                            } else {
+                                setchoixAjoutModif(true);
+                            }
+                        }} />
+                    </div>
                 </div>
                 <div className="field   lg:col-6 md:col-12 col:12 m-0 p-0">
-                    <CRmodel sethtmlm={setmodel} setrecHtml={setrecHtml} recHtml={recHtml} />
+                    <CRmodel sethtmlm={setmodel} setrecHtml={setrecHtml} recHtml={recHtml} setoldfilename={setoldfilename} />
                 </div>
             </div>
             <div className='col-12 mt-3 mb-3' >
-                <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-primary ' label={chargePost.chajoute ? 'Enregistrement...' : 'Enregistrer'} onClick={log} />
+                <Button icon={choixAjoutModif ? PrimeIcons.PENCIL : PrimeIcons.SAVE} className='p-button-sm p-button-primary '
+                    label={choixAjoutModif ?
+                        chargePost.chajoute ?
+                            'Modification...' : 'Modifier' :
+                        chargePost.chajoute ?
+                            'Enregistrement...' : 'Enregistrer'} onClick={log} />
+
+
                 <ReactToPrint trigger={() =>
                     <Button icon={PrimeIcons.EYE} className='p-button-sm p-button-secondary ml-3 ' label={'Visualiser'} />
                 } content={() => visualier()} />

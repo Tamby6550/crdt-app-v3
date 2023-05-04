@@ -60,7 +60,14 @@ export default function CRmodel(props) {
       <div className='grid h-full'>
         <div className='col-12 pt-0' style={{ width: '70%', height: '40px' }}>
           <Label>Choisir un model CR </Label>
-          <Dropdown options={dropdownOptions} value={htmlm} onChange={(e) => { getHtmlContent(e);sethtmlm(e.value) }} filter placeholder='Sélectionner un modèle' style={{  width: '100%' }} />
+          <Dropdown options={dropdownOptions} value={htmlm}
+            onChange={(e) => {
+              getHtmlContent(e);
+              sethtmlm(e.value);
+              if (props.setoldfilename) {
+                props.setoldfilename(e.value)
+              }
+            }} filter placeholder='Sélectionner un modèle' style={{ width: '100%' }} />
         </div>
         <div className='col-12 pt-0' id='html'>
         </div>
