@@ -161,7 +161,7 @@ export default function ExamenEffValide(props) {
             {infoReherche.date_examen !== "" || infoReherche.date_arr != "" || infoReherche.nom != "" || infoReherche.date_naiss != "" || infoReherche.numero_arr != "" ? <Button icon={PrimeIcons.REFRESH} className='p-buttom-sm p-1 p-button-warning ' tooltip='actualiser' tooltipOptions={{ position: 'top' }} onClick={() => setrefreshData(1)} />
                 :
                 <>
-                    <h3 className='m-3'>Examens éffectuées</h3>
+                    <h3 className='m-3'>Examens effectués</h3>
                     <h3 className='m-3' style={{ visibility: 'hidden' }} >Examens éffectuées</h3>
                 </>
             }

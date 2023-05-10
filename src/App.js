@@ -85,7 +85,7 @@ function App() {
     //     seturl(urls);
     // }
 
-    //  php 5.5
+    // //  php 5.5
     // const urlip=()=>{
     //     let ip = window.location.hostname;
     //     let urls ='http://'+ip+':3353/'

@@ -165,7 +165,7 @@ export default function InsertModel() {
 
             <div className='col-12 pt-0 flex  justify-conten-between pb-3' style={{ borderBottom: '1px solid #efefef', alignItems: 'center' }} >
                 <div className="field   lg:col-6 md:col-12 col:12 m-0 p-0">
-                    <h2 className=" m-1">{choixAjoutModif? 'Modifier le modèle de l\'examen ' : 'Entrez le nom de la nouvelle examen'} :</h2>
+                    <h2 className=" m-1">{choixAjoutModif? 'Modification du modèle d\'examen' : 'Entrez le nom du nouvel examen'} :</h2>
                     <div >
                         <InputText disabled={choixAjoutModif} id="username2" style={{ width: '50%', height: '35px' }} aria-describedby="username2-help" name='nom' value={nomFichier} onChange={(e) => { setnomFichier(e.target.value) }} />
 

@@ -336,7 +336,7 @@ export default function ImpressionFact(props) {
                                         <strong>PATIENT(E):</strong>
                                     </td>
                                     <td colspan="2" class="table">
-                                        {infoFacture.patient + ' '+infoFacture.ref_carte}
+                                        {infoFacture.ref_carte===null? infoFacture.patient  : infoFacture.patient + ' '+infoFacture.ref_carte}
                                     </td>
                                 </tr>
                                 <tr>

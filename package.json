@@ -32,6 +32,7 @@
     "react-transition-group": "^4.4.1",
     "styled-components": "^5.3.6",
     "tinymce": "^6.3.1",
+    "typo-js": "^1.2.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

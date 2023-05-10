@@ -195,7 +195,7 @@ export default function FactureNonRegler(props) {
                 <Button icon={PrimeIcons.REFRESH} className='p-buttom-sm p-1 p-button-warning ' tooltip='actualiser' tooltipOptions={{ position: 'top' }} onClick={() => setrefreshData(1)} />
                 :
                 <>
-                    <h3 className='m-3'  >Facture non régler (5 dernier jour)</h3>
+                    <h3 className='m-3'  >Liste de factures non réglées (5 dernier jour)</h3>
                     <h3 className='m-3' style={{ visibility: 'hidden' }} >facture </h3>
                 <Button icon={PrimeIcons.REFRESH} className='p-buttom-sm p-1 p-button-warning ' tooltip='actualiser' tooltipOptions={{ position: 'top' }} onClick={() => setrefreshData(1)} />
                 </>

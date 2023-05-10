@@ -14,7 +14,7 @@ export default function ModelPage(props) {
     <div className="tabview-demo">
       <div className="card">
         <TabView activeIndex={activeIndex} onTabChange={(e)=>{ setActiveIndex(e.index) }} >
-          <TabPanel header="AJOUT DE NOUVEAU MODELE DE CR"   >
+          <TabPanel header="AJOUT DE NOUVEAUX MODELES DE CR"   >
             <InsertModel url={props.url}  activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
           </TabPanel>
           <TabPanel header="LISTE DES MODELES">

@@ -25,6 +25,10 @@ export default function RFacture(props) {
     const [blockedPanel, setBlockedPanel] = useState(true);
     const [redirege, setredirege] = useState(0);
 
+    const [visible, setVisible] = useState(false);
+
+    const [isClicked, setisClicked] = useState(true);
+
     function numberV(value) {
         let numberValue = parseFloat(value.replace(/[^0-9.-]+/g, ""));
         return numberValue;
@@ -72,7 +76,7 @@ export default function RFacture(props) {
         num_facture: '', date_facture: '', patient: '', type: '', type_facture: '0',
         reglement_id: '0', nomreglement: '', montantreglement: '0', rib: '',
         code_cli: 'AAAA', nom_cli: '-', pec: '0', remise: '0',
-        ref_carte:'',
+        ref_carte: '',
         code_presc: 'AAAA', nom_presc: 'Dr   -',
         num_arriv: '', date_arriv: '',
         montant_brute: '0', montant_net: '0',
@@ -92,7 +96,7 @@ export default function RFacture(props) {
             num_facture: '', date_facture: '', patient: '', type: '', type_facture: '0',
             reglement_id: '0', nomreglement: '', montantreglement: '0', rib: '',
             code_cli: '', nom_cli: '', pec: '0', remise: '0',
-            ref_carte:'',
+            ref_carte: '',
             code_presc: '', nom_presc: '',
             num_arriv: '', date_arriv: '',
             montant_brute: '0', montant_net: '0',
@@ -286,7 +290,6 @@ export default function RFacture(props) {
         settarifCh('');
         setchargeV({ chupdate: false });
         setverfChamp({ nom_presc: false, nom_cli: false })
-
     }
     const onHide1 = (name) => {
         dialogFuncMap1[`${name}`](false);
@@ -297,7 +300,7 @@ export default function RFacture(props) {
     const renderFooter = (name) => {
         return (
             <div>
-                <Button label="Fermer" icon="pi pi-times" onClick={() =>{ onHide(name);onHide1(name)}} className="p-button-text" />
+                <Button label="Fermer" icon="pi pi-times" onClick={() => { onHide(name); onHide1(name) }} className="p-button-text" />
             </div>
         );
     }
@@ -315,7 +318,7 @@ export default function RFacture(props) {
     /** Fin modal */
 
     /* Modal */
-   
+
 
     const renderH = (name) => {
         let jr = moment(aujourd);
@@ -349,7 +352,7 @@ export default function RFacture(props) {
         if (infoFacture.type == 'L2') {
             if (infoFacture.code_presc == '') {
                 setverfChamp({ nom_presc: true, nom_cli: false });
-                
+
                 alert('Verifer votre champ !')
             } else {
                 const accept = () => {
@@ -368,7 +371,7 @@ export default function RFacture(props) {
                     accept,
                     reject
                 });
-               
+
             }
         } else {
             if (infoFacture.code_presc == '' && infoFacture.code_cli == '') {
@@ -412,14 +415,14 @@ export default function RFacture(props) {
     const onInsertFacture = async () => {
 
         setchargeV({ chupdate: true });
+        setisClicked(false);
         await axios.post(props.url + 'insertFacture', infoFacture)
             .then(res => {
                 notificationAction(res.data.etat, 'Facture ', res.data.message);//message avy @back
                 setchargeV({ chupdate: false });
                 setverfChamp({ nom_presc: false, nom_cli: false })
                 setTimeout(() => {
-                    // onHide('displayBasic2');
-                    // props.changecharge(1);
+                    setVisible(false);
                     onClick1('displayBasic');
                     setredirege(1);
                 }, 600)
@@ -434,10 +437,10 @@ export default function RFacture(props) {
     }
 
 
-//    useEffect(() => {
-//      console.log(infoFacture)
-//    }, [infoFacture.nom_presc,infoFacture.nom_cli])
-   
+    //    useEffect(() => {
+    //      console.log(infoFacture)
+    //    }, [infoFacture.nom_presc,infoFacture.nom_cli])
+
 
     return (
         <>
@@ -446,11 +449,34 @@ export default function RFacture(props) {
 
             {/* Saisie Reglement */}
             <Dialog header={renderH('displayBasic')} maximizable visible={displayBasic} className="lg:col-10 col-10 md:col-11 sm:col-12 p-0" footer={renderFooter('displayBasic')} onHide={() => onHide1('displayBasic')}  >
-                <Reglement setredirege={setredirege}  onHide1={onHide1} displayBasic={displayBasic} url={props.url} type_patient={infoFacture.type} numero={infoFacture.num_arriv} date_arr={infoFacture.date_arriv} num_fact={infoFacture.num_facture} changecharge={props.changecharge}  />
+                <Reglement setredirege={setredirege} onHide1={onHide1} displayBasic={displayBasic} url={props.url} type_patient={infoFacture.type} numero={infoFacture.num_arriv} date_arr={infoFacture.date_arriv} num_fact={infoFacture.num_facture} changecharge={props.changecharge} />
             </Dialog>
             {/* Saisie Reglement */}
 
             <Dialog header={renderHeader('displayBasic2')} maximizable visible={displayBasic2} className="lg:col-8 md:col-11 sm:col-12 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
+                <Dialog header="Confirmation" visible={visible} style={{ width: '15vw' }} onHide={() => setVisible(false)}>
+                    <div className='flex flex-column justify-content-center'>
+                        <label style={{ textAlign: 'center', fontSize: '1.2em' }} >
+                            Prise en charge : <strong>{infoFacture.pec}%</strong>
+                            <br /> Remise :  <strong>{infoFacture.remise}%</strong>
+                        </label> <br />
+
+                        <div className='flex justify-content-between'>
+
+                            <Button className='p-button-text p-button-info ' tooltip="Annuler" style={{ cursor: 'pointer' }} label={'Annuler'}
+                                onClick={() => {
+                                    setVisible(false);
+                                }} />
+                            <Button icon={PrimeIcons.CHECK} className='p-button-sm p-button-success ' tooltip="Valider" style={{ cursor: 'pointer' }} label={chargeV.chupdate?'Patienter...' : 'Ok, Valider'}
+                                onClick={() => {
+                                    if (isClicked) {
+                                        onInsertFacture();
+                                    }
+                                }} />
+                        </div>
+                    </div>
+
+                </Dialog>
                 <BlockUI blocked={blockedPanel} template={<ProgressSpinner />}>
                     <div className="ml-4 mr-4 style-modal-tamby" >
                         <div className="grid h-full">
@@ -504,7 +530,7 @@ export default function RFacture(props) {
                                                             <label htmlFor="username2" className="label-input-sm">Référence Carte</label>
                                                             <InputText id="username2" aria-describedby="username2-help" name='ref_carte' value={infoFacture.ref_carte}
                                                                 onChange={(e) => {
-                                                                    setinfoFacture({...infoFacture,ref_carte:e.target.value})
+                                                                    setinfoFacture({ ...infoFacture, ref_carte: e.target.value })
                                                                 }} />
                                                         </div>
                                                     </div>
@@ -592,9 +618,10 @@ export default function RFacture(props) {
                     <div className='flex mt-3 mr-4 justify-content-center '>
                         <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-success ' tooltip="Valider l'examen" style={{ cursor: 'pointer' }} label={chargeV.chupdate ? 'Veuillez attendez...' : 'Valider'}
                             onClick={() => {
+                                setVisible(true)
                                 // if ((infoFacture.pec == '0' || infoFacture.pec == '' || infoFacture.pec == null) && (infoFacture.remise == '0' || infoFacture.remise == '' || infoFacture.remise == null)) {
-                                    onVerfeCh()
-                              
+                                // onVerfeCh()
+
                                 // } else {
                                 //     onVerfeCh();
                                 // }

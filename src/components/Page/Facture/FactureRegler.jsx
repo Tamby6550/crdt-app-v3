@@ -86,7 +86,7 @@ export default function FactureNonRegler(props) {
 
     const header = (
         <div className='flex flex-row justify-content-center align-items-center m-0 '>
-            <h3 className='m-3'>Liste facture régler (5 dernier jour)</h3>
+            <h3 className='m-3'>Liste de factures réglées (5 dernier jour)</h3>
         </div>
     )
 
