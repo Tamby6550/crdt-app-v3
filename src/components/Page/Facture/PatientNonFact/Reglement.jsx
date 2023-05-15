@@ -29,6 +29,9 @@ export default function RFacture(props) {
 
     const [verfbtnajoutreglmn, setverfbtnajoutreglmn] = useState(false)
 
+    const [visible, setVisible] = useState(false);
+    const [chargeV, setchargeV] = useState({ chupdate: false })
+    const [isClicked, setisClicked] = useState(true);
 
 
     function poucentage(val, pourc) {
@@ -185,7 +188,7 @@ export default function RFacture(props) {
             .then(
                 (results) => {
                     setinfoFacture(results.data);
-                    setdataReglement({...dataReglement,montantreglement:results.data.reste_patient});
+                    setdataReglement({ ...dataReglement, montantreglement: results.data.reste_patient });
                     setTimeout(() => {
                         loadReglemnt(num_facture);
                     }, 200)
@@ -282,7 +285,7 @@ export default function RFacture(props) {
 
     const bodyConfirme = () => {
         return (
-            <div style={{fontSize:'1.1em'}}>
+            <div style={{ fontSize: '1.1em' }}>
                 <label className='m-2'>Reglement fait par : <strong className='m-1'>{dataReglement.type_reglmnt == 'P' ? 'Patient' : 'Client'}</strong> </label> <hr />
                 <label className='m-2'>Type règlement : <strong className='m-1'>{dataReglement.nomreglement}</strong> </label> <hr />
                 <label className='m-2'>Montant : <strong className='m-1'>{dataReglement.montantreglement} Ar </strong> </label><hr />
@@ -322,23 +325,24 @@ export default function RFacture(props) {
                 rejectLabel: '_',
             });
         } else {
-            const accept = () => {
-                onInsertReglement();
-            }
-            const reject = () => {
-                onVideReglement();
-                return null;
-            }
-            confirmDialog({
-                message: bodyConfirme,
-                header: '',
-                icon: 'pi pi-exclamation-circle',
-                acceptClassName: 'p-button-success',
-                acceptLabel: 'Confirmer et ajouter',
-                rejectLabel: 'Annuler',
-                accept,
-                reject
-            });
+            setVisible(true)
+            // const accept = () => {
+            //     onInsertReglement();
+            // }
+            // const reject = () => {
+            //     onVideReglement();
+            //     return null;
+            // }
+            // confirmDialog({
+            //     message: bodyConfirme,
+            //     header: '',
+            //     icon: 'pi pi-exclamation-circle',
+            //     acceptClassName: 'p-button-success',
+            //     acceptLabel: 'Confirmer et ajouter',
+            //     rejectLabel: 'Annuler',
+            //     accept,
+            //     reject
+            // });
 
         }
 
@@ -346,14 +350,18 @@ export default function RFacture(props) {
 
 
     const onInsertReglement = async () => {
+        setisClicked(false);
+        setchargeV({ chupdate: true });
 
         setCharge(true);
         await axios.post(props.url + 'insertReglementFacture', dataReglement)
             .then(res => {
                 //message avy @back
                 notificationAction(res.data.etat, 'Règlement ', res.data.message);
+                setchargeV({ chupdate: false });
 
                 setTimeout(() => {
+                    setVisible(false);
                     chargementData();
 
                     setverffaireReglmnt(true);
@@ -422,10 +430,33 @@ export default function RFacture(props) {
     }
 
 
-    
+
     return (
         <>
             <Toast ref={toastTR} position="top-right" />
+            <Dialog header="Confirmation" visible={visible} style={{ width: '15vw' }} onHide={() => setVisible(false)}>
+                <div className='flex flex-column justify-content-center'>
+                    <div style={{ fontSize: '1.1em' }}>
+                        <label className='m-2'>Reglement fait par : <strong className='m-1'>{dataReglement.type_reglmnt == 'P' ? 'Patient' : 'Client'}</strong> </label> <hr />
+                        <label className='m-2'>Type règlement : <strong className='m-1'>{dataReglement.nomreglement}</strong> </label> <hr />
+                        <label className='m-2'>Montant : <strong className='m-1'>{dataReglement.montantreglement} Ar </strong> </label><hr />
+                        <label className='m-2'>RIB : <strong className='m-1'>{dataReglement.rib == '' ? '-' : dataReglement.rib}</strong> </label>
+                    </div> <br />
+
+                    <div className='flex justify-content-between'>
+                        <Button className='p-button-text p-button-info ' tooltip="Annuler" style={{ cursor: 'pointer' }} label={'Annuler'}
+                            onClick={() => {
+                                setVisible(false);
+                            }} />
+                        <Button icon={PrimeIcons.CHECK} className='p-button-sm p-button-success ' tooltip="Valider" style={{ cursor: 'pointer' }} label={chargeV.chupdate ? 'Patienter...' : 'Ok, Valider'}
+                            onClick={() => {
+                                if (isClicked) {
+                                    onInsertReglement();
+                                }
+                            }} />
+                    </div>
+                </div>
+            </Dialog>
             <BlockUI blocked={blockedPanel} template={chargmm} >
                 <div className="ml-4 mr-4 style-modal-tamby"  >
                     <div className="grid h-full" >
@@ -619,7 +650,7 @@ export default function RFacture(props) {
                                         </div>
                                         <div className='flex mt-3 mr-4 justify-content-between '>
                                             <Button icon={PrimeIcons.TIMES} className='p-button-sm p-button-secondary mr-2 '
-                                                tooltip="Fermer " tooltipOptions={{ position: 'top' }} style={{ cursor: 'pointer' }} label={'Fermer'} onClick={()=>{props.onHide1('displayBasic')}}
+                                                tooltip="Fermer " tooltipOptions={{ position: 'top' }} style={{ cursor: 'pointer' }} label={'Fermer'} onClick={() => { props.onHide1('displayBasic') }}
                                             />
 
                                             <Button icon={PrimeIcons.SAVE} className='p-button-sm p-button-success '

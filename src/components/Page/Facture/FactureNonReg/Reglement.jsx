@@ -29,7 +29,9 @@ export default function RFacture(props) {
 
     const [verfbtnajoutreglmn, setverfbtnajoutreglmn] = useState(false)
 
-
+    const [visible, setVisible] = useState(false);
+    const [chargeV, setchargeV] = useState({ chupdate: false })
+    const [isClicked, setisClicked] = useState(true);
 
     function poucentage(val, pourc) {
         let res = (val * pourc) / 100;
@@ -70,19 +72,20 @@ export default function RFacture(props) {
         reste: ""
     });
     const [dataReglement, setdataReglement] = useState({
-        num_facture: '',
+        num_facture: props.data.num_fact,
+        num_arriv: props.data.numero,
+        date_arriv: props.data.date_arr,
         reglement_id: '0',
         nomreglement: '',
         type_reglmnt: '',
         montantreglement: '0',
         rib: null,
-        num_arriv: '',
-        date_arriv: ''
+      
     })
 
     const [resteVerf, setresteVerf] = useState('0')
-    const [typePC, settypePC] = useState({ pat: false, cli: false })
-    const [montantPatient, setmontantPatient] = useState(0)
+    const [typePC, settypePC] = useState({ pat: false, cli: true });
+    const [montantPatient, setmontantPatient] = useState(0);
     const [verfChamp, setverfChamp] = useState({ nom_presc: false, nom_cli: false });
     const [aujourd, setaujourd] = useState();
 
@@ -190,6 +193,10 @@ export default function RFacture(props) {
                     setTimeout(() => {
                         loadReglemnt(num_facture);
                     }, 200)
+                    if (results.data.reste_pec != '0') {
+                        settypePC({ pat: false, cli: true });
+                        setdataReglement({ ...dataReglement, montantreglement: results.data.reste_pec,type_reglmnt:'C' });
+                    } 
                 }
             );
     }
@@ -202,10 +209,12 @@ export default function RFacture(props) {
                     setlistReglement(results.data);
                     setBlockedPanel(false);
                     setCharge(false)
-                    onVideReglement();
+                    // onVideReglement();
                 }
             );
     }
+
+  
 
 
     const chargementData = () => {
@@ -327,23 +336,26 @@ export default function RFacture(props) {
                 rejectLabel: '_',
             });
         } else {
-            const accept = () => {
-                onInsertReglement();
-            }
-            const reject = () => {
-                onVideReglement();
-                return null;
-            }
-            confirmDialog({
-                message: bodyConfirme,
-                header: '',
-                icon: 'pi pi-exclamation-circle',
-                acceptClassName: 'p-button-success',
-                acceptLabel: 'Confirmer et ajouter',
-                rejectLabel: 'Annuler',
-                accept,
-                reject
-            });
+            setdataReglement({ ...dataReglement, num_arriv: props.data.numero, date_arriv: props.data.date_arr, num_facture: props.data.num_fact });
+
+            setVisible(true);
+            // const accept = () => {
+            //     onInsertReglement();
+            // }
+            // const reject = () => {
+            //     onVideReglement();
+            //     return null;
+            // }
+            // confirmDialog({
+            //     message: bodyConfirme,
+            //     header: '',
+            //     icon: 'pi pi-exclamation-circle',
+            //     acceptClassName: 'p-button-success',
+            //     acceptLabel: 'Confirmer et ajouter',
+            //     rejectLabel: 'Annuler',
+            //     accept,
+            //     reject
+            // });
 
         }
 
@@ -352,25 +364,32 @@ export default function RFacture(props) {
 
 
     const onInsertReglement = async () => {
-
+        console.log(dataReglement)
+        setisClicked(false);
         setCharge(true);
+        setchargeV({ chupdate: true });
+
         await axios.post(props.url + 'insertReglementFacture', dataReglement)
             .then(res => {
                 //message avy @back
-
                 notificationAction(res.data.etat, 'Règlement ', res.data.message);
+                setchargeV({ chupdate: false });
 
                 setTimeout(() => {
+                    setVisible(false);
                     chargementData();
-
                     setverffaireReglmnt(true);
+
                     // //Raha ohatra vo sambany vo  nanao reglement
                     // if (props.data.nbrergl== 0) {
                     //     setverffaireReglmnt(true);
                     // }
+                    onVideReglement();
                     if (res.data.regle == '1') {
                         setchRegle(true);
+
                     }
+                    setisClicked(true);
 
                 }, 900)
             })
@@ -418,6 +437,29 @@ export default function RFacture(props) {
             <Button icon={PrimeIcons.PLUS} className='p-buttom-sm p-1 mr-2 p-button-info ' label='reglement' tooltip='Ajout règlement' style={stylebtnRec} tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementData() }} />
 
             <Dialog header={renderHeader('displayBasic2')} maximizable visible={displayBasic2} className="lg:col-10 col-10 md:col-11 sm:col-12 p-0" footer={renderFooter('displayBasic2')} onHide={() => onHide('displayBasic2')}  >
+                <Dialog header="Confirmation" visible={visible} style={{ width: '15vw' }} onHide={() => setVisible(false)}>
+                    <div className='flex flex-column justify-content-center'>
+                        <div style={{ fontSize: '1.1em' }}>
+                            <label className='m-2'>Reglement fait par : <strong className='m-1'>{dataReglement.type_reglmnt == 'P' ? 'Patient' : 'Client'}</strong> </label> <hr />
+                            <label className='m-2'>Type règlement : <strong className='m-1'>{dataReglement.nomreglement}</strong> </label> <hr />
+                            <label className='m-2'>Montant : <strong className='m-1'>{dataReglement.montantreglement} Ar </strong> </label><hr />
+                            <label className='m-2'>RIB : <strong className='m-1'>{dataReglement.rib == '' ? '-' : dataReglement.rib}</strong> </label>
+                        </div> <br />
+
+                        <div className='flex justify-content-between'>
+                            <Button className='p-button-text p-button-info ' tooltip="Annuler" style={{ cursor: 'pointer' }} label={'Annuler'}
+                                onClick={() => {
+                                    setVisible(false);
+                                }} />
+                            <Button icon={PrimeIcons.CHECK} className='p-button-sm p-button-success ' tooltip="Valider" style={{ cursor: 'pointer' }} label={chargeV.chupdate ? 'Patienter...' : 'Ok, Valider'}
+                                onClick={() => {
+                                    if (isClicked) {
+                                        onInsertReglement();
+                                    }
+                                }} />
+                        </div>
+                    </div>
+                </Dialog>
                 <BlockUI blocked={blockedPanel} template={<ProgressSpinner />}>
                     <div className="ml-4 mr-4 style-modal-tamby"  >
                         <div className="grid h-full" >
@@ -502,11 +544,11 @@ export default function RFacture(props) {
                                                     <div className="field   lg:col-4 md:col-4 sm:col:6 col:6 my-1 flex flex-column">
                                                         <div className="field   lg:col-12 md:col-12 col:12 m-0 p-0 flex flex-row justify-content-evenly align-items-center" >
                                                             <label htmlFor="username2" className="label-input-sm " style={{ fontWeight: '500' }}>Montant Reglé  Patient:</label>
-                                                            <InputText id="username2" aria-describedby="username2-help" style={{ width: '180px', border: '1px solid #939090' }} name='patient' value={format(infoFacture.montant_patient_regle, 2, " ")} readOnly />
+                                                            <InputText id="username2" aria-describedby="username2-help" style={{ width: '180px', border: '1px solid #939090' }} name='mtreglepat' value={format(infoFacture.montant_patient_regle, 2, " ")} readOnly />
                                                         </div>
                                                         <div className="field   lg:col-12 md:col-12 col:12 mt-2 p-0 flex flex-row justify-content-evenly align-items-center" >
                                                             <label htmlFor="username2" className="label-input-sm " style={{ fontWeight: '500' }}>Montant Reglé  Client:</label>
-                                                            <InputText id="username2" aria-describedby="username2-help" style={{ width: '180px', border: '1px solid #939090' }} name='patient' value={format(infoFacture.montant_pec_regle, 2, " ")} readOnly />
+                                                            <InputText id="username2" aria-describedby="username2-help" style={{ width: '180px', border: '1px solid #939090' }} name='mtreglecli' value={format(infoFacture.montant_pec_regle, 2, " ")} readOnly />
                                                         </div>
                                                     </div>
 
@@ -518,12 +560,12 @@ export default function RFacture(props) {
                                                         </div>
                                                         <div className="field   lg:col-12 md:col-12 col:12 mt-2 p-0 flex flex-row justify-content-evenly align-items-center" >
                                                             <label htmlFor="username2" className="label-input-sm " style={{ fontWeight: '500' }} >Reste  Client:</label>
-                                                            <InputText id="username2" aria-describedby="username2-help" style={{ width: '170px', border: '1px solid #939090' }} name='patient' value={format(infoFacture.reste_pec, 2, " ")} readOnly />
+                                                            <InputText id="username2" aria-describedby="username2-help" style={{ width: '170px', border: '1px solid #939090' }} name='client' value={format(infoFacture.reste_pec, 2, " ")} readOnly />
                                                         </div>
                                                         <hr className='col-12' />
                                                         <div className="field   lg:col-12 md:col-12 col:12 mt-2 p-0 flex flex-row justify-content-evenly align-items-center" >
                                                             <label htmlFor="username2" className="label-input-sm " style={{ fontWeight: '700' }} >Reste  :</label>
-                                                            <InputText id="username2" aria-describedby="username2-help" style={{ width: '170px', border: '1px solid #2a2b2c' }} name='patient' value={format(infoFacture.reste, 2, " ")} readOnly />
+                                                            <InputText id="username2" aria-describedby="username2-help" style={{ width: '170px', border: '1px solid #2a2b2c' }} name='reste' value={format(infoFacture.reste, 2, " ")} readOnly />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -557,7 +599,7 @@ export default function RFacture(props) {
                                                                             acceptLabel: 'Ok',
                                                                             rejectLabel: '_',
                                                                         });
-                                                                        settypePC({...typePC, cli: false });
+                                                                        settypePC({ ...typePC, cli: false });
 
                                                                     } else {
                                                                         setverfbtnajoutreglmn(false);
@@ -581,7 +623,7 @@ export default function RFacture(props) {
                                                                             acceptLabel: 'Ok',
                                                                             rejectLabel: '_',
                                                                         });
-                                                                        settypePC({...typePC, cli: false });
+                                                                        settypePC({ ...typePC, cli: false });
                                                                     } else {
                                                                         setverfbtnajoutreglmn(false);
                                                                         settypePC({ pat: false, cli: true });

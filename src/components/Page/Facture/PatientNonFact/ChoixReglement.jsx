@@ -31,7 +31,7 @@ export default function ChoixReglement(props) {
     }
 
     useEffect(() => {
-        setuser(decrypt().data.login)
+        setuser(decrypt().data.login);
     }, [decrypt().data.login])
 
 

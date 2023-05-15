@@ -1,18 +1,13 @@
-// import React, { useState } from 'react';
-// import Typo from 'typo-js';
-// import fr from '../../Page/TEST/Typo/typo/dictionaries/fr_FR/fr_FR.aff';
+import React, { useState } from 'react';
 
-// function App() {
-//   const typo = new Typo('fr_FR',fr);
+function Formulaire() {
+   
+  return (
+    <div>
+      <h1>Correction automatique des fautes d'orthographe</h1>
+     
+    </div>
+  );
+}
 
-//   console.log(typo.check('Bonjour')); // Doit afficher "true"
-//   console.log(typo.check('Bounjour')); // Doit afficher "false"
-
-//   return (
-//     <div>
-//      <h1>Hellox</h1>
-//     </div>
-//   );
-// }
-
-// export default App;
+export default Formulaire;
