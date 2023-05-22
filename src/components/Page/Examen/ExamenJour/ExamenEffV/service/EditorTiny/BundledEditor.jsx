@@ -63,6 +63,8 @@ export default function BundledEditor(props) {
         skin: false,
         content_css: false,
         content_style: [contentCss, contentUiCss, init.content_style || ''].join('\n'),
+        browser_spellcheck:true
+
       }}
       {...rest}
     />

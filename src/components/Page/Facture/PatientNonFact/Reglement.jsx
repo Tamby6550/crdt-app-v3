@@ -350,7 +350,6 @@ export default function RFacture(props) {
 
 
     const onInsertReglement = async () => {
-        setisClicked(false);
         setchargeV({ chupdate: true });
 
         setCharge(true);
@@ -451,6 +450,7 @@ export default function RFacture(props) {
                         <Button icon={PrimeIcons.CHECK} className='p-button-sm p-button-success ' tooltip="Valider" style={{ cursor: 'pointer' }} label={chargeV.chupdate ? 'Patienter...' : 'Ok, Valider'}
                             onClick={() => {
                                 if (isClicked) {
+                                    setisClicked(false);
                                     onInsertReglement();
                                 }
                             }} />
