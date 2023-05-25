@@ -14,50 +14,50 @@ import moment from 'moment/moment';
 
 export default function VoirCompteRendu(props) {
     moment.locale('fr', {
-        months : 'janvier_février_mars_avril_mai_juin_juillet_août_septembre_octobre_novembre_décembre'.split('_'),
-        monthsShort : 'janv._févr._mars_avr._mai_juin_juil._août_sept._oct._nov._déc.'.split('_'),
-        monthsParseExact : true,
-        weekdays : 'dimanche_lundi_mardi_mercredi_jeudi_vendredi_samedi'.split('_'),
-        weekdaysShort : 'dim._lun._mar._mer._jeu._ven._sam.'.split('_'),
-        weekdaysMin : 'Di_Lu_Ma_Me_Je_Ve_Sa'.split('_'),
-        weekdaysParseExact : true,
-        longDateFormat : {
-            LT : 'HH:mm',
-            LTS : 'HH:mm:ss',
-            L : 'DD/MM/YYYY',
-            LL : 'D MMMM YYYY',
-            LLL : 'D MMMM YYYY HH:mm',
-            LLLL : 'dddd D MMMM YYYY HH:mm'
+        months: 'janvier_février_mars_avril_mai_juin_juillet_août_septembre_octobre_novembre_décembre'.split('_'),
+        monthsShort: 'janv._févr._mars_avr._mai_juin_juil._août_sept._oct._nov._déc.'.split('_'),
+        monthsParseExact: true,
+        weekdays: 'dimanche_lundi_mardi_mercredi_jeudi_vendredi_samedi'.split('_'),
+        weekdaysShort: 'dim._lun._mar._mer._jeu._ven._sam.'.split('_'),
+        weekdaysMin: 'Di_Lu_Ma_Me_Je_Ve_Sa'.split('_'),
+        weekdaysParseExact: true,
+        longDateFormat: {
+            LT: 'HH:mm',
+            LTS: 'HH:mm:ss',
+            L: 'DD/MM/YYYY',
+            LL: 'D MMMM YYYY',
+            LLL: 'D MMMM YYYY HH:mm',
+            LLLL: 'dddd D MMMM YYYY HH:mm'
         },
-        calendar : {
-            sameDay : '[Aujourd’hui à] LT',
-            nextDay : '[Demain à] LT',
-            nextWeek : 'dddd [à] LT',
-            lastDay : '[Hier à] LT',
-            lastWeek : 'dddd [dernier à] LT',
-            sameElse : 'L'
+        calendar: {
+            sameDay: '[Aujourd’hui à] LT',
+            nextDay: '[Demain à] LT',
+            nextWeek: 'dddd [à] LT',
+            lastDay: '[Hier à] LT',
+            lastWeek: 'dddd [dernier à] LT',
+            sameElse: 'L'
         },
-        relativeTime : {
-            future : 'dans %s',
-            past : 'il y a %s',
-            s : 'quelques secondes',
-            m : 'une minute',
-            mm : '%d minutes',
-            h : 'une heure',
-            hh : '%d heures',
-            d : 'un jour',
-            dd : '%d jours',
-            M : 'un mois',
-            MM : '%d mois',
-            y : 'un an',
-            yy : '%d ans'
+        relativeTime: {
+            future: 'dans %s',
+            past: 'il y a %s',
+            s: 'quelques secondes',
+            m: 'une minute',
+            mm: '%d minutes',
+            h: 'une heure',
+            hh: '%d heures',
+            d: 'un jour',
+            dd: '%d jours',
+            M: 'un mois',
+            MM: '%d mois',
+            y: 'un an',
+            yy: '%d ans'
         },
-        dayOfMonthOrdinalParse : /\d{1,2}(er|e)/,
-        ordinal : function (number) {
+        dayOfMonthOrdinalParse: /\d{1,2}(er|e)/,
+        ordinal: function (number) {
             return number + (number === 1 ? 'er' : 'e');
         },
-        meridiemParse : /PD|MD/,
-        isPM : function (input) {
+        meridiemParse: /PD|MD/,
+        isPM: function (input) {
             return input.charAt(0) === 'M';
         },
         // In case the meridiem units are not separated around 12, then implement
@@ -65,12 +65,12 @@ export default function VoirCompteRendu(props) {
         // meridiemHour : function (hour, meridiem) {
         //     return /* 0-23 hour, given meridiem token and hour 1-12 */ ;
         // },
-        meridiem : function (hours, minutes, isLower) {
+        meridiem: function (hours, minutes, isLower) {
             return hours < 12 ? 'PD' : 'MD';
         },
-        week : {
-            dow : 1, // Monday is the first day of the week.
-            doy : 4  // Used to determine first week of the year.
+        week: {
+            dow: 1, // Monday is the first day of the week.
+            doy: 4  // Used to determine first week of the year.
         }
     });
 
@@ -109,14 +109,14 @@ export default function VoirCompteRendu(props) {
 
     useEffect(() => {
         if (editorRef.current) {
-        var currentDate = new Date();
-        // Formatage de la date au format souhaité (ici, jj/mm/aaaa)
-        var formattedDate = moment().format('DD MMMM YYYY');
+            var currentDate = new Date();
+            // Formatage de la date au format souhaité (ici, jj/mm/aaaa)
+            var formattedDate = moment().format('DD MMMM YYYY');
 
-        // Remplacement de [DATE] par la date formatée
-        var content = editorRef.current.getContent().replace('[DATE]', formattedDate);
-        editorRef.current.setContent(content);
-    }
+            // Remplacement de [DATE] par la date formatée
+            var content = editorRef.current.getContent().replace('[DATE]', formattedDate);
+            editorRef.current.setContent(content);
+        }
     }, [recHtml])
 
 
@@ -221,7 +221,7 @@ export default function VoirCompteRendu(props) {
     const stylebtnRec = {
         fontSize: '1rem', padding: ' 0.2rem 0.3rem', backgroundColor: '#0FBD6F', border: '1px solid #0FBD6F'
     };
-    
+
     const stylebtnDetele = {
         fontSize: '1rem', padding: ' 0.8375rem 0.975rem', backgroundColor: 'rgb(195 46 46 / 85%)', border: '1px solid #d32f2fa1'
     };
@@ -310,15 +310,15 @@ export default function VoirCompteRendu(props) {
         textArea.select();
         try {
             setcopy(true);
-          document.execCommand('copy');
-                setTimeout(() => {
-                    setcopy(false);
-                }, 800)
+            document.execCommand('copy');
+            setTimeout(() => {
+                setcopy(false);
+            }, 800)
         } catch (err) {
-          console.error('Unable to copy to clipboard', err);
+            console.error('Unable to copy to clipboard', err);
         }
         document.body.removeChild(textArea);
-      }
+    }
 
     return (
         <>
@@ -326,24 +326,24 @@ export default function VoirCompteRendu(props) {
             <Button icon={PrimeIcons.PENCIL} className='p-buttom-sm p-1 ml-4 p-button-secondary ' tooltip='Modifier le compte rendu' tooltipOptions={{ position: 'top' }}
                 onClick={() => { onClick('displayBasic2'); chargeProps(); getData(); }} />
 
-            <Dialog maximizable header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-8 md:col-9 col-10 p-0" footer={renderFooter('displayBasic2')} 
-             onHide={() => {
-                const accept = () => {
-                    onHide('displayBasic2');
-                }
-            
-                const reject = () => {
-                    return null;
-                }
-                confirmDialog({
-                    message: 'Avez-vous déjà enregistré ?',
-                    header: 'Confirmation',
-                    icon: 'pi pi-exclamation-triangle',
-                    accept,
-                    reject
-                });                    
-                
-            }}>
+            <Dialog maximizable header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-8 md:col-9 col-10 p-0" footer={renderFooter('displayBasic2')}
+                onHide={() => {
+                    const accept = () => {
+                        onHide('displayBasic2');
+                    }
+
+                    const reject = () => {
+                        return null;
+                    }
+                    confirmDialog({
+                        message: 'Avez-vous déjà enregistré ?',
+                        header: 'Confirmation',
+                        icon: 'pi pi-exclamation-triangle',
+                        accept,
+                        reject
+                    });
+
+                }}>
                 <Toast ref={toastTR} position="top-right" />
 
                 <div className="p-1  style-modal-tamby">
@@ -352,8 +352,8 @@ export default function VoirCompteRendu(props) {
                             <CRmodel setrecHtml={setrecHtml} recHtml={recHtml} />
                         </div>
                         <div className='col-8'>
-                            <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.2em' }} >Nom : <span  ><strong  id='textCopy' >{props.nom}</strong>
-                            <Button icon={copy?PrimeIcons.CHECK :PrimeIcons.COPY}  className={'p-button-sm p-button-info ml-5'} style={stylebtnRec} label={copy? 'Copie !' :'Copier '} onClick={()=>{unsecuredCopyToClipboard(props.nom)}} />
+                            <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.2em' }} >Nom : <span  ><strong id='textCopy' >{props.nom}</strong>
+                                <Button icon={copy ? PrimeIcons.CHECK : PrimeIcons.COPY} className={'p-button-sm p-button-info ml-5'} style={stylebtnRec} label={copy ? 'Copie !' : 'Copier '} onClick={() => { unsecuredCopyToClipboard(props.nom) }} />
 
                             </span></p>
                             <p className='m-1' style={{ fontWeight: 'bold', color: '#2c2b2b', fontSize: '1.2em' }} >Examen : <span  ><strong>{props.lib_examen}</strong></span></p>
@@ -372,16 +372,18 @@ export default function VoirCompteRendu(props) {
                             init={{
                                 height: 700,
                                 menubar: false,
-                                plugins: [
-                                    'advlist', 'anchor', 'autolink', 'help', 'image', 'link', 'lists',
-                                    'searchreplace', 'table', 'wordcount', 'pagebreak',
-                                ],
-                                toolbar: 'undo redo | blocks | ' +
-                                    'bold italic forecolor | alignleft aligncenter ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol' +
-                                    'removeformat | help',
-                                language: 'fr_FR',
 
-                                content_style: 'body { font-family:Helvetica,Arial,sans-serif;min-height:21cm;padding:3px 25px;margin:0 2%;clip-path:inset(-15px -15px 0px -15px); box-shadow:0 0 3px 0px rgba(0, 0, 0, 0.219); font-size:12px } '
+                                plugins: [
+                                    'advlist', 'font', 'anchor',  'help', 'image',  'lists',
+                                    'searchreplace', 'table', 'wordcount', 'pagebreak', 'spellchecker'
+                                ],
+                                toolbar: 'police| undo redo | fontfamily fontsize | ' +
+                                    'bold italic forecolor underline | alignleft aligncenter | fontselect | styleselect ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol' +
+                                    'removeformat',
+                                language: 'fr_FR',
+                                font_formats:
+                                    "Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats",
+                                content_style: 'body {  font-family:Helvetica,Arial,sans-serif;min-height:21cm;padding:3px 25px;margin:0 2%;clip-path:inset(-15px -15px 0px -15px); box-shadow:0 0 3px 0px rgba(0, 0, 0, 0.219); font-size:14px } '
                             }}
                         />
                     </div>

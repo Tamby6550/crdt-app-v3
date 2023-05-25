@@ -221,14 +221,17 @@ export default function InsertModel() {
                     init={{
                         height: 700,
                         menubar: false,
+
                         plugins: [
-                            'advlist', 'anchor', 'autolink', 'help', 'image', 'link', 'lists',
+                            'advlist', 'font', 'anchor',  'help', 'image',  'lists',
                             'searchreplace', 'table', 'wordcount', 'pagebreak', 'spellchecker'
                         ],
-                        toolbar: 'police| undo redo | blocks | ' +
-                            'bold italic forecolor | alignleft aligncenter ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol' +
+                        toolbar: 'police| undo redo | fontfamily fontsize | ' +
+                            'bold italic forecolor underline | alignleft aligncenter | fontselect | styleselect ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol' +
                             'removeformat',
                         language: 'fr_FR',
+                        font_formats:
+                            "Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats",
                         content_style: 'body {  font-family:Helvetica,Arial,sans-serif;min-height:21cm;padding:3px 25px;margin:0 2%;clip-path:inset(-15px -15px 0px -15px); box-shadow:0 0 3px 0px rgba(0, 0, 0, 0.219); font-size:14px } '
                     }}
                 />
