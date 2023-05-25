@@ -175,7 +175,7 @@ export default function FactureNonRegler(props) {
     const headerReherche = (
         <div className='flex flex-row justify-content-between align-items-center m-0 '>
             <div className='my-0 flex  py-2'>
-                <Recherche icon={PrimeIcons.SEARCH} setCharge={setCharge} setlistFactureEff={setlistFactureEff} changecharge={changecharge} url={props.url} infoReherche={infoReherche} setinfoReherche={setinfoReherche} />
+                <Recherche icon={PrimeIcons.SEARCH} setCharge={setCharge} charge={charge} setlistFactureEff={setlistFactureEff} changecharge={changecharge} url={props.url} infoReherche={infoReherche} setinfoReherche={setinfoReherche} />
                 {infoReherche.num_facture == "" && infoReherche.date_facture == "" && infoReherche.nom_patient == "" && infoReherche.nom_client == ""
                     && infoReherche.numero_arr == "" && infoReherche.date_arr == "" && infoReherche.pec === false && infoReherche.date_debut == "" && infoReherche.date_fin == "" ? null :
                     <label className='ml-5 mt-2'>
@@ -198,7 +198,7 @@ export default function FactureNonRegler(props) {
                 </>
                 :
                 <>
-                    <h3 className='m-3'  >Liste de factures non réglées (5 dernier jour)</h3>
+                    <h3 className='m-3'  >Liste de factures non réglées(Aujourd'hui)</h3>
                     <h3 className='m-3' style={{ visibility: 'hidden' }} >facture </h3>
                     <Button icon={PrimeIcons.REFRESH} className='p-buttom-sm p-1 p-button-warning ' tooltip='actualiser' tooltipOptions={{ position: 'top' }} onClick={() => setrefreshData(1)} />
                 </>

@@ -181,7 +181,7 @@ export default function Recherche(props) {
 
                         {verfChamp ? <center><small id="username2-help" className="p-error block justify-content-center" style={{ fontWeight: 'bold' }}>Veuillez entrer la critère pour la recherche - Code ou Nom </small></center> : null}
                         <div className='flex mt-3 mr-4 justify-content-center '>
-                            <Button icon={PrimeIcons.SEARCH} className='p-button p-button-secondary ' label={'Reherche'} onClick={() => {
+                            <Button icon={PrimeIcons.SEARCH} className='p-button p-button-secondary ' label={props.charge? 'Recherche en cours...':'Reherche'} onClick={() => {
                                 if (activeIndex === 0) {
                                     if (infoRehFact.num_facture == "" && infoRehFact.pec == false && infoRehFact.date_facture == "" && infoRehFact.nom_patient == "" && infoRehFact.nom_client == "" && infoRehFact.numero_arr == "" && infoRehFact.date_arr == "") {
                                         alert('Entrez le(s) critère(s) de recherche ! ')

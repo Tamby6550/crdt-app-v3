@@ -56,15 +56,32 @@ export default function BundledEditor(props) {
   const {init, ...rest} = props;
   // note that skin and content_css is disabled to avoid the normal
   // loading process and is instead loaded as a string via content_style
+  function handleEditorChange(content)  {
+    console.log('Content was updated:', content);
+  }
+  function handlePastePreprocess(plugin, args) {
+    const content = args.content;
+    
+    // Définir la police par défaut pour le texte collé
+    const defaultFontFamily = 'Arial';
+    
+    // Modifier le contenu collé pour utiliser la police par défaut
+    args.content = `<span style="font-family: ${defaultFontFamily};">${content}</span>`;
+  }
+
   return (
     <Editor
       init={{
         ...init,
+        paste_preprocess: handlePastePreprocess,
+        plugins: 'paste',
         skin: false,
         content_css: false,
         content_style: [contentCss, contentUiCss, init.content_style || ''].join('\n'),
-        browser_spellcheck:true
+        browser_spellcheck:true,
+        
       }}
+      onEditorChange={handleEditorChange}
       {...rest}
     />
   );

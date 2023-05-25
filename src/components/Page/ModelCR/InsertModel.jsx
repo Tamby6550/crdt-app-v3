@@ -157,7 +157,19 @@ export default function InsertModel() {
    
     useEffect(() => {
         getnameFileLink();
-    }, [oldfilename,choixAjoutModif])
+    }, [oldfilename,choixAjoutModif]);
+
+    function handlePastePreprocess(plugin, args) {
+        const content = args.content;
+        
+        // Définir la police par défaut pour le texte collé
+        const defaultFontFamily = 'Tahoma';
+        console.log('Police!!!')
+        
+        // Modifier le contenu collé pour utiliser la police par défaut
+        args.content = `<span style="color:red;font-family: ${defaultFontFamily};">${content}</span>`;
+      }
+
 
     return (
         <div className="p-1  style-modal-tamby flex " style={{ alignItems: 'center', flexDirection: 'column' }} >
