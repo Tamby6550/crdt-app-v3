@@ -9,6 +9,8 @@ import axios from 'axios'
 import "../../../../facture.css";
 import moment from 'moment/moment';
 import { NumberToLetter } from 'convertir-nombre-lettre';
+import { Toast } from 'primereact/toast';
+
 export default function ImpressionFact(props) {
 
     moment.locale('fr', {
@@ -84,7 +86,12 @@ export default function ImpressionFact(props) {
         fontSize: '1rem', padding: ' 0.8375rem 0.975rem', backgroundColor: 'rgb(195 153 46 / 85%)', border: '1px solid rgb(211 152 47 / 63%)'
     };
 
+    const toastTR = useRef(null);
+    const notificationAction = (etat, titre, message) => {
+        toastTR.current.show({ severity: etat, summary: titre, detail: message, life: 3000 });
+    }
 
+    // console.log(props.data)
     /* Modal */
     const [displayBasic2, setDisplayBasic2] = useState(false);
     const [position, setPosition] = useState('center');
@@ -109,7 +116,7 @@ export default function ImpressionFact(props) {
         return (
             <div>
                 <center>
-                    <h4>Facture</h4>
+                    {blockedPanel ? <h2>Veuillez patienter pendant le chargement des données...</h2> : <h4>Facture</h4>}
                 </center>
             </div>
         );
@@ -163,6 +170,57 @@ export default function ImpressionFact(props) {
         montant_patient: '0', montant_pech: '0', montant_remise: '0', montantRestPatient: '0', montant_pec_regle: '0', net_pec: 'vide', net_mtnet: 'vide',
         rc: '', stat: '', cif: '', nif: '',
     }]);
+    const [DataAllFactExamen, setDataAllFactExamen] = useState([
+        {
+            num_facture: "",
+            date_facture: "",
+            ref_carte: null,
+            patient: "",
+            type: "",
+            nomreglement: "",
+            montantreglementpat: "",
+            nom_cli: "-",
+            pec: "",
+            remise: "0",
+            montant_remise: "0.00",
+            nom_presc: "",
+            num_arriv: "",
+            date_arriv: "",
+            montant_brute: "",
+            montant_net: "",
+            montant_patient: "",
+            montant_pech: "",
+            montantRestPatient: "",
+            montant_pec_regle: "",
+            code_cli: "",
+            status: "",
+            montantRestPresc: "",
+            montantRest: "",
+            net_pec: "",
+            net_mtnet: "",
+            rc: null,
+            stat: null,
+            cif: null,
+            nif: null,
+            examenResult: [
+                {
+                    num_fact: "",
+                    lib_examen: "",
+                    code_tarif: "",
+                    quantite: "",
+                    montant: "",
+                    date_examen: "",
+                    type: "",
+                    rejet: "",
+                    num_arriv: "",
+                    date_arriv: "",
+                    cr_name: "",
+                    date_exam: "",
+                }
+            ],
+            totalMt: "",
+        },
+    ]);
     const [totalMt, settotalMt] = useState(0);
     const [aujourd, setaujourd] = useState(moment().format('LL'));
 
@@ -183,21 +241,15 @@ export default function ImpressionFact(props) {
 
 
     //Get List Examen
-    const loadData = async (numero) => {
-        let dt = (props.data.date_arr).split('/');
+    const loadDataExamen = async (numero, date_ariv_) => {
+        let dt = date_ariv_.split('/');
         let cmpltDate = dt[0] + '-' + dt[1] + '-' + dt[2];
-        await axios.get(props.url + `getPatientExamenFacture/${numero}&${cmpltDate}`)
-            .then(
-                (results) => {
-                    setinfoExamen(results.data.all);
-                    settotalMt(results.data.total)
-
-                    setBlockedPanel(false);
-                    setCharge(false);
-                    console.log(results.data)
-                }
-            );
-    }
+        const response = await axios.get(props.url + `getPatientExamenFacture/${numero}&${cmpltDate}`);
+        return {
+            all: response.data.all,
+            total: response.data.total,
+        };
+    };
 
     function poucentage(val, pourc) {
         let res = (val * pourc) / 100;
@@ -205,61 +257,98 @@ export default function ImpressionFact(props) {
         return res;
     }
 
-    //Get List numfacture et tarif
-    const loadDataFact = async () => {
-        let numf = (props.data.num_fact).split('/');
-        let cmpltFact = numf[0] + '-' + numf[1] + '-' + numf[2];
-        setBlockedPanel(true);
-        await axios.get(props.url + `getInfoPatientFacture/${cmpltFact}`)
-            .then(
-                (result) => {
 
-                    let remises_ = poucentage(result.data.montant_brute, result.data.remise);
-                    let mtremises = result.data.montant_brute - remises_;
-                    setinfoFacture({
-                        ...infoFacture,
-                        num_facture: result.data.num_fact,
-                        date_facture: result.data.date_fact,
-                        ref_carte: result.data.ref_carte,
-                        patient: result.data.patient,
-                        type: result.data.type_client,
-                        nomreglement: result.data.reglemnt,
-                        montantreglementpat: format(result.data.montant_patient_regle, 2, " "),
-                        nom_cli: result.data.client,
-                        pec: result.data.pec,
-                        remise: result.data.remise,
-                        montant_remise: format(mtremises, 2, " "),
-                        nom_presc: result.data.presc,
-                        num_arriv: result.data.num_arriv,
-                        date_arriv: props.data.date_arr,
-                        montant_brute: format(result.data.montant_brute, 2, " "),
-                        montant_net: format(result.data.montant_net, 2, " "),
-                        montant_patient: format(result.data.montant_patient, 2, " "),
-                        montant_pech: format(result.data.montant_pec, 2, " "),
-                        montantRestPatient: format(result.data.reste_patient, 2, " "),
-                        montant_pec_regle: format(result.data.montant_pec_regle, 2, " "),
-                        code_cli: result.data.code_cli, status: result.data.status,
-                        montantRestPresc: format(result.data.reste_pec, 2, " "),
-                        montantRest: format(result.data.reste, 2, " "),
-                        net_pec: result.data.net_pec,
-                        net_mtnet: result.data.net_mtnet,
-                        rc: result.data.rc,
-                        stat: result.data.stat,
-                        cif: result.data.cif,
-                        nif: result.data.nif,
-                    });
-                    setTimeout(() => {
-                        loadData(props.data.numero);
-                    }, 900)
-                }
-            );
-    }
+    //Get List numfacture et tarif
+    const loadDataFact = async (num_fact_, date_arriv_) => {
+        try {
+            let numf = num_fact_.split('/');
+            let cmpltFact = numf[0] + '-' + numf[1] + '-' + numf[2];
+
+            const response = await axios.get(props.url + `getInfoPatientFacture/${cmpltFact}`);
+
+            let remises_ = poucentage(response.data.montant_brute, response.data.remise);
+            let mtremises = response.data.montant_brute - remises_;
+
+            // Appel de loadDataExamen avec les paramètres appropriés
+            const examenResult = await loadDataExamen(response.data.num_arriv, date_arriv_);
+
+            const result = {
+                num_facture: response.data.num_fact,
+                date_facture: response.data.date_fact,
+                ref_carte: response.data.ref_carte,
+                patient: response.data.patient,
+                type: response.data.type_client,
+                nomreglement: response.data.reglemnt,
+                montantreglementpat: format(response.data.montant_patient_regle, 2, " "),
+                nom_cli: response.data.client,
+                pec: response.data.pec,
+                remise: response.data.remise,
+                montant_remise: format(mtremises, 2, " "),
+                nom_presc: response.data.presc,
+                num_arriv: response.data.num_arriv,
+                date_arriv: date_arriv_,
+                montant_brute: format(response.data.montant_brute, 2, " "),
+                montant_net: format(response.data.montant_net, 2, " "),
+                montant_patient: format(response.data.montant_patient, 2, " "),
+                montant_pech: format(response.data.montant_pec, 2, " "),
+                montantRestPatient: format(response.data.reste_patient, 2, " "),
+                montant_pec_regle: format(response.data.montant_pec_regle, 2, " "),
+                code_cli: response.data.code_cli,
+                status: response.data.status,
+                montantRestPresc: format(response.data.reste_pec, 2, " "),
+                montantRest: format(response.data.reste, 2, " "),
+                net_pec: response.data.net_pec,
+                net_mtnet: response.data.net_mtnet,
+                rc: response.data.rc,
+                stat: response.data.stat,
+                cif: response.data.cif,
+                nif: response.data.nif,
+                examenResult: examenResult.all, // Stocker les résultats de loadDataExamen dans la constante result
+                totalMt: examenResult.total, // Stocker le total de loadDataExamen dans la constante result
+            };
+
+            return result;
+        } catch (error) {
+            // Gérer les erreurs
+            console.error(error);
+            return null;
+        }
+    };
+
+    const loadDataTest = async () => {
+        const results = [];
+        let i = 0;
+        setBlockedPanel(true);
+        let verf = 0;
+        while (i < props.data.length) {
+            const num_fact_ = props.data[i].num_fact;
+            const date_arriv = props.data[i].date_arr;
+
+            try {
+                const result = await loadDataFact(num_fact_, date_arriv);
+                results.push(result);
+                notificationAction('info', (i + 1) + ' factures ont été récupérées avec succès. !', "");
+                i++;
+            } catch (error) {
+                console.error(error);
+                results = [];
+                // Réinitialiser la boucle en cas d'erreur
+                i = 0;
+            }
+        }
+
+        if (i == props.data.length) {
+            setBlockedPanel(false);
+        }
+        // Faites ce que vous voulez avec les résultats
+        setDataAllFactExamen(results);
+    };
 
     const chargementData = () => {
         setCharge(true);
         setinfoExamen([{ quantite: 'Chargement de données...' }]);
         setTimeout(() => {
-            loadDataFact()
+            loadDataTest()
         }, 200)
     }
 
@@ -278,10 +367,11 @@ export default function ImpressionFact(props) {
 
     return (
         <>
-            <Button icon={PrimeIcons.PRINT} tooltip='Imprimer' className='p-buttom-sm p-1 mr-2 ' style={stylebtnRetourner} tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementData() }} />
+            <Button icon={PrimeIcons.PRINT} label='Imprimer toutes les factures' tooltip='Imprimer toutes les factures' className='p-buttom-sm p-1 mr-2 ' style={stylebtnRetourner} tooltipOptions={{ position: 'top' }} onClick={() => { onClick('displayBasic2'); chargementData() }} />
 
             <Dialog header={renderHeader('displayBasic2')} visible={displayBasic2} className="lg:col-7 md:col-10 col-11 p-0" onHide={() => onHide('displayBasic2')}  >
                 <BlockUI blocked={blockedPanel} template={<ProgressSpinner />}>
+                    <Toast ref={toastTR} position="top-left" />
                     <div className='recu-imprime' style={{ padding: '50px', border: '1px solid black' }} >
 
                         <div
@@ -291,9 +381,9 @@ export default function ImpressionFact(props) {
                         >
 
                             {/* Début Boucle  */}
-                            {infoFacture.map((dt, i) => (
+                            {DataAllFactExamen.map((dt, i) => (
 
-                                <div className='m-0' key={i} style={{ marginBottom: '30%' }}>
+                                <div className='m-0 recuimprime-all' key={i}  >
 
                                     <div className='crdt co-12 ' style={{ position: 'absolute', alignItems: 'center', width: '100%' }}>
                                         <center>
@@ -367,7 +457,7 @@ export default function ImpressionFact(props) {
 
                                         <tr>
                                             <td class="input1" height="26">
-                                                {infoExamen.map((element) => (
+                                                {dt.examenResult.map((element) => (
                                                     <div>
                                                         {element.lib_examen === null ||
                                                             element.lib_examen === "" ||
@@ -380,7 +470,7 @@ export default function ImpressionFact(props) {
                                                 ))}
                                             </td>
                                             <td align="right" class="table" style={{ padding: "0px" }}>
-                                                {infoExamen.map((element) => (
+                                                {dt.examenResult.map((element) => (
                                                     <div style={{ width: "100%", borderTop: "0.3px solid black", padding: '2px' }}>
                                                         {element.montant === null ||
                                                             element.montant === "" ||
@@ -401,17 +491,17 @@ export default function ImpressionFact(props) {
                                                 </div>
                                             </td>
                                             <td align="right" class="table">
-                                                {infoFacture.montant_brute}
+                                                {dt.montant_brute}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td height="26" class="Style3 table">
                                                 <div align="right" class="Style5">
-                                                    REMISE {infoFacture.remise}%:
+                                                    REMISE {dt.remise}%:
                                                 </div>
                                             </td>
                                             <td align="right" class="table">
-                                                {infoFacture.montant_remise}
+                                                {dt.montant_remise}
                                             </td>
                                         </tr>
                                         <tr>
@@ -421,7 +511,7 @@ export default function ImpressionFact(props) {
                                                 </div>
                                             </td>
                                             <td align="right" class="table">
-                                                {infoFacture.montant_net}
+                                                {dt.montant_net}
                                             </td>
                                         </tr>
                                         <tr>
@@ -431,7 +521,7 @@ export default function ImpressionFact(props) {
                                                 </div>
                                             </td>
                                             <td align="right" class="table">
-                                                {infoFacture.montant_patient}
+                                                {dt.montant_patient}
                                             </td>
                                         </tr>
                                         <tr>
@@ -441,7 +531,7 @@ export default function ImpressionFact(props) {
                                                 </div>
                                             </td>
                                             <td align="right" class="table">
-                                                {infoFacture.montant_pech}
+                                                {dt.montant_pech}
                                             </td>
                                         </tr>
                                     </table>
@@ -451,7 +541,7 @@ export default function ImpressionFact(props) {
                                         <tr>
                                             <td width="428">
                                                 Arrêté la présente facture à la somme de: <br />
-                                                <label style={{ fontWeight: '700' }}>/{infoFacture.montant_pech == '0.00' ? manisyLettre(infoFacture.net_mtnet) : manisyLettre(infoFacture.net_pec)}/</label>
+                                                <label style={{ fontWeight: '700' }}>/{dt.montant_pech == '0.00' ? manisyLettre(infoFacture.net_mtnet) : manisyLettre(infoFacture.net_pec)}/</label>
 
                                             </td>
                                             <td width="199">&nbsp;</td>

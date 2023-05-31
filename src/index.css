@@ -38,7 +38,9 @@
     page:special;
 
 }
-
+.recuimprime-all{
+    page:recuAll;
+}
 /* Récu */
 #scan{
     page:special1;
@@ -72,4 +74,7 @@
     size:portrait;
     
 
+}
+@page recuAll{
+    margin-bottom: 80mm;
 }

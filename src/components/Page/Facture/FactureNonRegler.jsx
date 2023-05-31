@@ -14,7 +14,7 @@ import FFactureVoir from './FactureNonReg/FFactureVoir';
 import Reglement from './FactureNonReg/Reglement'
 import ModifReglement from './FactureNonReg/ModifReglement'
 import ImpressionFact from './FactureNonReg/ImpressionFact';
-// import ImpressionFactAll from './FactureNonReg/ImpressionFactAll';
+import ImpressionFactAll from './FactureNonReg/ImpressionFactAll';
 import Recherche from './FactureNonReg/Recherche';
 
 export default function FactureNonRegler(props) {
@@ -200,6 +200,7 @@ export default function FactureNonRegler(props) {
                 <>
                     <h3 className='m-3'  >Liste de factures non réglées(Aujourd'hui)</h3>
                     <h3 className='m-3' style={{ visibility: 'hidden' }} >facture </h3>
+                {/* <ImpressionFactAll url={props.url} data={listFactureEff} changecharge={changecharge} setrefreshData={setrefreshData} /> */}
                     <Button icon={PrimeIcons.REFRESH} className='p-buttom-sm p-1 p-button-warning ' tooltip='actualiser' tooltipOptions={{ position: 'top' }} onClick={() => setrefreshData(1)} />
                 </>
             }
