@@ -15,7 +15,7 @@ import moment from 'moment/moment';
 
 export default function ReleveFacture(props) {
 
-    const messagesParPage = 17;
+    const messagesParPage = 26;
 
     const [donne, setdonne] = useState({ code_cli: '', nom_cli: '', date_deb: '', date_fin: '' });
     const [verfChamp, setverfChamp] = useState({ nom_cli: false })
@@ -169,7 +169,7 @@ export default function ReleveFacture(props) {
                                     const pagededonnees = DataAll.slice(debut, fin);
 
                                     return (
-                                        <div key={index} className='rapportxxx' >
+                                        <div key={index} className='rapportxxxrv' >
                                             <span class="Style5" style={{ fontWeight: "bold" }}>CRDT</span>
                                             <table width="777" border="0" align="center">
                                                 <tr>
@@ -201,7 +201,7 @@ export default function ReleveFacture(props) {
 
                                             <table width="98.5%" border="0" align="center" class="table">
                                                 <tr>
-                                                    <td width="1%" class="Style3 table">
+                                                    {/* <td width="1%" class="Style3 table">
                                                         <div align="left" class="Style1">
                                                             <div align="center">N° ARRIV</div>
                                                         </div>
@@ -210,7 +210,7 @@ export default function ReleveFacture(props) {
                                                         <div align="left" class="Style1">
                                                             <div align="center">DATE ARRIV</div>
                                                         </div>
-                                                    </td>
+                                                    </td> */}
                                                     <td width="9%" class="Style3 table">
                                                         <div align="left" class="Style1">
                                                             <div align="center">DATE EXAM</div>
@@ -221,17 +221,17 @@ export default function ReleveFacture(props) {
                                                             <div align="center">NUMFACT</div>
                                                         </div>
                                                     </td>
-                                                    <td width="25%" class="Style3 table">
+                                                    <td width="29%" class="Style3 table">
                                                         <div align="left" class="Style1">
                                                             <div align="center">PATIENT</div>
                                                         </div>
                                                     </td>
-                                                    <td width="14%" class="Style3 table">
+                                                    <td width="10%" class="Style3 table">
                                                         <div align="left" class="Style1">
                                                             <div align="center">MONTANT</div>
                                                         </div>
                                                     </td>
-                                                    <td width="14%" class="Style3 table">
+                                                    <td width="7%" class="Style3 table">
                                                         <div align="left" class="Style1">
                                                             <div align="center">MONTANT REGLE </div>
                                                         </div>
@@ -244,7 +244,7 @@ export default function ReleveFacture(props) {
                                                 </tr>
                                                 {pagededonnees.map((el, i) => (
                                                     <tr key={i}>
-                                                        <td class="table Style3">
+                                                        {/* <td class="table Style3">
                                                             <div align="center">
                                                                 <font size="1">{el.num_arriv}</font>
                                                             </div>
@@ -253,7 +253,7 @@ export default function ReleveFacture(props) {
                                                             <div align="center">
                                                                 <font size="1">{el.date_arriv}</font>
                                                             </div>
-                                                        </td>
+                                                        </td> */}
                                                         <td class="table Style3">
                                                             <div align="center">
                                                                 <font size="1">{el.date_examen}</font>
@@ -286,12 +286,12 @@ export default function ReleveFacture(props) {
                                                 ))}
                                                 {index === nombreDePages - 1 && (
                                                     <tr>
-                                                        <td height="22" class="table Style3">
+                                                        {/* <td height="22" class="table Style3">
                                                             &nbsp;
                                                         </td>
                                                         <td height="22" class="table Style3">
                                                             &nbsp;
-                                                        </td>
+                                                        </td> */}
                                                         <td height="22" class="table Style3">
                                                             &nbsp;
                                                         </td>

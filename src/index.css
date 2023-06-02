@@ -38,6 +38,10 @@
     page:special;
 
 }
+.rapportxxxrv{
+    page:specialrv;
+
+}
 .recuimprime-all{
     page:recuAll;
 }
@@ -55,6 +59,11 @@
 @page special{
     margin: 4mm;
     size: landscape;
+
+}
+@page rapportxxxrv{
+    margin: 4mm;
+    size: portrait;
 
 }
 
